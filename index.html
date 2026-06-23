@@ -89,6 +89,7 @@
         <a href="#services">Услуги</a>
         <a href="#segments">Для кого</a>
         <a href="#packages">Пакеты</a>
+        <a href="#quiz">Калькулятор</a>
         <a href="#benefits">Преимущества</a>
         <a href="#cases">Кейсы</a>
         <a href="#faq">FAQ</a>
@@ -306,6 +307,44 @@
             </ul>
             <a class="btn btn-ghost" href="#contacts">Обсудить проект</a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quiz" aria-labelledby="quiz-title">
+      <div class="container">
+        <h2 id="quiz-title">Рассчитайте бюджет автоматизации</h2>
+        <p class="section-subtitle">Укажите параметры объекта — получите ориентировочную стоимость и сроки запуска.</p>
+        <div class="quiz-grid">
+          <form class="quiz-form" id="quiz-form" novalidate>
+            <label for="quiz-type">Тип объекта</label>
+            <select id="quiz-type" name="quiz-type" required>
+              <option value="">Выберите тип</option>
+              <option value="hotel">Отель</option>
+              <option value="mini">Мини-отель / гостевой дом</option>
+              <option value="apart">Апартаменты / УК</option>
+              <option value="chain">Сетевые объекты</option>
+            </select>
+
+            <label for="quiz-rooms">Количество номеров</label>
+            <input id="quiz-rooms" name="quiz-rooms" type="number" min="1" max="999" placeholder="Например: 40" required>
+
+            <fieldset>
+              <legend>Нужные модули</legend>
+              <label><input type="checkbox" name="modules" value="1c"> 1С автоматизация</label>
+              <label><input type="checkbox" name="modules" value="kkt"> Онлайн-кассы и ОФД</label>
+              <label><input type="checkbox" name="modules" value="srv"> Серверы и сеть</label>
+              <label><input type="checkbox" name="modules" value="lock"> Замковые системы</label>
+              <label><input type="checkbox" name="modules" value="ops"> Поддержка 24/7</label>
+              <label><input type="checkbox" name="modules" value="ota"> Интеграция каналов продаж</label>
+            </fieldset>
+
+            <button class="btn btn-primary" type="submit">Рассчитать стоимость</button>
+          </form>
+          <div class="quiz-result reveal" id="quiz-result">
+            <h3>Заполните параметры</h3>
+            <p>Укажите тип объекта, количество номеров и нужные модули — получите предварительный бюджет и сроки запуска.</p>
+          </div>
         </div>
       </div>
     </section>
