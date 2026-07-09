@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Настройка серверов для отеля",
+    "name": "Настройка серверов и сети для отеля",
+    "description": "Проектирование и настройка серверной инфраструктуры и сети отеля: резервирование, Wi-Fi, отказоустойчивость.",
+    "provider": { "@type": "Organization", "name": "ТЕХБИЗ", "url": "{{ SITE_URL }}/" },
+    "areaServed": "RU"
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Услуги автоматизации гостиниц</p>
+        <h1 id="hero-title">Настройка серверов и сетевой инфраструктуры отеля</h1>
+        <p class="lead">Проектируем и настраиваем серверную часть и сеть так, чтобы 1С, кассы и замковые системы работали без сбоев, а Wi-Fi выдерживал полную загрузку отеля.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+          <a class="btn btn-ghost" href="{{ url_for('home', anchor='services') }}">Смотреть остальные услуги</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what" aria-labelledby="what-title">
+      <div class="container">
+        <h2 id="what-title">Что входит в настройку серверов и сети</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">SRV</span>
+            <h3>Проектирование архитектуры</h3>
+            <p>Подбираем серверную конфигурацию под нагрузку и критичные сервисы объекта.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">RES</span>
+            <h3>Резервирование и отказоустойчивость</h3>
+            <p>Настраиваем резервное копирование и сценарии восстановления после сбоя.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">WIFI</span>
+            <h3>Настройка Wi-Fi и локальной сети</h3>
+            <p>Обеспечиваем стабильное покрытие для гостей и рабочих мест персонала.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">MON</span>
+            <h3>Мониторинг 24/7</h3>
+            <p>Отслеживаем состояние инфраструктуры и реагируем до того, как сбой заметят гости.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">SEC</span>
+            <h3>Защита данных</h3>
+            <p>Настраиваем разграничение доступа и защиту от несанкционированного проникновения в сеть.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">SCL</span>
+            <h3>Масштабирование под рост объекта</h3>
+            <p>Проектируем инфраструктуру с запасом — под открытие новых корпусов или объектов сети.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <h2 id="process-title">Как проходит настройка</h2>
+        <ol class="process-line">
+          <li class="reveal"><strong>1. Аудит</strong><span>Проверяем текущую сеть, оборудование и точки отказа.</span></li>
+          <li class="reveal"><strong>2. Проект</strong><span>Проектируем архитектуру с резервированием под задачи объекта.</span></li>
+          <li class="reveal"><strong>3. Запуск</strong><span>Разворачиваем серверы и сеть, тестируем нагрузку.</span></li>
+          <li class="reveal"><strong>4. Обучение</strong><span>Передаём регламенты обслуживания ответственным сотрудникам.</span></li>
+          <li class="reveal"><strong>5. Сопровождение</strong><span>Мониторим инфраструктуру и оперативно реагируем на инциденты.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title">Частые вопросы про серверы и сеть</h2>
+        <details class="faq-item reveal">
+          <summary>Что если сервер выйдет из строя во время заезда гостей?</summary>
+          <p>Настраиваем резервирование и мониторинг, чтобы сбой обнаруживался и устранялся до того, как повлияет на заселение.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Можно ли разместить сервер в облаке?</summary>
+          <p>Да, обсуждаем вариант размещения — локальный сервер, облако или гибридная схема — исходя из задач объекта.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Выдержит ли Wi-Fi полную загрузку отеля?</summary>
+          <p>Проектируем сеть с запасом по нагрузке и точками доступа, покрывающими все зоны, включая высокий сезон.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="container contact-grid">
+        <div>
+          <h2 id="contacts-title">Получите план настройки серверов для вашего отеля</h2>
+          <p>Оставьте контакты — подготовим аудит текущей инфраструктуры и предложение по настройке.</p>
+          <ul class="contacts-list">
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
+            <li>Работаем по всей России</li>
+          </ul>
+        </div>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+
+          <label for="object">Тип объекта</label>
+          <select id="object" name="object" required>
+            <option value="">Выберите тип</option>
+            <option>Отель</option>
+            <option>Мини-отель</option>
+            <option>Апартаменты</option>
+            <option>Другое</option>
+          </select>
+
+          <label for="message">Задача</label>
+          <textarea id="message" name="message" rows="4" placeholder="Нужна настройка серверов и сети — расскажите детали"></textarea>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="agree" required>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+          </label>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+{% endblock %}

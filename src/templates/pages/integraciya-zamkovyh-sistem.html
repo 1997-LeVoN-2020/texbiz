@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Интеграция замковых систем",
+    "name": "Интеграция замковых систем для отеля",
+    "description": "Интеграция электронных замков и карт доступа с 1С-Отель: автоматическая выдача ключей, контроль доступа гостей и персонала.",
+    "provider": { "@type": "Organization", "name": "ТЕХБИЗ", "url": "{{ SITE_URL }}/" },
+    "areaServed": "RU"
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Услуги автоматизации гостиниц</p>
+        <h1 id="hero-title">Интеграция замковых систем</h1>
+        <p class="lead">Подключаем электронные замки и карты доступа к 1С-Отель — ключ выдаётся автоматически при заселении, а доступ гостя ограничен сроком проживания.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+          <a class="btn btn-ghost" href="{{ url_for('home', anchor='services') }}">Смотреть остальные услуги</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what" aria-labelledby="what-title">
+      <div class="container">
+        <h2 id="what-title">Что входит в интеграцию замковых систем</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">LOCK</span>
+            <h3>Синхронизация с 1С</h3>
+            <p>Ключ или карта доступа привязывается к брони автоматически при заселении и деактивируется при выселении.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">CARD</span>
+            <h3>Карты доступа гостей и персонала</h3>
+            <p>Настраиваем отдельные уровни доступа для гостей, горничных, службы безопасности и администрации.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">CMP</span>
+            <h3>Совместимость с популярными системами</h3>
+            <p>Интегрируем большинство распространённых систем электронных замков, применяемых в гостиницах.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">LOG</span>
+            <h3>Аварийный доступ и логирование</h3>
+            <p>Настраиваем аварийные сценарии открытия и ведём журнал доступа по каждому номеру.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">ZON</span>
+            <h3>Настройка зон доступа</h3>
+            <p>Ограничиваем доступ к служебным, техническим и закрытым зонам объекта.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">OPS</span>
+            <h3>Поддержка и сервис</h3>
+            <p>Обслуживаем оборудование и оперативно реагируем на сбои считывателей и замков.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <h2 id="process-title">Как проходит интеграция</h2>
+        <ol class="process-line">
+          <li class="reveal"><strong>1. Аудит</strong><span>Проверяем установленные замки и совместимость с 1С.</span></li>
+          <li class="reveal"><strong>2. Проект</strong><span>Проектируем схему зон доступа для гостей и персонала.</span></li>
+          <li class="reveal"><strong>3. Запуск</strong><span>Настраиваем интеграцию и тестируем выдачу ключей на реальных бронях.</span></li>
+          <li class="reveal"><strong>4. Обучение</strong><span>Обучаем администраторов работе с выдачей и перевыпуском ключей.</span></li>
+          <li class="reveal"><strong>5. Сопровождение</strong><span>Обслуживаем оборудование и следим за стабильностью системы.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title">Частые вопросы про замковые системы</h2>
+        <details class="faq-item reveal">
+          <summary>С какими замковыми системами вы работаете?</summary>
+          <p>Интегрируем большинство популярных систем электронных замков, применяемых в гостиницах — совместимость уточняем на аудите объекта.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Что будет при отключении электричества?</summary>
+          <p>Замковые системы поддерживают аварийный доступ по регламенту производителя — настраиваем сценарий совместно с вашей службой безопасности.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Можно ли использовать уже установленные замки?</summary>
+          <p>Да, проводим аудит текущего оборудования и интегрируем его с 1С, если это технически целесообразно.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="container contact-grid">
+        <div>
+          <h2 id="contacts-title">Получите план интеграции замковых систем</h2>
+          <p>Оставьте контакты — подготовим аудит текущего оборудования и предложение по интеграции.</p>
+          <ul class="contacts-list">
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
+            <li>Работаем по всей России</li>
+          </ul>
+        </div>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+
+          <label for="object">Тип объекта</label>
+          <select id="object" name="object" required>
+            <option value="">Выберите тип</option>
+            <option>Отель</option>
+            <option>Мини-отель</option>
+            <option>Апартаменты</option>
+            <option>Другое</option>
+          </select>
+
+          <label for="message">Задача</label>
+          <textarea id="message" name="message" rows="4" placeholder="Нужна интеграция замковых систем — расскажите детали"></textarea>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="agree" required>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+          </label>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Модуль онлайн-бронирования ТЕХБИЗ",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Модуль онлайн-бронирования и оплаты номеров для сайта отеля с интеграцией в 1С-Отель по SOAP, платёжными шлюзами ЮKassa и Сбербанк Эквайринг.",
+    "url": "{{ canonical_url }}",
+    "provider": {
+      "@type": "Organization",
+      "name": "ТЕХБИЗ"
+    }
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Модуль онлайн-бронирования</p>
+          <h1 id="hero-title">Гость бронирует и оплачивает номер прямо на вашем сайте</h1>
+          <p class="lead">Без комиссии агрегаторов, без ручного переноса броней. Модуль напрямую интегрирован с 1С-Отель: цены, доступность и статус брони всегда синхронизированы в реальном времени.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contacts">Подключить модуль</a>
+            <a class="btn btn-ghost" href="https://booking-module.tex-biz.ru/" target="_blank" rel="noopener noreferrer">Смотреть демо</a>
+          </div>
+          <ul class="trust-list">
+            <li>Интеграция с 1С-Отель</li>
+            <li>ЮKassa и Сбербанк Эквайринг</li>
+            <li>Без комиссии агрегаторов</li>
+          </ul>
+        </div>
+        <aside class="hero-card" aria-label="Как проходит бронирование">
+          <h2>Путь гостя — 4 шага</h2>
+          <ol class="process-line" style="margin:0">
+            <li><strong>1. Поиск</strong><span>Даты, гости, тип номера — с живыми ценами из 1С.</span></li>
+            <li><strong>2. Выбор</strong><span>Номер, тариф и способ размещения, с учётом детей по возрасту.</span></li>
+            <li><strong>3. Оплата</strong><span>Онлайн через ЮKassa или Сбербанк Эквайринг.</span></li>
+            <li><strong>4. Подтверждение</strong><span>Бронь автоматически регистрируется в 1С-Отель.</span></li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <h2 id="features-title">Что входит в модуль</h2>
+        <p class="section-subtitle">Не просто форма заявки — полноценный цикл бронирования и оплаты, привязанный к вашей PMS.</p>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">PMS</span>
+            <h3>Живые цены и доступность</h3>
+            <p>Тарифы и номера запрашиваются напрямую у 1С-Отель — гость видит те же условия, что и администратор на ресепшене.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">PAY</span>
+            <h3>Онлайн-оплата с автоподтверждением</h3>
+            <p>ЮKassa и Сбербанк Эквайринг. Оплата сразу проводится в бронь 1С, без ручной сверки платежей.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">15</span>
+            <h3>Автоотмена неоплаченных броней</h3>
+            <p>Если оплата не поступила в течение 15 минут после старта — заявка автоматически снимается, номер не блокируется зря.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">SRCH</span>
+            <h3>Поиск брони без регистрации</h3>
+            <p>Гость находит и оплачивает свою бронь по номеру и контактным данным — без создания аккаунта.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">RUM</span>
+            <h3>Каталог номеров с фото и тарифами</h3>
+            <p>Фото, характеристики (вид из окна, тип кровати, санузел) и несколько тарифов на один номер со скидками.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">KID</span>
+            <h3>Состав гостей по возрасту</h3>
+            <p>Учитываются взрослые и дети с возрастом — номер подбирается по фактической вместимости, а не только по числу мест.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">CRT</span>
+            <h3>Несколько номеров в одной брони</h3>
+            <p>Гость может добавить в заявку несколько номеров, даже с разными датами — всё уйдёт в 1С одной группой.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">ADM</span>
+            <h3>Управление без разработчика</h3>
+            <p>Фото, описания, характеристики номеров и способы оплаты редактируются из админки.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent" id="why" aria-labelledby="why-title">
+      <div class="container">
+        <h2 id="why-title">Почему это выгоднее агрегаторов</h2>
+        <p class="section-subtitle">Прямой канал продаж не отдаёт комиссию OTA и не зависит от чужих правил ранжирования.</p>
+        <div class="benefits-grid">
+          <article class="benefit reveal">
+            <h3>0% комиссии с брони</h3>
+            <p>В отличие от агрегаторов, которые берут 15-20% с каждого бронирования, прямой канал не требует комиссии с продаж.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Полный контроль над ценами</h3>
+            <p>Вы сами задаёте тарифы и акции в 1С — модуль их просто отображает, без наценок и ограничений со стороны площадки.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Прямой контакт с гостем</h3>
+            <p>Контактные данные гостя остаются у отеля, а не у посредника — это база для повторных продаж и рассылок.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Данные карт не хранятся на сайте</h3>
+            <p>Оплата обрабатывается на стороне платёжного шлюза (ЮKassa/Сбербанк) — сайт не работает с номерами карт напрямую.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="booking-faq" aria-labelledby="booking-faq-title">
+      <div class="container">
+        <h2 id="booking-faq-title">Частые вопросы о модуле бронирования</h2>
+        <details class="faq-item reveal">
+          <summary>Нужно ли менять текущую PMS отеля?</summary>
+          <p>Нет. Модуль подключается к уже работающей 1С-Отель — учёт, номерной фонд и тарифы остаются там же.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Сколько времени занимает подключение?</summary>
+          <p>Зависит от готовности каталога номеров и доступа к 1С-Отель. Обычно от нескольких дней до двух недель.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Можно ли использовать свой платёжный шлюз?</summary>
+          <p>Сейчас поддерживаются ЮKassa и Сбербанк Эквайринг. Подключение других провайдеров обсуждается индивидуально.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Что видит гость, если оплата не прошла?</summary>
+          <p>Понятное сообщение об ошибке без потери введённых данных — бронь при этом не подтверждается в 1С, номер остаётся свободным.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="container contact-grid">
+        <div>
+          <h2 id="contacts-title">Подключите модуль бронирования к своему сайту</h2>
+          <p>Оставьте контакты — покажем демо на данных вашего отеля и посчитаем сроки подключения к 1С-Отель.</p>
+          <ul class="contacts-list">
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
+            <li>Работаем по всей России</li>
+          </ul>
+        </div>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+
+          <label for="object">Тип объекта</label>
+          <select id="object" name="object" required>
+            <option value="">Выберите тип</option>
+            <option>Отель</option>
+            <option>Мини-отель</option>
+            <option>Апартаменты</option>
+            <option>Другое</option>
+          </select>
+
+          <label for="message">Задача</label>
+          <textarea id="message" name="message" rows="4" placeholder="Хочу подключить модуль онлайн-бронирования. Расскажите про текущую PMS и сайт отеля"></textarea>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="agree" required>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+          </label>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+{% endblock %}

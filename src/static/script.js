@@ -1,3 +1,7 @@
+// URL of the Python (Flask/Passenger) form handler — set in cPanel's "Setup Python App"
+// as the Application URL. Update this if you choose a different mount path there.
+const MAIL_ENDPOINT = '/mailapp/send';
+
 const menuBtn = document.querySelector('.menu-btn');
 const mainNav = document.querySelector('#main-nav');
 
@@ -14,6 +18,38 @@ if (menuBtn && mainNav) {
     });
   });
 }
+
+const navDropdowns = document.querySelectorAll('.nav-item.has-dropdown');
+
+function closeNavDropdowns() {
+  navDropdowns.forEach((item) => {
+    item.classList.remove('is-open');
+    item.querySelector('.nav-dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+  });
+}
+
+navDropdowns.forEach((item) => {
+  const toggle = item.querySelector('.nav-dropdown-toggle');
+  if (!toggle) return;
+
+  toggle.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isOpen = item.classList.contains('is-open');
+    closeNavDropdowns();
+    if (!isOpen) {
+      item.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+document.addEventListener('click', closeNavDropdowns);
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeNavDropdowns();
+  }
+});
 
 const revealItems = document.querySelectorAll('.reveal');
 
@@ -63,13 +99,14 @@ function isValidPhone(value) {
 }
 
 if (form && statusEl) {
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const name = form.querySelector('#name');
     const phone = form.querySelector('#phone');
     const object = form.querySelector('#object');
     const agree = form.querySelector('#agree');
+    const submitBtn = form.querySelector('button[type="submit"]');
 
     statusEl.className = 'form-status';
 
@@ -85,9 +122,30 @@ if (form && statusEl) {
       return;
     }
 
-    statusEl.textContent = 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.';
-    statusEl.classList.add('success');
-    form.reset();
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Отправляем заявку...';
+
+    try {
+      const response = await fetch(MAIL_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'send_failed');
+      }
+
+      statusEl.textContent = 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.';
+      statusEl.classList.add('success');
+      form.reset();
+    } catch (error) {
+      statusEl.textContent = 'Не удалось отправить заявку. Позвоните нам напрямую по указанному телефону.';
+      statusEl.classList.add('error');
+    } finally {
+      submitBtn.disabled = false;
+    }
   });
 }
 

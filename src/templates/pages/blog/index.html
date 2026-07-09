@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Блог ТЕХБИЗ</p>
+        <h1 id="hero-title">Статьи об автоматизации гостиничного бизнеса</h1>
+        <p class="lead">Разбираем на практике, как внедрять 1С, кассы, серверную инфраструктуру и замковые системы в отелях — без маркетинговой воды.</p>
+      </div>
+    </section>
+
+    <section class="section" id="posts" aria-labelledby="posts-title">
+      <div class="container">
+        <h2 id="posts-title" class="section-subtitle" style="font-size:1rem">Все статьи</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">1C</span>
+            <h3><a href="{{ url_for('blog_1c') }}">Автоматизация 1С для отеля: с чего начать</a></h3>
+            <p>Пошаговый план для владельца отеля: аудит, приоритетные модули, типичные ошибки при внедрении и реальные сроки.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">KKT</span>
+            <h3><a href="{{ url_for('blog_kassy') }}">Как выбрать онлайн-кассу для гостиницы</a></h3>
+            <p>Требования 54-ФЗ, на что смотреть при выборе ККТ для отеля и как не остаться без кассы в высокий сезон.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+{% endblock %}

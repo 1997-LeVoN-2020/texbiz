@@ -1,53 +1,25 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends "base.html" %}
 
-  <title>Автоматизация отелей под ключ в 1С | Кассы, серверы, замки | ТЕХБИЗ</title>
-  <meta name="description" content="ТЕХБИЗ внедряет 1С для отелей, настраивает онлайн-кассы, серверы и замковые системы. Комплексная автоматизация гостиниц под ключ с поддержкой 24/7.">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <meta name="author" content="ТЕХБИЗ">
-  <link rel="canonical" href="https://tehbiz.ru/">
-
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="ТЕХБИЗ">
-  <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="Автоматизация отелей под ключ в 1С | ТЕХБИЗ">
-  <meta property="og:description" content="Внедрение 1С для отелей, онлайн-кассы, серверная инфраструктура и замковые системы. Пусконаладка и сопровождение.">
-  <meta property="og:url" content="https://tehbiz.ru/">
-  <meta property="og:image" content="https://tehbiz.ru/assets/og-cover.jpg">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Автоматизация отелей под ключ в 1С | ТЕХБИЗ">
-  <meta name="twitter:description" content="Комплексная автоматизация гостиниц: 1С, кассы, серверы, замковые системы.">
-  <meta name="twitter:image" content="https://tehbiz.ru/assets/og-cover.jpg">
-
-  <link rel="alternate" hreflang="ru" href="https://tehbiz.ru/">
-  <link rel="alternate" hreflang="x-default" href="https://tehbiz.ru/">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="styles.css">
-
+{% block extra_head %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "ТЕХБИЗ",
-    "url": "https://tehbiz.ru/",
+    "alternateName": "Технологии для бизнеса",
+    "legalName": "ИП Арушанян Левон Гарникович",
+    "taxID": "230123783003",
+    "url": "{{ SITE_URL }}/",
     "description": "Комплексная автоматизация гостиниц и отелей: внедрение 1С, настройка онлайн-касс, серверной инфраструктуры и замковых систем.",
-    "telephone": "+7-900-000-00-00",
-    "email": "info@tehbiz.ru",
+    "telephone": "+7-938-511-13-31",
+    "email": "info@tex-biz.ru",
     "areaServed": "RU",
     "serviceType": [
       "Автоматизация 1С для отеля",
       "Настройка онлайн-касс",
       "Настройка серверов",
-      "Интеграция замковых систем"
+      "Интеграция замковых систем",
+      "Модуль онлайн-бронирования"
     ]
   }
   </script>
@@ -59,46 +31,42 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Сколько времени занимает автоматизация отеля?",
+        "name": "Сколько стоит внедрение 1С и касс для отеля?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Срок зависит от масштаба объекта, обычно базовый запуск занимает от 5 до 14 дней, включая настройку 1С, касс и интеграций."
+          "text": "Стоимость рассчитывается после аудита объекта. На цену влияет количество рабочих мест, касс, интеграций и сложность инфраструктуры."
         }
       },
       {
         "@type": "Question",
-        "name": "Можно ли подключить существующие кассы и замки?",
+        "name": "Можно ли внедрять поэтапно без остановки работы отеля?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Да, в большинстве случаев мы интегрируем текущую инфраструктуру и помогаем обновить только проблемные узлы."
+          "text": "Да. Мы разбиваем внедрение на этапы и выполняем переключение в низконагруженные периоды."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Работаете ли вы с уже установленной инфраструктурой?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да, проводим аудит текущей системы и адаптируем решение под существующее оборудование, если это технически целесообразно."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Можно ли принимать бронирования и оплату прямо на сайте отеля?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да, для этого есть отдельный модуль онлайн-бронирования: гость выбирает номер и оплачивает его на сайте отеля, бронь сразу уходит в 1С-Отель без комиссии агрегаторов."
         }
       }
     ]
   }
   </script>
-</head>
-<body>
-  <a class="skip-link" href="#main">Перейти к основному контенту</a>
+{% endblock %}
 
-  <header class="site-header" id="top">
-    <div class="container nav-wrap">
-      <a href="#top" class="logo" aria-label="ТЕХБИЗ - главная">ТЕХБИЗ</a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="main-nav" aria-label="Открыть меню">Меню</button>
-      <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
-        <a href="#metrics">Результат</a>
-        <a href="#services">Услуги</a>
-        <a href="#segments">Для кого</a>
-        <a href="#packages">Пакеты</a>
-        <a href="#quiz">Калькулятор</a>
-        <a href="#benefits">Преимущества</a>
-        <a href="#cases">Кейсы</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="main">
+{% block content %}
     <section class="hero section" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div>
@@ -180,22 +148,22 @@
         <div class="cards">
           <article class="card reveal">
             <span class="service-icon" aria-hidden="true">1C</span>
-            <h3>Автоматизация 1С для отеля</h3>
+            <h3><a href="{{ url_for('svc_1c') }}">Автоматизация 1С для отеля</a></h3>
             <p>Настройка учета, бронирования, отчетности и интеграций с гостиничными модулями.</p>
           </article>
           <article class="card reveal">
             <span class="service-icon" aria-hidden="true">KKT</span>
-            <h3>Онлайн-кассы и фискализация</h3>
+            <h3><a href="{{ url_for('svc_kassy') }}">Онлайн-кассы и фискализация</a></h3>
             <p>Подключение ККТ, настройка ОФД, эквайринга и бесперебойной передачи чеков.</p>
           </article>
           <article class="card reveal">
             <span class="service-icon" aria-hidden="true">SRV</span>
-            <h3>Серверы и сеть</h3>
+            <h3><a href="{{ url_for('svc_servers') }}">Серверы и сеть</a></h3>
             <p>Проектирование и настройка серверной архитектуры, Wi-Fi и локальной сети объекта.</p>
           </article>
           <article class="card reveal">
             <span class="service-icon" aria-hidden="true">LOCK</span>
-            <h3>Замковые системы</h3>
+            <h3><a href="{{ url_for('svc_locks') }}">Замковые системы</a></h3>
             <p>Интеграция электронных замков, карт доступа и синхронизация с учетной системой.</p>
           </article>
           <article class="card reveal">
@@ -207,6 +175,11 @@
             <span class="service-icon" aria-hidden="true">OTA</span>
             <h3>Интеграция каналов продаж</h3>
             <p>Подключение OTA и PMS, синхронизация тарифов, квот и доступности в реальном времени.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">BOOK</span>
+            <h3><a href="{{ url_for('booking') }}">Модуль онлайн-бронирования</a></h3>
+            <p>Прямые брони и оплата на сайте отеля с интеграцией в 1С-Отель — без комиссии агрегаторов.</p>
           </article>
           <article class="card reveal">
             <span class="service-icon" aria-hidden="true">MIG</span>
@@ -269,6 +242,40 @@
           <li>Сканеры документов</li>
           <li>CRM и BI</li>
         </ul>
+      </div>
+    </section>
+
+    <section class="section accent" id="booking-engine" aria-labelledby="booking-engine-title">
+      <div class="container">
+        <h2 id="booking-engine-title">Модуль онлайн-бронирования для сайта отеля</h2>
+        <p class="section-subtitle">Гость выбирает номер, бронирует и оплачивает прямо на вашем сайте — без комиссии агрегаторов. Цены, доступность и статус брони всегда синхронизированы с 1С-Отель.</p>
+        <ul class="trust-list">
+          <li>Прямая интеграция с 1С-Отель</li>
+          <li>Оплата: ЮKassa и Сбербанк Эквайринг</li>
+          <li>Поиск брони по номеру и контакту</li>
+        </ul>
+        <div class="benefits-grid">
+          <article class="benefit reveal">
+            <h3>Живые цены и доступность из 1С</h3>
+            <p>Модуль запрашивает тарифы, номера и ограничения напрямую у 1С-Отель — гость видит те же условия, что и администратор на ресепшене.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Онлайн-оплата с автоподтверждением</h3>
+            <p>Оплата сразу проводится в бронь 1С через ЮKassa или Сбербанк Эквайринг. Неоплаченные заявки автоматически снимаются через 15 минут.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Бронь без регистрации</h3>
+            <p>Гость находит и оплачивает свою бронь по номеру и контактным данным — без создания аккаунта и лишних полей.</p>
+          </article>
+          <article class="benefit reveal">
+            <h3>Каталог номеров с фото и тарифами</h3>
+            <p>Фото, характеристики и несколько тарифов на один номер со скидками — все управляется из удобной админки, без разработчика.</p>
+          </article>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{{ url_for('booking') }}">Подробнее о модуле</a>
+          <a class="btn btn-ghost" href="https://booking-module.tex-biz.ru/" target="_blank" rel="noopener noreferrer">Смотреть демо</a>
+        </div>
       </div>
     </section>
 
@@ -337,6 +344,7 @@
               <label><input type="checkbox" name="modules" value="lock"> Замковые системы</label>
               <label><input type="checkbox" name="modules" value="ops"> Поддержка 24/7</label>
               <label><input type="checkbox" name="modules" value="ota"> Интеграция каналов продаж</label>
+              <label><input type="checkbox" name="modules" value="booking"> Модуль онлайн-бронирования</label>
             </fieldset>
 
             <button class="btn btn-primary" type="submit">Рассчитать стоимость</button>
@@ -459,6 +467,10 @@
           <summary>Работаете ли вы с уже установленной инфраструктурой?</summary>
           <p>Да, проводим аудит текущей системы и адаптируем решение под существующее оборудование, если это технически целесообразно.</p>
         </details>
+        <details class="faq-item reveal">
+          <summary>Можно ли принимать бронирования и оплату прямо на сайте отеля?</summary>
+          <p>Да, для этого у нас есть отдельный <a href="{{ url_for('booking') }}">модуль онлайн-бронирования</a>: гость выбирает номер и оплачивает его на вашем сайте, бронь сразу уходит в 1С-Отель — без комиссии агрегаторов.</p>
+        </details>
       </div>
     </section>
 
@@ -467,14 +479,18 @@
         <div>
           <h2 id="contacts-title">Получите план автоматизации вашего объекта</h2>
           <p>Оставьте контакты и описание задачи. Подготовим дорожную карту внедрения 1С, касс, серверной части и замковой системы.</p>
-          <a class="checklist-link" href="#" aria-label="Скачать чеклист готовности отеля к автоматизации">Скачать чеклист готовности отеля к автоматизации</a>
           <ul class="contacts-list">
-            <li><a href="tel:+79000000000">+7 (900) 000-00-00</a></li>
-            <li><a href="mailto:info@tehbiz.ru">info@tehbiz.ru</a></li>
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
             <li>Работаем по всей России</li>
           </ul>
         </div>
         <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
           <label for="name">Имя</label>
           <input id="name" name="name" type="text" autocomplete="name" required>
 
@@ -495,7 +511,7 @@
 
           <label class="checkbox-wrap">
             <input type="checkbox" id="agree" required>
-            <span>Согласен на обработку персональных данных</span>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
           </label>
 
           <button class="btn btn-primary" type="submit">Отправить заявку</button>
@@ -503,15 +519,4 @@
         </form>
       </div>
     </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-wrap">
-      <p>© 2026 ТЕХБИЗ. Автоматизация отелей: 1С, кассы, серверы, замковые системы.</p>
-      <a href="#top">Наверх</a>
-    </div>
-  </footer>
-
-  <script src="script.js" defer></script>
-</body>
-</html>
+{% endblock %}

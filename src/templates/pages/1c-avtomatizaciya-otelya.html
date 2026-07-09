@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Автоматизация 1С для отеля",
+    "name": "Автоматизация 1С для отеля",
+    "description": "Внедрение и настройка 1С для отеля: учёт, заселение, отчётность, интеграция с кассами и PMS.",
+    "provider": { "@type": "Organization", "name": "ТЕХБИЗ", "url": "{{ SITE_URL }}/" },
+    "areaServed": "RU"
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Услуги автоматизации гостиниц</p>
+        <h1 id="hero-title">Автоматизация 1С для отеля</h1>
+        <p class="lead">Настраиваем 1С под реальные процессы отеля: заселение, учёт номеров, кассовые операции и управленческую отчётность — без хаоса в переходный период.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+          <a class="btn btn-ghost" href="{{ url_for('home', anchor='services') }}">Смотреть остальные услуги</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what" aria-labelledby="what-title">
+      <div class="container">
+        <h2 id="what-title">Что входит в настройку 1С</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">1C</span>
+            <h3>Учёт и заселение</h3>
+            <p>Настраиваем номерной фонд, бронирование, заселение и выселение — с учётом фактического графика загрузки отеля.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">KKT</span>
+            <h3>Интеграция с кассами и ОФД</h3>
+            <p>Кассовые операции проводятся напрямую из 1С, без двойного ввода данных и расхождений в учёте.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">RPT</span>
+            <h3>Управленческие отчёты</h3>
+            <p>Настраиваем отчёты по загрузке, выручке и остаткам — понятные руководителю, а не только бухгалтеру.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">OTA</span>
+            <h3>Интеграция с PMS и каналами продаж</h3>
+            <p>Синхронизируем 1С с системой управления объектом и каналами бронирования, чтобы тарифы и квоты не расходились.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">EDU</span>
+            <h3>Обучение персонала</h3>
+            <p>Обучаем администраторов и бухгалтерию работе в новой системе по готовым регламентам.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">OPS</span>
+            <h3>Поддержка и обновления</h3>
+            <p>Сопровождаем систему после запуска: обновления, регламентные работы, реакция на инциденты.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <h2 id="process-title">Как проходит внедрение</h2>
+        <ol class="process-line">
+          <li class="reveal"><strong>1. Аудит</strong><span>Изучаем текущие процессы, оборудование и точки риска.</span></li>
+          <li class="reveal"><strong>2. Проект</strong><span>Формируем архитектуру, этапы и дедлайны внедрения.</span></li>
+          <li class="reveal"><strong>3. Запуск</strong><span>Настраиваем и интегрируем системы, проводим тестовый контур.</span></li>
+          <li class="reveal"><strong>4. Обучение</strong><span>Передаём регламенты и обучаем персонал работе в новой системе.</span></li>
+          <li class="reveal"><strong>5. Сопровождение</strong><span>Поддерживаем объект, развиваем и масштабируем инфраструктуру.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title">Частые вопросы про автоматизацию 1С</h2>
+        <details class="faq-item reveal">
+          <summary>Сколько стоит внедрение 1С для отеля?</summary>
+          <p>Стоимость рассчитывается после аудита объекта. На цену влияет количество рабочих мест, касс, интеграций и сложность инфраструктуры.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Можно ли внедрить 1С без остановки работы отеля?</summary>
+          <p>Да. Мы разбиваем внедрение на этапы и выполняем переключение в низконагруженные периоды.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Какая конфигурация 1С используется?</summary>
+          <p>Обычно 1С:Отель или 1С:Управление гостиницей — подбираем конкретную конфигурацию под масштаб и задачи вашего объекта.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="container contact-grid">
+        <div>
+          <h2 id="contacts-title">Получите план автоматизации 1С для вашего отеля</h2>
+          <p>Оставьте контакты — подготовим аудит текущей схемы и предложение по внедрению.</p>
+          <ul class="contacts-list">
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
+            <li>Работаем по всей России</li>
+          </ul>
+        </div>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+
+          <label for="object">Тип объекта</label>
+          <select id="object" name="object" required>
+            <option value="">Выберите тип</option>
+            <option>Отель</option>
+            <option>Мини-отель</option>
+            <option>Апартаменты</option>
+            <option>Другое</option>
+          </select>
+
+          <label for="message">Задача</label>
+          <textarea id="message" name="message" rows="4" placeholder="Нужна автоматизация 1С — расскажите детали"></textarea>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="agree" required>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+          </label>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="section" aria-labelledby="404-title">
+      <div class="container legal-content">
+        <p class="eyebrow">Ошибка 404</p>
+        <h1 id="404-title">Страница не найдена</h1>
+        <p class="section-subtitle">Такой страницы нет — возможно, ссылка устарела или в адресе опечатка.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="{{ url_for('home') }}">На главную</a>
+          <a class="btn btn-ghost" href="{{ url_for('home', anchor='contacts') }}">Связаться с нами</a>
+        </div>
+      </div>
+    </section>
+{% endblock %}

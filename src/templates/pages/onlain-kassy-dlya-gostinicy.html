@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Настройка онлайн-касс для гостиницы",
+    "name": "Настройка онлайн-касс для гостиницы",
+    "description": "Подключение и настройка онлайн-касс для отеля: 54-ФЗ, ОФД, эквайринг, интеграция с 1С.",
+    "provider": { "@type": "Organization", "name": "ТЕХБИЗ", "url": "{{ SITE_URL }}/" },
+    "areaServed": "RU"
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <section class="hero section" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="eyebrow">Услуги автоматизации гостиниц</p>
+        <h1 id="hero-title">Настройка онлайн-касс для гостиницы</h1>
+        <p class="lead">Подключаем и настраиваем ККТ по 54-ФЗ, обеспечиваем передачу чеков в ОФД и интеграцию с эквайрингом — кассы работают без сбоев даже в высокий сезон.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+          <a class="btn btn-ghost" href="{{ url_for('home', anchor='services') }}">Смотреть остальные услуги</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what" aria-labelledby="what-title">
+      <div class="container">
+        <h2 id="what-title">Что входит в настройку касс</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">KKT</span>
+            <h3>Подключение ККТ</h3>
+            <p>Регистрируем и настраиваем онлайн-кассы в соответствии с требованиями 54-ФЗ.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">OFD</span>
+            <h3>Настройка ОФД</h3>
+            <p>Обеспечиваем бесперебойную передачу фискальных чеков оператору данных.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">PAY</span>
+            <h3>Интеграция с эквайрингом</h3>
+            <p>Настраиваем приём безналичной оплаты напрямую через кассовый узел.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">1C</span>
+            <h3>Интеграция с 1С</h3>
+            <p>Кассовые операции проводятся из 1С — без двойного ввода и расхождений в учёте.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">RES</span>
+            <h3>Резервирование кассовых узлов</h3>
+            <p>Настраиваем резервные сценарии на случай сбоя оборудования или связи.</p>
+          </article>
+          <article class="card reveal">
+            <span class="service-icon" aria-hidden="true">OPS</span>
+            <h3>Поддержка 24/7</h3>
+            <p>Реагируем на инциденты с кассами оперативно — включая высокий сезон и праздники.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <h2 id="process-title">Как проходит подключение</h2>
+        <ol class="process-line">
+          <li class="reveal"><strong>1. Аудит</strong><span>Проверяем текущее оборудование и схему фискализации.</span></li>
+          <li class="reveal"><strong>2. Проект</strong><span>Подбираем ККТ и ОФД под масштаб объекта.</span></li>
+          <li class="reveal"><strong>3. Запуск</strong><span>Регистрируем кассы и настраиваем интеграцию с 1С и эквайрингом.</span></li>
+          <li class="reveal"><strong>4. Обучение</strong><span>Обучаем персонал работе с кассовым узлом.</span></li>
+          <li class="reveal"><strong>5. Сопровождение</strong><span>Следим за стабильностью и обновлениями кассового ПО.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title">Частые вопросы про онлайн-кассы</h2>
+        <details class="faq-item reveal">
+          <summary>Нужно ли менять текущее кассовое оборудование?</summary>
+          <p>Не всегда — часто можно донастроить уже установленные кассы. Решение принимаем после аудита.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Что будет, если касса выйдет из строя в высокий сезон?</summary>
+          <p>Настраиваем резервные сценарии и реагируем по SLA — критичные обращения берём в работу в первую очередь.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Кассы будут работать вместе с 1С?</summary>
+          <p>Да, кассовые операции интегрируются с 1С напрямую, без двойного ввода данных.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="container contact-grid">
+        <div>
+          <h2 id="contacts-title">Получите план подключения касс для вашего отеля</h2>
+          <p>Оставьте контакты — подготовим аудит текущей схемы и предложение по подключению.</p>
+          <ul class="contacts-list">
+            <li><a href="tel:+79385111331">+7 938 511-13-31</a></li>
+            <li><a href="mailto:info@tex-biz.ru">info@tex-biz.ru</a></li>
+            <li>Работаем по всей России</li>
+          </ul>
+        </div>
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
+
+          <label for="object">Тип объекта</label>
+          <select id="object" name="object" required>
+            <option value="">Выберите тип</option>
+            <option>Отель</option>
+            <option>Мини-отель</option>
+            <option>Апартаменты</option>
+            <option>Другое</option>
+          </select>
+
+          <label for="message">Задача</label>
+          <textarea id="message" name="message" rows="4" placeholder="Нужна настройка онлайн-касс — расскажите детали"></textarea>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="agree" required>
+            <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+          </label>
+
+          <button class="btn btn-primary" type="submit">Отправить заявку</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+{% endblock %}

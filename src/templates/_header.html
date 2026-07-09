@@ -1,0 +1,27 @@
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a href="{{ url_for('home', anchor='top') }}" class="logo" aria-label="ТЕХБИЗ - технологии для бизнеса, главная">
+        <span class="logo-mark"><span class="logo-tech">ТЕХ</span><span class="logo-biz">БИЗ</span></span>
+        <span class="logo-tagline">технологии для бизнеса</span>
+      </a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="main-nav" aria-label="Открыть меню">Меню</button>
+      <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
+        <div class="nav-item has-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="services-dropdown">
+            Услуги <span class="nav-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav-dropdown" id="services-dropdown">
+            <a href="{{ url_for('svc_1c') }}">Автоматизация 1С</a>
+            <a href="{{ url_for('svc_kassy') }}">Онлайн-кассы</a>
+            <a href="{{ url_for('svc_servers') }}">Серверы и сеть</a>
+            <a href="{{ url_for('svc_locks') }}">Замковые системы</a>
+            <a href="{{ url_for('home', anchor='services') }}" class="nav-dropdown-all">Все услуги</a>
+          </div>
+        </div>
+        <a href="{{ url_for('booking') }}">Бронирование</a>
+        <a href="{{ url_for('home', anchor='cases') }}">Кейсы</a>
+        <a href="{{ url_for('blog_index') }}">Блог</a>
+        <a href="{{ url_for('home', anchor='contacts') }}">Контакты</a>
+      </nav>
+    </div>
+  </header>

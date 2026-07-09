@@ -1,0 +1,48 @@
+# HTTPS enforcement is handled by ISPmanager itself (site setting "перенаправлять
+# http-запросы в HTTPS"), not here: %{HTTPS} is unreliable behind reg.ru's
+# proxy/WAF layer and caused an infinite redirect loop (ERR_TOO_MANY_REDIRECTS)
+# when duplicated at this level.
+RewriteEngine On
+
+# www -> non-www (host-based, safe: doesn't depend on %{HTTPS}).
+RewriteCond %{HTTP_HOST} ^www\.tex-biz\.ru$ [NC]
+RewriteRule ^ https://tex-biz.ru%{REQUEST_URI} [L,R=301]
+
+# Legacy flat .html URLs -> clean directory URLs (301, keeps any SEO/link equity).
+RewriteRule ^booking\.html$ /booking/ [L,R=301]
+RewriteRule ^1c-avtomatizaciya-otelya\.html$ /1c-avtomatizaciya-otelya/ [L,R=301]
+RewriteRule ^onlain-kassy-dlya-gostinicy\.html$ /onlain-kassy-dlya-gostinicy/ [L,R=301]
+RewriteRule ^nastroika-serverov-otelya\.html$ /nastroika-serverov-otelya/ [L,R=301]
+RewriteRule ^integraciya-zamkovyh-sistem\.html$ /integraciya-zamkovyh-sistem/ [L,R=301]
+RewriteRule ^privacy\.html$ /privacy/ [L,R=301]
+RewriteRule ^blog/1c-avtomatizaciya-otelya-s-chego-nachat\.html$ /blog/1c-avtomatizaciya-otelya-s-chego-nachat/ [L,R=301]
+RewriteRule ^blog/kak-vybrat-onlayn-kassu-dlya-gostinicy\.html$ /blog/kak-vybrat-onlayn-kassu-dlya-gostinicy/ [L,R=301]
+
+# Custom 404 page.
+ErrorDocument 404 /404.html
+
+# Don't expose directory listings or dotfiles.
+Options -Indexes
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/xml application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
