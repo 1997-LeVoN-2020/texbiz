@@ -100,6 +100,21 @@
       <div class="container">
         <h2 id="why-title">Почему это выгоднее агрегаторов</h2>
         <p class="section-subtitle">Прямой канал продаж не отдаёт комиссию OTA и не зависит от чужих правил ранжирования.</p>
+        <div class="hero-diagram" aria-label="Сравнение комиссии агрегатора и прямого канала" style="max-width: 32rem;">
+          <p class="hero-diagram-title">Пример: 50 броней в месяц, средний чек 8 000 ₽</p>
+          <div class="hero-diagram-row">
+            <span>Агрегатор (комиссия ~18%): −72 000 ₽/мес</span>
+            <div class="hero-bars" aria-hidden="true">
+              <i class="bar before" style="--w: 100%"></i>
+            </div>
+          </div>
+          <div class="hero-diagram-row">
+            <span>Модуль ТЕХБИЗ (0% комиссии): 0 ₽/мес</span>
+            <div class="hero-bars" aria-hidden="true">
+              <i class="bar after" style="--w: 2%"></i>
+            </div>
+          </div>
+        </div>
         <div class="benefits-grid">
           <article class="benefit reveal">
             <h3>0% комиссии с брони</h3>
@@ -179,7 +194,7 @@
           <textarea id="message" name="message" rows="4" placeholder="Хочу подключить модуль онлайн-бронирования. Расскажите про текущую PMS и сайт отеля"></textarea>
 
           <label class="checkbox-wrap">
-            <input type="checkbox" id="agree" required>
+            <input type="checkbox" id="agree" name="agree" required>
             <span>Согласен на <a href="{{ url_for('privacy') }}" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
           </label>
 

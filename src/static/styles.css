@@ -367,6 +367,16 @@ h3 {
   border-color: rgba(34, 123, 221, 0.34);
 }
 
+.hero-quick-contact {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--c-dark) 75%, white);
+}
+
+.hero-quick-contact a {
+  font-weight: 700;
+}
+
 .trust-list {
   margin: 1.35rem 0 0;
   padding: 0;
