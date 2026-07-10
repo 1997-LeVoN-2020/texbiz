@@ -12,4 +12,4 @@ __pycache__/
 venv/
 
 # Claude Code local settings — machine-specific, not shared project config
-.claude/
+.claude/settings.local.json
