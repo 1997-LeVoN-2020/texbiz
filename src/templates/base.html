@@ -41,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ asset('styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('styles.css') }}?v={{ ASSET_VERSION }}">
 
   {% block extra_head %}{% endblock %}
 </head>
@@ -56,6 +56,6 @@
 
   {% include "_footer.html" %}
 
-  <script src="{{ asset('script.js') }}" defer></script>
+  <script src="{{ asset('script.js') }}?v={{ ASSET_VERSION }}" defer></script>
 </body>
 </html>

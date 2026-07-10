@@ -2,7 +2,9 @@
 
 Usage: python build.py
 """
+import hashlib
 import shutil
+from datetime import date
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
@@ -143,6 +145,16 @@ def make_asset(current_url_path):
     return asset
 
 
+def _asset_version():
+    # Cache-busting query string for styles.css/script.js — .htaccess caches
+    # them for 1 month, so without this returning visitors wouldn't see
+    # updates until the cache expires.
+    h = hashlib.sha256()
+    for name in ("styles.css", "script.js"):
+        h.update((STATIC_DIR / name).read_bytes())
+    return h.hexdigest()[:10]
+
+
 def build():
     if DIST.exists():
         shutil.rmtree(DIST)
@@ -163,6 +175,8 @@ def build():
         autoescape=False,
     )
 
+    asset_version = _asset_version()
+
     for page in PAGES:
         page = {**page}
         page.setdefault("robots", ROBOTS_DEFAULT)
@@ -175,6 +189,7 @@ def build():
             "canonical_url": canonical_url,
             "url_for": make_url_for(page["url_path"]),
             "asset": make_asset(page["url_path"]),
+            "ASSET_VERSION": asset_version,
         }
 
         template = env.get_template(page["template"])
@@ -185,13 +200,13 @@ def build():
         (out_dir / "index.html").write_text(html, encoding="utf-8")
         print(f"built {page['id']:14s} -> dist/{page['url_path']}index.html")
 
-    build_404(env)
+    build_404(env, asset_version)
 
     build_sitemap()
     print(f"\nDone. Output in {DIST}")
 
 
-def build_404(env):
+def build_404(env, asset_version):
     # Not a normal routable page: lives at dist/404.html (root), excluded from
     # sitemap/url_for. .htaccess points ErrorDocument 404 here.
     page = {
@@ -209,6 +224,7 @@ def build_404(env):
         "canonical_url": f"{SITE_URL}/404.html",
         "url_for": make_url_for(""),
         "asset": make_asset(""),
+        "ASSET_VERSION": asset_version,
     }
     template = env.get_template("pages/404.html")
     html = template.render(**context)
@@ -217,6 +233,7 @@ def build_404(env):
 
 
 def build_sitemap():
+    lastmod = date.today().isoformat()
     lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for page in PAGES:
         if page.get("in_sitemap") is False:
@@ -224,7 +241,7 @@ def build_sitemap():
         loc = f"{SITE_URL}/{page['url_path']}"
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")
-        lines.append("    <lastmod>2026-07-08</lastmod>")
+        lines.append(f"    <lastmod>{lastmod}</lastmod>")
         lines.append(f"    <changefreq>{page['changefreq']}</changefreq>")
         lines.append(f"    <priority>{page['priority']}</priority>")
         lines.append("  </url>")

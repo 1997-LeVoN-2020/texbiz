@@ -1,5 +1,7 @@
 import os
 import smtplib
+import time
+from collections import defaultdict
 from email.header import Header
 from email.mime.text import MIMEText
 
@@ -14,24 +16,53 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
 SMTP_USER = os.environ.get("SMTP_USER")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
+RATE_LIMIT_WINDOW = 600  # seconds
+RATE_LIMIT_MAX = 5  # requests per IP per window
+
+# In-memory only — resets per worker process on restart, and isn't shared
+# across multiple Passenger worker processes. Good enough to blunt naive
+# spam/flooding on this low-traffic lead form without adding a dependency.
+_rate_limit_hits = defaultdict(list)
+
 
 def clean(value):
     return (value or "").replace("\r", " ").replace("\n", " ").strip()
 
 
+def client_ip():
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.remote_addr or "unknown"
+
+
+def rate_limited(ip):
+    now = time.time()
+    hits = _rate_limit_hits[ip]
+    hits[:] = [t for t in hits if now - t < RATE_LIMIT_WINDOW]
+    if len(hits) >= RATE_LIMIT_MAX:
+        return True
+    hits.append(now)
+    return False
+
+
 @app.route("/send", methods=["POST"])
 def send():
+    if rate_limited(client_ip()):
+        return jsonify(ok=False, error="rate_limited"), 429
+
     name = clean(request.form.get("name"))
     phone = clean(request.form.get("phone"))
     object_type = clean(request.form.get("object"))
     message = clean(request.form.get("message"))
     honeypot = clean(request.form.get("website"))
+    agree = request.form.get("agree")
 
     # Honeypot: bots fill hidden fields, humans don't. Pretend success without sending.
     if honeypot:
         return jsonify(ok=True)
 
-    if not name or not phone or not object_type:
+    if not name or not phone or not object_type or not agree:
         return jsonify(ok=False, error="missing_fields"), 422
 
     body = (

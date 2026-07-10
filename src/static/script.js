@@ -1,5 +1,6 @@
-// URL of the Python (Flask/Passenger) form handler — set in cPanel's "Setup Python App"
-// as the Application URL. Update this if you choose a different mount path there.
+// URL of the Python (Flask/Passenger) form handler — set as the application
+// path when creating the Python app in ISPmanager ("Python" section).
+// Update this if you choose a different mount path there.
 const MAIL_ENDPOINT = '/mailapp/send';
 
 const menuBtn = document.querySelector('.menu-btn');
