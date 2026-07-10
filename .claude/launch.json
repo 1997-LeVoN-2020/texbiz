@@ -4,8 +4,8 @@
     {
       "name": "dist-preview",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "dist"],
-      "port": 8000
+      "runtimeArgs": ["-m", "http.server", "8043", "--directory", "dist"],
+      "port": 8043
     }
   ]
 }
