@@ -396,6 +396,10 @@ h3 {
 .trust-list li {
   border: 1px solid rgba(43, 61, 86, 0.2);
   background: rgba(255, 255, 255, 0.76);
+  /* Chip background stays light even in .accent sections — but .accent sets
+     color: white on the whole section, so without this the text would be
+     white-on-near-white and unreadable. */
+  color: var(--c-dark);
   border-radius: 999px;
   font-size: 0.92rem;
   padding: 0.42rem 0.75rem;
