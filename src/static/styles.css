@@ -351,6 +351,13 @@ h3 {
   box-shadow: 0 12px 26px rgba(43, 61, 86, 0.2);
 }
 
+/* .btn-primary's gradient ends in var(--c-accent) — the same blue that
+   .accent sections fade into, so its right edge disappears into the
+   section background there. A light border keeps the pill boundary visible. */
+.accent .btn-primary {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
 .btn-primary:hover,
 .btn-primary:focus-visible {
   box-shadow: 0 18px 30px rgba(43, 61, 86, 0.24);
