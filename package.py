@@ -1,10 +1,16 @@
-"""Packages the built site and pyapp into versioned zip archives under builds/.
+"""Build a versioned deploy archive pair for manual upload to ISPmanager --
+see README.md "Деплой на хостинг".
 
-Reads the version from VERSION and refuses to overwrite an archive that
-already exists for that version — bump VERSION before packaging again.
-Older versioned archives in builds/ are never deleted.
+Packages releases/texbiz-site-v<VERSION>.zip (dist/) and
+releases/texbiz-pyapp-v<VERSION>.zip (src/pyapp/). The archive names are
+just the VERSION file's contents -- bump VERSION before running this for
+a new release. If VERSION wasn't bumped, this script refuses to overwrite
+the existing archives for that version instead of silently clobbering
+them; old releases under releases/ (gitignored, not committed) are never
+overwritten or deleted, so they stay available for rollback.
 
-Usage: python package.py
+Usage:
+    python package.py
 """
 import zipfile
 from pathlib import Path
@@ -12,7 +18,7 @@ from pathlib import Path
 import build as site_build
 
 ROOT = Path(__file__).parent
-BUILDS = ROOT / "builds"
+OUT_DIR = ROOT / "releases"
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
@@ -26,23 +32,27 @@ def zip_dir(src, out):
 
 def package():
     site_build.build()
-    BUILDS.mkdir(exist_ok=True)
+    OUT_DIR.mkdir(exist_ok=True)
 
-    site_zip = BUILDS / f"texbiz-site-{VERSION}.zip"
-    pyapp_zip = BUILDS / f"texbiz-pyapp-{VERSION}.zip"
+    site_zip = OUT_DIR / f"texbiz-site-v{VERSION}.zip"
+    pyapp_zip = OUT_DIR / f"texbiz-pyapp-v{VERSION}.zip"
 
     if site_zip.exists() or pyapp_zip.exists():
         raise SystemExit(
-            f"builds/texbiz-site-{VERSION}.zip or texbiz-pyapp-{VERSION}.zip already exists. "
-            "Bump VERSION before packaging a new build -- old versioned archives are never overwritten."
+            f"==> {site_zip.name} or {pyapp_zip.name} already exists -- refusing to overwrite.\n"
+            "    Bump VERSION for a new release, or delete it yourself if this rebuild is intentional."
         )
 
+    print(f"==> Building {site_zip.name} and {pyapp_zip.name}...")
     zip_dir(site_build.DIST, site_zip)
     zip_dir(ROOT / "src" / "pyapp", pyapp_zip)
 
-    print(f"Packaged version {VERSION}:")
-    print(f"  {site_zip}")
-    print(f"  {pyapp_zip}")
+    print(f"\nDone: {site_zip}, {pyapp_zip}")
+
+    releases = sorted(OUT_DIR.glob("texbiz-site-v*.zip"), key=lambda p: p.stat().st_mtime)
+    print(f"\n==> All site releases in {OUT_DIR}/ (oldest first):")
+    for r in releases:
+        print(f"    {r.name}")
 
 
 if __name__ == "__main__":
