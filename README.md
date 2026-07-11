@@ -71,30 +71,21 @@ python build.py
 
 ## Деплой на хостинг (reg.ru, ISPmanager)
 
-### 0. Собрать архивы для загрузки
+### 0. Собрать версионированные архивы для загрузки
 
 ```
-python build.py
-python -c "
-import zipfile, os
-def zip_dir(src, out):
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for root, _, files in os.walk(src):
-            for f in files:
-                full = os.path.join(root, f)
-                zf.write(full, os.path.relpath(full, src))
-zip_dir('dist', 'texbiz-site.zip')
-zip_dir('src/pyapp', 'texbiz-pyapp.zip')
-"
+python package.py
 ```
 
-Получаются `texbiz-site.zip` (содержимое `dist/`, без обёрточной папки — распаковывать прямо в директорию домена) и `texbiz-pyapp.zip` (содержимое `src/pyapp/` — распаковывать в подпапку `mailapp/` внутри той же директории домена, см. раздел «2. Python-приложение для формы» — отдельной директории для Python-приложений на этом тарифе нет). Оба в `.gitignore`, не коммитятся.
+Собирает сайт (`build.py`) и упаковывает `builds/texbiz-site-<VERSION>.zip` (содержимое `dist/`, без обёрточной папки — распаковывать прямо в директорию домена) и `builds/texbiz-pyapp-<VERSION>.zip` (содержимое `src/pyapp/` — распаковывать в подпапку `mailapp/` внутри той же директории домена, см. раздел «2. Python-приложение для формы» — отдельной директории для Python-приложений на этом тарифе нет). `<VERSION>` берётся из файла `VERSION` в корне репозитория.
+
+Каждая версия — отдельная пара файлов в `builds/`; старые версии не перезаписываются и не удаляются (`package.py` откажется собрать архив, если файл с текущей версией уже существует — сначала поднять `VERSION`). `builds/` в `.gitignore`, сами архивы не коммитятся, но так остаётся локальная история версий для отката.
 
 ### 1. Статический сайт
 
-1. Локально: `pip install -r requirements.txt && python build.py` → получаем `dist/` (или готовый `texbiz-site.zip`, см. шаг 0).
+1. Локально: `pip install -r requirements.txt && python build.py` → получаем `dist/` (или готовый `builds/texbiz-site-<VERSION>.zip`, см. шаг 0).
 2. В ISPmanager: «Домены» / «WWW-домены» → выбрать `tex-biz.ru` → посмотреть путь к директории сайта (обычно `/var/www/<пользователь>/data/www/tex-biz.ru`).
-3. Залить содержимое `dist/` (не саму папку, а файлы из неё) в эту директорию — через SFTP (например, FileZilla с данными доступа из ISPmanager), встроенный файловый менеджер ISPmanager, или распаковать там `texbiz-site.zip`.
+3. Залить содержимое `dist/` (не саму папку, а файлы из неё) в эту директорию — через SFTP (например, FileZilla с данными доступа из ISPmanager), встроенный файловый менеджер ISPmanager, или распаковать там `texbiz-site-<VERSION>.zip`.
 4. Проверить, что `.htaccess` реально загрузился (файловые менеджеры иногда скрывают dotfiles) и что домен уже привязан к SSL-сертификату в ISPmanager (иначе редирект на HTTPS из `.htaccess` уведёт на несуществующий сертификат).
 
 > **Грабли (было на этом проекте):** HTTPS-редирект внутри `.htaccess` (`RewriteCond %{HTTPS} off`) вызвал `ERR_TOO_MANY_REDIRECTS` на reg.ru — за проксирующим/WAF-слоем этого хостинга `%{HTTPS}` не отражает реальный протокол запроса, и правило зацикливалось само на себя. В ISPmanager у сайта уже есть своя галочка «перенаправлять http-запросы в HTTPS» — HTTPS-редирект в `.htaccess` намеренно убран, чтобы не дублировать и не ломать эту логику; в `.htaccess` остался только редирект `www` → без `www` (он безопасен, не зависит от `%{HTTPS}`).
@@ -105,7 +96,7 @@ zip_dir('src/pyapp', 'texbiz-pyapp.zip')
 
 1. В ISPmanager открыть раздел **«Python»** (в списке модулей слева или на странице домена) → **«Создать»**.
 2. Указать: домен `tex-biz.ru`, путь приложения `/mailapp` (это и станет `MAIL_ENDPOINT`), версию Python 3. В качестве директории для файлов приложения указать подпапку `mailapp` внутри директории сайта из шага 1.2 (а не отдельную/внешнюю директорию, которую ISPmanager может предложить по умолчанию).
-3. ISPmanager создаст пустое приложение с virtualenv и своим `passenger_wsgi.py`-заглушкой в этой подпапке — её нужно заменить содержимым `src/pyapp/` (загрузить `app.py`, `passenger_wsgi.py`, `requirements.txt` через SFTP/файловый менеджер, затерев заглушку — либо распаковать туда `texbiz-pyapp.zip`, см. шаг 0). Содержимое `dist/` (шаг 1.3) и содержимое `texbiz-pyapp.zip` в итоге лежат в одной директории: `mailapp/` — подпапка внутри неё же.
+3. ISPmanager создаст пустое приложение с virtualenv и своим `passenger_wsgi.py`-заглушкой в этой подпапке — её нужно заменить содержимым `src/pyapp/` (загрузить `app.py`, `passenger_wsgi.py`, `requirements.txt` через SFTP/файловый менеджер, затерев заглушку — либо распаковать туда `texbiz-pyapp-<VERSION>.zip`, см. шаг 0). Содержимое `dist/` (шаг 1.3) и содержимое `texbiz-pyapp-<VERSION>.zip` в итоге лежат в одной директории: `mailapp/` — подпапка внутри неё же.
 4. Установить зависимости в virtualenv приложения. В ISPmanager обычно есть кнопка «Установить зависимости» / «pip install -r requirements.txt» на странице приложения; если её нет — через SSH: `<путь_к_venv_приложения>/bin/pip install -r requirements.txt`.
 5. Если хостинг требует авторизованный SMTP, а не локальный релей — задать переменные окружения `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` в настройках Python-приложения в ISPmanager.
 6. Перезапустить приложение (кнопка «Перезапустить» / «Restart» на странице приложения в ISPmanager).

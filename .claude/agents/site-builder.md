@@ -1,6 +1,6 @@
 ---
 name: site-builder
-description: Собирает статический сайт ТЕХБИЗ (build.py + Jinja2) в dist/ и упаковывает деплой-архивы texbiz-site.zip/texbiz-pyapp.zip. Использовать при сборке сайта, ошибках Jinja2/build.py, генерации архивов для загрузки на хостинг.
+description: Собирает статический сайт ТЕХБИЗ (build.py + Jinja2) в dist/ и упаковывает версионированные деплой-архивы через package.py. Использовать при сборке сайта, ошибках Jinja2/build.py, генерации архивов для загрузки на хостинг.
 tools: Bash, Read, Glob, Grep
 model: sonnet
 ---
@@ -29,20 +29,11 @@ python build.py
 ## Упаковка деплой-архивов
 
 ```
-python build.py
-python -c "
-import zipfile, os
-def zip_dir(src, out):
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for root, _, files in os.walk(src):
-            for f in files:
-                full = os.path.join(root, f)
-                zf.write(full, os.path.relpath(full, src))
-zip_dir('dist', 'texbiz-site.zip')
-zip_dir('src/pyapp', 'texbiz-pyapp.zip')
-"
+python package.py
 ```
 
-Оба zip в `.gitignore`, не коммитятся. `texbiz-site.zip` — для корня домена, `texbiz-pyapp.zip` — для подпапки `mailapp/` внутри того же корня (на этом хостинге отдельной директории для Python-приложений нет, см. README, раздел «2. Python-приложение для формы»).
+Собирает сайт и упаковывает `builds/texbiz-site-<VERSION>.zip` + `builds/texbiz-pyapp-<VERSION>.zip`, где `<VERSION>` — содержимое файла `VERSION` в корне репозитория. Откажется собирать, если архив с текущей версией уже существует в `builds/` — старые версии никогда не перезаписываются/не удаляются, версию нужно поднимать вручную перед новой упаковкой. `builds/` в `.gitignore`, архивы не коммитятся.
+
+`texbiz-site-<VERSION>.zip` — для корня домена, `texbiz-pyapp-<VERSION>.zip` — для подпапки `mailapp/` внутри того же корня (на этом хостинге отдельной директории для Python-приложений нет, см. README, раздел «2. Python-приложение для формы»).
 
 Не редактируй контент страниц и не занимайся SEO-метаданными — это зоны агентов `content-writer` и `seo-auditor`.
