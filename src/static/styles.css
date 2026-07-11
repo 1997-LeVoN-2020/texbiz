@@ -378,7 +378,7 @@ h3 {
 }
 
 .trust-list {
-  margin: 1.35rem 0 0;
+  margin: 1.35rem 0;
   padding: 0;
   list-style: none;
   display: flex;
@@ -550,6 +550,15 @@ h3 {
   backdrop-filter: blur(4px);
 }
 
+/* .benefit is a "glass card" meant for dark .accent backgrounds — when used
+   in a regular light section (e.g. a comparison grid outside .accent), fall
+   back to the same light card look as .card so it isn't nearly invisible. */
+.section:not(.accent) .benefit {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 248, 248, 0.92));
+  border: 1px solid rgba(43, 61, 86, 0.15);
+  backdrop-filter: none;
+}
+
 .card::before,
 .case::before,
 .benefit::before {
@@ -559,6 +568,14 @@ h3 {
   width: 100%;
   height: 3px;
   background: linear-gradient(90deg, rgba(43, 61, 86, 0.9), rgba(34, 123, 221, 0.7));
+}
+
+/* Same top-accent-bar blends into .accent's own dark navy/blue gradient
+   background — use a light bar there instead so it stays visible. */
+.accent .card::before,
+.accent .case::before,
+.accent .benefit::before {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25));
 }
 
 .card:hover,
