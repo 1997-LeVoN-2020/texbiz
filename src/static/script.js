@@ -1,7 +1,7 @@
-// URL of the Python (Flask/Passenger) form handler — set as the application
-// path when creating the Python app in ISPmanager ("Python" section).
-// Update this if you choose a different mount path there.
-const MAIL_ENDPOINT = '/mailapp/send';
+// URL of the Python (Flask/Passenger) form handler. The Python app is
+// deployed at the domain root (same directory as the static site), so
+// this is just the Flask route path — update it if that ever changes.
+const MAIL_ENDPOINT = '/send';
 
 const menuBtn = document.querySelector('.menu-btn');
 const mainNav = document.querySelector('#main-nav');

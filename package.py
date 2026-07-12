@@ -1,13 +1,20 @@
-"""Build a versioned deploy archive pair for manual upload to ISPmanager --
+"""Build a versioned deploy archive for manual upload to ISPmanager --
 see README.md "Деплой на хостинг".
 
-Packages releases/texbiz-site-v<VERSION>.zip (dist/) and
-releases/texbiz-pyapp-v<VERSION>.zip (src/pyapp/). The archive names are
-just the VERSION file's contents -- bump VERSION before running this for
-a new release. If VERSION wasn't bumped, this script refuses to overwrite
-the existing archives for that version instead of silently clobbering
-them; old releases under releases/ (gitignored, not committed) are never
-overwritten or deleted, so they stay available for rollback.
+Packages releases/texbiz-deploy-v<VERSION>.zip with the exact layout the
+domain root needs: dist/ and src/pyapp/ contents both flattened into the
+archive root -- unzip the whole thing directly into the domain root and
+both the static site and the Python app land where ISPmanager expects
+them, in one step (this hosting plan runs the Python app straight out of
+the domain root, no separate subfolder -- see README "2. Python-приложение
+для формы").
+
+The archive name is just the VERSION file's contents -- bump VERSION
+before running this for a new release. If VERSION wasn't bumped, this
+script refuses to overwrite the existing archive for that version instead
+of silently clobbering it; old releases under releases/ (gitignored, not
+committed) are never overwritten or deleted, so they stay available for
+rollback.
 
 Usage:
     python package.py
@@ -22,35 +29,34 @@ OUT_DIR = ROOT / "releases"
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
-def zip_dir(src, out):
-    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
-        for path in src.rglob("*"):
-            if not path.is_file() or "__pycache__" in path.parts:
-                continue
-            zf.write(path, path.relative_to(src))
-
-
 def package():
     site_build.build()
     OUT_DIR.mkdir(exist_ok=True)
 
-    site_zip = OUT_DIR / f"texbiz-site-v{VERSION}.zip"
-    pyapp_zip = OUT_DIR / f"texbiz-pyapp-v{VERSION}.zip"
+    out_zip = OUT_DIR / f"texbiz-deploy-v{VERSION}.zip"
 
-    if site_zip.exists() or pyapp_zip.exists():
+    if out_zip.exists():
         raise SystemExit(
-            f"==> {site_zip.name} or {pyapp_zip.name} already exists -- refusing to overwrite.\n"
+            f"==> {out_zip.name} already exists -- refusing to overwrite.\n"
             "    Bump VERSION for a new release, or delete it yourself if this rebuild is intentional."
         )
 
-    print(f"==> Building {site_zip.name} and {pyapp_zip.name}...")
-    zip_dir(site_build.DIST, site_zip)
-    zip_dir(ROOT / "src" / "pyapp", pyapp_zip)
+    print(f"==> Building {out_zip.name}...")
+    with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zf:
+        for path in site_build.DIST.rglob("*"):
+            if path.is_file():
+                zf.write(path, path.relative_to(site_build.DIST))
 
-    print(f"\nDone: {site_zip}, {pyapp_zip}")
+        pyapp_dir = ROOT / "src" / "pyapp"
+        for path in pyapp_dir.rglob("*"):
+            if not path.is_file() or "__pycache__" in path.parts:
+                continue
+            zf.write(path, path.relative_to(pyapp_dir))
 
-    releases = sorted(OUT_DIR.glob("texbiz-site-v*.zip"), key=lambda p: p.stat().st_mtime)
-    print(f"\n==> All site releases in {OUT_DIR}/ (oldest first):")
+    print(f"\nDone: {out_zip}")
+
+    releases = sorted(OUT_DIR.glob("texbiz-deploy-v*.zip"), key=lambda p: p.stat().st_mtime)
+    print(f"\n==> All releases in {OUT_DIR}/ (oldest first):")
     for r in releases:
         print(f"    {r.name}")
 
