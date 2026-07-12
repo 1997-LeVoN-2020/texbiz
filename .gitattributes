@@ -1,0 +1,5 @@
+# Tracked in git (useful in the repo) but not needed on the production
+# server -- excluded from `git archive` (used by build_release.sh) via
+# git's own export-ignore mechanism, so there's one source of truth for
+# what ships instead of a hand-maintained zip exclude list.
+.claude/ export-ignore

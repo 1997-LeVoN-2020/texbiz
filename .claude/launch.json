@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dist-preview",
+      "name": "flask-app",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8043", "--directory", "dist"],
-      "port": 8043
+      "runtimeArgs": ["app.py"],
+      "port": 5000
     }
   ]
 }

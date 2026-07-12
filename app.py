@@ -1,19 +1,22 @@
-"""Builds the static site from src/templates into dist/.
+"""ТЕХБИЗ — сайт как одно Flask-приложение: рендерит страницы по запросу
+и обрабатывает форму заявки (POST /send).
 
-Usage: python build.py
+Usage: python app.py
 """
 import hashlib
-import shutil
+import os
+import smtplib
+import time
+from collections import defaultdict
 from datetime import date
+from email.header import Header
+from email.mime.text import MIMEText
 from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader
+from flask import Flask, Response, jsonify, render_template, request
 
 ROOT = Path(__file__).parent
-SRC = ROOT / "src"
-TEMPLATES_DIR = SRC / "templates"
-STATIC_DIR = SRC / "static"
-DIST = ROOT / "dist"
+STATIC_DIR = ROOT / "src" / "static"
 
 SITE_URL = "https://tex-biz.ru"
 
@@ -114,101 +117,70 @@ PAGES = [
 
 PAGES_BY_ID = {p["id"]: p for p in PAGES}
 
-
-def _depth(url_path):
-    return len([seg for seg in url_path.split("/") if seg])
-
-
-def _root_prefix(url_path):
-    d = _depth(url_path)
-    return "../" * d
-
-
-def make_url_for(current_url_path):
-    def url_for(page_id, anchor=None):
-        target = PAGES_BY_ID[page_id]
-        target_path = target["url_path"]
-
-        if target_path == current_url_path:
-            return f"#{anchor}" if anchor else "./"
-
-        href = _root_prefix(current_url_path) + target_path if target_path else (_root_prefix(current_url_path) or "./")
-        if anchor:
-            href += f"#{anchor}"
-        return href
-    return url_for
-
-
-def make_asset(current_url_path):
-    def asset(rel_path):
-        return _root_prefix(current_url_path) + rel_path
-    return asset
+app = Flask(
+    __name__,
+    template_folder=str(ROOT / "src" / "templates"),
+    static_folder=str(STATIC_DIR),
+    static_url_path="",
+)
 
 
 def _asset_version():
-    # Cache-busting query string for styles.css/script.js — .htaccess caches
-    # them for 1 month, so without this returning visitors wouldn't see
-    # updates until the cache expires.
+    # Cache-busting query string for styles.css/script.js, computed once at
+    # process start (a fresh value appears on the next deploy/restart).
     h = hashlib.sha256()
     for name in ("styles.css", "script.js"):
         h.update((STATIC_DIR / name).read_bytes())
     return h.hexdigest()[:10]
 
 
-def build():
-    if DIST.exists():
-        shutil.rmtree(DIST)
-    DIST.mkdir(parents=True)
+ASSET_VERSION = _asset_version()
 
-    # Static passthrough (styles.css, script.js, .htaccess, assets/).
-    for item in STATIC_DIR.iterdir():
-        target = DIST / item.name
-        if item.is_dir():
-            shutil.copytree(item, target)
-        else:
-            shutil.copy2(item, target)
+# Sitemap <lastmod> equivalent to the old "build date" -- now there's no
+# build step, so this is the date the app process last started (deploy/
+# restart), computed once rather than on every request.
+DEPLOY_DATE = date.today().isoformat()
 
-    env = Environment(
-        loader=FileSystemLoader(str(TEMPLATES_DIR)),
-        trim_blocks=True,
-        lstrip_blocks=True,
-        autoescape=False,
-    )
 
-    asset_version = _asset_version()
+def url_for_page(page_id, anchor=None):
+    target = PAGES_BY_ID[page_id]
+    href = "/" + target["url_path"]
+    if anchor:
+        href += f"#{anchor}"
+    return href
 
-    for page in PAGES:
-        page = {**page}
-        page.setdefault("robots", ROBOTS_DEFAULT)
-        page.setdefault("og_type", "website")
 
+def asset(rel_path):
+    return "/" + rel_path
+
+
+@app.context_processor
+def inject_globals():
+    # Intentionally shadows Flask's own url_for inside Jinja rendering --
+    # templates never call the real flask.url_for, only this simpler one
+    # keyed by PAGES id. Python code can still use flask.url_for normally.
+    return {"url_for": url_for_page, "asset": asset, "SITE_URL": SITE_URL, "ASSET_VERSION": ASSET_VERSION}
+
+
+def make_page_view(page):
+    # Factory, not a closure over the loop variable directly -- otherwise
+    # every route would render whichever page the loop last held.
+    def view():
+        ctx_page = {**page}
+        ctx_page.setdefault("robots", ROBOTS_DEFAULT)
+        ctx_page.setdefault("og_type", "website")
         canonical_url = f"{SITE_URL}/{page['url_path']}"
-        context = {
-            "page": page,
-            "SITE_URL": SITE_URL,
-            "canonical_url": canonical_url,
-            "url_for": make_url_for(page["url_path"]),
-            "asset": make_asset(page["url_path"]),
-            "ASSET_VERSION": asset_version,
-        }
-
-        template = env.get_template(page["template"])
-        html = template.render(**context)
-
-        out_dir = DIST / page["url_path"]
-        out_dir.mkdir(parents=True, exist_ok=True)
-        (out_dir / "index.html").write_text(html, encoding="utf-8")
-        print(f"built {page['id']:14s} -> dist/{page['url_path']}index.html")
-
-    build_404(env, asset_version)
-
-    build_sitemap()
-    print(f"\nDone. Output in {DIST}")
+        return render_template(page["template"], page=ctx_page, canonical_url=canonical_url)
+    view.__name__ = f"page_{page['id']}"
+    return view
 
 
-def build_404(env, asset_version):
-    # Not a normal routable page: lives at dist/404.html (root), excluded from
-    # sitemap/url_for. .htaccess points ErrorDocument 404 here.
+for _page in PAGES:
+    app.add_url_rule(f"/{_page['url_path']}", endpoint=_page["id"], view_func=make_page_view(_page))
+
+
+@app.errorhandler(404)
+def not_found(_e):
     page = {
         "title": "Страница не найдена | ТЕХБИЗ",
         "description": "Запрошенная страница не найдена.",
@@ -218,22 +190,12 @@ def build_404(env, asset_version):
         "hreflang": False,
         "icon192": True,
     }
-    context = {
-        "page": page,
-        "SITE_URL": SITE_URL,
-        "canonical_url": f"{SITE_URL}/404.html",
-        "url_for": make_url_for(""),
-        "asset": make_asset(""),
-        "ASSET_VERSION": asset_version,
-    }
-    template = env.get_template("pages/404.html")
-    html = template.render(**context)
-    (DIST / "404.html").write_text(html, encoding="utf-8")
-    print(f"built {'404':14s} -> dist/404.html")
+    html = render_template("pages/404.html", page=page, canonical_url=f"{SITE_URL}/404.html")
+    return html, 404
 
 
-def build_sitemap():
-    lastmod = date.today().isoformat()
+@app.route("/sitemap.xml")
+def sitemap():
     lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for page in PAGES:
         if page.get("in_sitemap") is False:
@@ -241,17 +203,106 @@ def build_sitemap():
         loc = f"{SITE_URL}/{page['url_path']}"
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")
-        lines.append(f"    <lastmod>{lastmod}</lastmod>")
+        lines.append(f"    <lastmod>{DEPLOY_DATE}</lastmod>")
         lines.append(f"    <changefreq>{page['changefreq']}</changefreq>")
         lines.append(f"    <priority>{page['priority']}</priority>")
         lines.append("  </url>")
     lines.append("</urlset>")
-    (DIST / "sitemap.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return Response("\n".join(lines) + "\n", mimetype="application/xml")
 
-    (DIST / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8"
+
+@app.route("/robots.txt")
+def robots():
+    return Response(
+        f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n", mimetype="text/plain"
     )
 
 
+# --- Lead-generation form (merged from the previous separate pyapp) ---
+
+TO_ADDR = "info@tex-biz.ru"
+FROM_ADDR = os.environ.get("MAIL_FROM", "noreply@tex-biz.ru")
+SMTP_HOST = os.environ.get("SMTP_HOST", "localhost")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
+SMTP_USER = os.environ.get("SMTP_USER")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+
+RATE_LIMIT_WINDOW = 600  # seconds
+RATE_LIMIT_MAX = 5  # requests per IP per window
+
+# In-memory only — resets per worker process on restart, and isn't shared
+# across multiple Passenger worker processes. Good enough to blunt naive
+# spam/flooding on this low-traffic lead form without adding a dependency.
+_rate_limit_hits = defaultdict(list)
+
+
+def clean(value):
+    return (value or "").replace("\r", " ").replace("\n", " ").strip()
+
+
+def client_ip():
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.remote_addr or "unknown"
+
+
+def rate_limited(ip):
+    now = time.time()
+    hits = _rate_limit_hits[ip]
+    hits[:] = [t for t in hits if now - t < RATE_LIMIT_WINDOW]
+    if len(hits) >= RATE_LIMIT_MAX:
+        return True
+    hits.append(now)
+    return False
+
+
+@app.route("/send", methods=["POST"])
+def send():
+    if rate_limited(client_ip()):
+        return jsonify(ok=False, error="rate_limited"), 429
+
+    name = clean(request.form.get("name"))
+    phone = clean(request.form.get("phone"))
+    object_type = clean(request.form.get("object"))
+    message = clean(request.form.get("message"))
+    honeypot = clean(request.form.get("website"))
+    agree = request.form.get("agree")
+
+    # Honeypot: bots fill hidden fields, humans don't. Pretend success without sending.
+    if honeypot:
+        return jsonify(ok=True)
+
+    if not name or not phone or not object_type or not agree:
+        return jsonify(ok=False, error="missing_fields"), 422
+
+    body = (
+        f"Имя: {name}\n"
+        f"Телефон: {phone}\n"
+        f"Тип объекта: {object_type}\n"
+        f"Задача: {message or '-'}\n"
+    )
+
+    msg = MIMEText(body, "plain", "utf-8")
+    msg["Subject"] = Header("Новая заявка с сайта ТЕХБИЗ", "utf-8")
+    msg["From"] = FROM_ADDR
+    msg["To"] = TO_ADDR
+    msg["Reply-To"] = FROM_ADDR
+
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
+            if SMTP_USER and SMTP_PASSWORD:
+                server.starttls()
+                server.login(SMTP_USER, SMTP_PASSWORD)
+            server.sendmail(FROM_ADDR, [TO_ADDR], msg.as_string())
+    except Exception:
+        return jsonify(ok=False, error="send_failed"), 500
+
+    return jsonify(ok=True)
+
+
+# Passenger (ISPmanager) imports this exact name as the WSGI entry point.
+application = app
+
 if __name__ == "__main__":
-    build()
+    app.run(debug=True)

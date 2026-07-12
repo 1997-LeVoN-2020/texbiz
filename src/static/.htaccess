@@ -18,8 +18,8 @@ RewriteRule ^privacy\.html$ /privacy/ [L,R=301]
 RewriteRule ^blog/1c-avtomatizaciya-otelya-s-chego-nachat\.html$ /blog/1c-avtomatizaciya-otelya-s-chego-nachat/ [L,R=301]
 RewriteRule ^blog/kak-vybrat-onlayn-kassu-dlya-gostinicy\.html$ /blog/kak-vybrat-onlayn-kassu-dlya-gostinicy/ [L,R=301]
 
-# Custom 404 page.
-ErrorDocument 404 /404.html
+# Custom 404 page: no longer a static file -- the Flask app's own
+# @app.errorhandler(404) renders pages/404.html for any unmatched path.
 
 # Don't expose directory listings or dotfiles.
 Options -Indexes
@@ -31,6 +31,12 @@ Options -Indexes
   AddOutputFilterByType DEFLATE text/html text/css text/xml application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript text/javascript application/json image/svg+xml
 </IfModule>
 
+# mod_expires below only takes effect for requests Apache serves directly
+# from disk. Now that the whole site (including styles.css/script.js/
+# assets/) is served through the Flask app (Passenger), these directives
+# are dead for that traffic -- caching for those responses comes from
+# Flask's own static-file defaults instead. Left here in case that ever
+# changes back to Apache serving static assets directly.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/html "access plus 0 seconds"
