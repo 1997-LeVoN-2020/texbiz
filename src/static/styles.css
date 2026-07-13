@@ -768,6 +768,11 @@ h3 {
   display: grid;
   gap: 0.2rem;
   background: rgba(255, 255, 255, 0.9);
+  /* Card background is always near-white regardless of section — set text
+     color explicitly rather than inherit, since .accent sets color: white
+     on the whole section and this card would otherwise go white-on-white
+     on the "process" section of the 4 service pages. */
+  color: var(--c-dark);
   border: 1px solid rgba(43, 61, 86, 0.18);
   border-radius: var(--radius-sm);
   padding: 0.95rem 1rem;
