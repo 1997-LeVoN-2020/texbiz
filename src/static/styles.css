@@ -73,6 +73,8 @@ body::before {
   backdrop-filter: blur(12px);
   background: color-mix(in srgb, var(--c-white) 86%, transparent);
   border-bottom: 1px solid rgba(43, 61, 86, 0.12);
+  /* Deliberately lighter/tighter than --shadow-soft — a shadow that size
+     under a sticky, always-visible header would read as too heavy. */
   box-shadow: 0 6px 18px rgba(43, 61, 86, 0.08);
 }
 
@@ -192,7 +194,7 @@ body::before {
 
 .nav-dropdown a {
   padding: 0.5rem 0.6rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   white-space: nowrap;
 }
 
@@ -348,6 +350,8 @@ h3 {
 .btn-primary {
   color: var(--c-white);
   background: linear-gradient(98deg, #4a4a4a, var(--c-accent));
+  /* Deliberately darker/tighter than --shadow-soft — the primary CTA
+     should read heavier than a resting card surface. */
   box-shadow: 0 12px 26px rgba(43, 61, 86, 0.2);
 }
 
@@ -891,7 +895,7 @@ h3 {
 
 .faq-item[open] {
   border-color: rgba(34, 123, 221, 0.52);
-  box-shadow: 0 10px 26px rgba(43, 61, 86, 0.1);
+  box-shadow: var(--shadow-soft);
 }
 
 .contact-section {
