@@ -781,7 +781,7 @@ h3 {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 1rem;
-  background: linear-gradient(145deg, #2B3D56, #227BDD);
+  background: linear-gradient(145deg, var(--c-dark), var(--c-accent));
   color: var(--c-white);
   border-radius: var(--radius-lg);
   padding: 1.4rem;
@@ -995,11 +995,11 @@ h3 {
 }
 
 .form-status.error {
-  color: #227BDD;
+  color: var(--c-accent);
 }
 
 .form-status.success {
-  color: #2B3D56;
+  color: var(--c-dark);
 }
 
 .site-footer {
@@ -1115,7 +1115,7 @@ h3 {
     min-width: 220px;
     display: none;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--c-white);
     border: 1px solid rgba(43, 61, 86, 0.2);
     border-radius: var(--radius-sm);
     padding: 0.9rem;
