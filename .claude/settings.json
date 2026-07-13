@@ -44,7 +44,18 @@
       "Bash(cd \"/c/Users/arush/OneDrive/Рабочий стол/Projects\" && ls -la | grep -i \"tehbiz\\\\|texbiz\")",
       "Read(//c/Users/arush/OneDrive/Рабочий стол/Projects/**)",
       "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"OneDrive|Code|python|node|msedge|explorer\" } | Select-Object Id, ProcessName, Path | Format-Table -AutoSize)",
-      "PowerShell(Get-Process -Name Code | Where-Object { $_.MainWindowTitle -ne \"\" } | Select-Object Id, MainWindowTitle)"
+      "PowerShell(Get-Process -Name Code | Where-Object { $_.MainWindowTitle -ne \"\" } | Select-Object Id, MainWindowTitle)",
+      "Bash(where *)",
+      "mcp__Claude_Browser__navigate",
+      "mcp__Claude_Browser__get_page_text",
+      "mcp__Claude_Browser__read_network_requests",
+      "mcp__Claude_Browser__preview_screenshot",
+      "mcp__Claude_Browser__read_console_messages",
+      "mcp__Claude_Browser__preview_list",
+      "mcp__Claude_Browser__preview_logs",
+      "mcp__Claude_Browser__preview_network",
+      "mcp__Claude_Browser__read_page",
+      "mcp__Claude_Browser__preview_inspect"
     ]
   }
 }
