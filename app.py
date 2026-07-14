@@ -132,6 +132,42 @@ PAGES = [
         "og_description": "Интеграция с 1С, уровни доступа, аварийный доступ и совместимость — на что смотреть при выборе замковой системы.",
         "priority": "0.6", "changefreq": "yearly",
     },
+    {
+        "id": "blog_channels", "url_path": "blog/integraciya-kanalov-prodazh-dlya-otelya/", "template": "pages/blog/integraciya-kanalov-prodazh-dlya-otelya.html",
+        "title": "Интеграция каналов продаж (OTA/PMS) для отеля | Блог ТЕХБИЗ",
+        "description": "Зачем синхронизировать тарифы и квоты между 1С, PMS и каналами продаж в реальном времени, чтобы избежать овербукинга и расхождения цен.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Интеграция каналов продаж (OTA/PMS) для отеля",
+        "og_description": "Синхронизация 1С, PMS и каналов продаж в реальном времени — как избежать овербукинга и расхождения цен.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_support", "url_path": "blog/podderzhka-24-7-dlya-otelya-chto-dolzhno-byt-v-sla/", "template": "pages/blog/podderzhka-24-7-dlya-otelya-chto-dolzhno-byt-v-sla.html",
+        "title": "Поддержка 24/7 для отеля: что должно быть в SLA | Блог ТЕХБИЗ",
+        "description": "Приоритеты инцидентов P1/P2/P3, эскалация и реальная работа 24/7/365 в праздники — что должно быть в SLA техподдержки отеля.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Поддержка 24/7 для отеля: что должно быть в SLA",
+        "og_description": "Приоритеты инцидентов, эскалация и реальная работа 24/7/365 — что прописать в SLA техподдержки отеля.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_training", "url_path": "blog/obuchenie-personala-pri-vnedrenii-sistemy-v-otele/", "template": "pages/blog/obuchenie-personala-pri-vnedrenii-sistemy-v-otele.html",
+        "title": "Обучение персонала при внедрении новой системы в отеле | Блог ТЕХБИЗ",
+        "description": "Почему настроенная 1С не спасает от параллельного учёта: кого учить (администратор, бухгалтер, руководитель) и как проверить, что обучение закрепилось.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Обучение персонала при внедрении новой системы в отеле",
+        "og_description": "Кого и чему учить отдельно при внедрении, и как проверить, что обучение закрепилось, а не прошло формально.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_migration", "url_path": "blog/migraciya-na-novuyu-sistemu-bez-ostanovki-otelya/", "template": "pages/blog/migraciya-na-novuyu-sistemu-bez-ostanovki-otelya.html",
+        "title": "Миграция на новую систему без остановки работы отеля | Блог ТЕХБИЗ",
+        "description": "Как перенести отель на новую 1С, кассу или сервер без простоя: поэтапный перенос данных, тестовый контур, работа с историей броней, выбор окна переключения.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Миграция на новую систему без остановки работы отеля",
+        "og_description": "Поэтапный перенос данных, тестовый контур и выбор окна переключения — как мигрировать без простоя.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
 ]
 
 PAGES_BY_ID = {p["id"]: p for p in PAGES}
