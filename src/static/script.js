@@ -181,11 +181,19 @@ if (quizForm && quizResult) {
     event.preventDefault();
 
     const type = quizForm.querySelector('#quiz-type').value;
-    const rooms = Number(quizForm.querySelector('#quiz-rooms').value);
+    const roomsInput = quizForm.querySelector('#quiz-rooms');
+    const rooms = Number(roomsInput.value);
+    const roomsMin = Number(roomsInput.min);
+    const roomsMax = Number(roomsInput.max);
     const modules = quizForm.querySelectorAll('input[type="checkbox"]:checked').length;
 
     if (!type || !rooms || modules === 0) {
       quizResult.innerHTML = '<h3>Недостаточно данных для расчета</h3><p>Выберите тип объекта, количество номеров и минимум один модуль.</p>';
+      return;
+    }
+
+    if (rooms < roomsMin || rooms > roomsMax) {
+      quizResult.innerHTML = `<h3>Проверьте количество номеров</h3><p>Введите значение от ${roomsMin} до ${roomsMax}.</p>`;
       return;
     }
 
