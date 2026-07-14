@@ -985,7 +985,7 @@ h3 {
   margin-top: 2rem;
 }
 
-.legal-content p {
+.legal-content p:not(.eyebrow) {
   color: color-mix(in srgb, var(--c-dark) 88%, white);
 }
 
