@@ -114,6 +114,24 @@ PAGES = [
         "og_description": "Требования 54-ФЗ и на что смотреть при выборе ККТ для отеля.",
         "priority": "0.6", "changefreq": "yearly",
     },
+    {
+        "id": "blog_servers", "url_path": "blog/kak-vybrat-server-i-set-dlya-otelya/", "template": "pages/blog/kak-vybrat-server-i-set-dlya-otelya.html",
+        "title": "Как выбрать сервер и сеть для отеля | Блог ТЕХБИЗ",
+        "description": "Резервирование, разделение Wi-Fi для гостей и персонала, мониторинг 24/7 и защита данных — как спроектировать серверную инфраструктуру отеля без сбоев.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Как выбрать сервер и сеть для отеля",
+        "og_description": "Резервирование, Wi-Fi для гостей и персонала и мониторинг 24/7 — как спроектировать серверную инфраструктуру отеля.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_locks", "url_path": "blog/kak-vybrat-zamkovuyu-sistemu-dlya-otelya/", "template": "pages/blog/kak-vybrat-zamkovuyu-sistemu-dlya-otelya.html",
+        "title": "Как выбрать электронную замковую систему для отеля | Блог ТЕХБИЗ",
+        "description": "На что обратить внимание при выборе и внедрении электронных замков для отеля: интеграция с 1С, уровни доступа, аварийный доступ, совместимость.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Как выбрать электронную замковую систему для отеля",
+        "og_description": "Интеграция с 1С, уровни доступа, аварийный доступ и совместимость — на что смотреть при выборе замковой системы.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
 ]
 
 PAGES_BY_ID = {p["id"]: p for p in PAGES}
