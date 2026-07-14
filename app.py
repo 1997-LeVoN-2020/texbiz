@@ -437,6 +437,10 @@ def send():
                 server.login(SMTP_USER, SMTP_PASSWORD)
             server.sendmail(FROM_ADDR, [TO_ADDR], msg.as_string())
     except Exception:
+        # Swallowed from the client on purpose (user just sees "call us
+        # instead"), but log server-side -- otherwise a real SMTP outage
+        # in production leaves zero trace to diagnose from.
+        app.logger.exception("Failed to send lead email via %s:%s", SMTP_HOST, SMTP_PORT)
         return jsonify(ok=False, error="send_failed"), 500
 
     return jsonify(ok=True)
