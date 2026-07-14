@@ -180,13 +180,13 @@ const quizResult = document.querySelector('#quiz-result');
 // systems to configure, support is mostly ongoing (cheaper to onboard),
 // so a flat per-checkbox price didn't reflect real scope differences.
 const MODULE_PRICES = {
-  '1c': 65000,
-  kkt: 40000,
-  srv: 55000,
-  lock: 35000,
-  ops: 25000,
-  ota: 35000,
-  booking: 55000,
+  '1c': 75000,
+  kkt: 60000,
+  srv: 155000,
+  lock: 90000,
+  ops: 15000,
+  ota: 15000,
+  booking: 100000,
 };
 
 if (quizForm && quizResult) {
