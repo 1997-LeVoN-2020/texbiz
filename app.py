@@ -168,6 +168,42 @@ PAGES = [
         "og_description": "Поэтапный перенос данных, тестовый контур и выбор окна переключения — как мигрировать без простоя.",
         "priority": "0.6", "changefreq": "yearly",
     },
+    {
+        "id": "blog_mini_hotel", "url_path": "blog/avtomatizaciya-mini-otelya-i-gostevogo-doma/", "template": "pages/blog/avtomatizaciya-mini-otelya-i-gostevogo-doma.html",
+        "title": "Автоматизация мини-отеля и гостевого дома: с чего начать при небольшом бюджете | Блог ТЕХБИЗ",
+        "description": "Какие модули автоматизации нужны мини-отелю и гостевому дому в первую очередь при небольшом бюджете, а что можно отложить на потом.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Автоматизация мини-отеля и гостевого дома",
+        "og_description": "С каких модулей начинать автоматизацию при ограниченном бюджете, а что подключить вторым этапом.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_apartments", "url_path": "blog/avtomatizaciya-apartamentov-i-uk/", "template": "pages/blog/avtomatizaciya-apartamentov-i-uk.html",
+        "title": "Автоматизация апартаментов и УК: чем отличается от отеля | Блог ТЕХБИЗ",
+        "description": "Чем управление апарт-объектами отличается от отеля: разрозненные адреса, разные владельцы квартир, нет стойки. Единое окно доступов, платежей, отчётности.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Автоматизация апартаментов и УК",
+        "og_description": "Разрозненные объекты, разные владельцы квартир, нет ресепшена — почему нужно единое окно управления.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_chain", "url_path": "blog/avtomatizaciya-seti-otelej/", "template": "pages/blog/avtomatizaciya-seti-otelej.html",
+        "title": "Автоматизация сети отелей: как не потерять управляемость при росте | Блог ТЕХБИЗ",
+        "description": "Почему решения одного отеля ломаются на сети из нескольких объектов и как унифицированные регламенты и централизованный учёт на уровне УК сохраняют контроль над ростом.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Автоматизация сети отелей",
+        "og_description": "Унифицированные регламенты и централизованный учёт на уровне УК — как сохранить контроль при росте сети.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
+    {
+        "id": "blog_season", "url_path": "blog/chek-list-podgotovki-otelya-k-vysokomu-sezonu/", "template": "pages/blog/chek-list-podgotovki-otelya-k-vysokomu-sezonu.html",
+        "title": "Чек-лист подготовки отеля к высокому сезону | Блог ТЕХБИЗ",
+        "description": "Что проверить в ИТ-инфраструктуре отеля до высокого сезона: резервные сценарии касс, отказоустойчивость серверов, SLA поддержки и готовность сети.",
+        "og": True, "og_type": "article", "icon192": False,
+        "og_title": "Чек-лист подготовки отеля к высокому сезону",
+        "og_description": "Резервные сценарии касс, отказоустойчивость серверов, SLA поддержки — что проверить до начала сезона.",
+        "priority": "0.6", "changefreq": "yearly",
+    },
 ]
 
 PAGES_BY_ID = {p["id"]: p for p in PAGES}
