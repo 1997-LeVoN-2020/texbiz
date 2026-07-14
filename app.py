@@ -431,9 +431,13 @@ def send():
     msg["Reply-To"] = FROM_ADDR
 
     try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as server:
+        # Port 465 is implicit TLS from the first byte (SMTPS) -- STARTTLS
+        # is a different, incompatible upgrade handshake used on 587/25.
+        smtp_cls = smtplib.SMTP_SSL if SMTP_PORT == 465 else smtplib.SMTP
+        with smtp_cls(SMTP_HOST, SMTP_PORT, timeout=10) as server:
             if SMTP_USER and SMTP_PASSWORD:
-                server.starttls()
+                if SMTP_PORT != 465:
+                    server.starttls()
                 server.login(SMTP_USER, SMTP_PASSWORD)
             server.sendmail(FROM_ADDR, [TO_ADDR], msg.as_string())
     except Exception:
