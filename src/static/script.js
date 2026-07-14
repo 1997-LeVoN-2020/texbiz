@@ -176,6 +176,19 @@ if (segmentTabs.length && segmentPanels.length) {
 const quizForm = document.querySelector('#quiz-form');
 const quizResult = document.querySelector('#quiz-result');
 
+// Relative setup effort per module -- 1C and the booking engine are full
+// systems to configure, support is mostly ongoing (cheaper to onboard),
+// so a flat per-checkbox price didn't reflect real scope differences.
+const MODULE_PRICES = {
+  '1c': 65000,
+  kkt: 40000,
+  srv: 55000,
+  lock: 35000,
+  ops: 25000,
+  ota: 35000,
+  booking: 55000,
+};
+
 if (quizForm && quizResult) {
   quizForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -185,9 +198,9 @@ if (quizForm && quizResult) {
     const rooms = Number(roomsInput.value);
     const roomsMin = Number(roomsInput.min);
     const roomsMax = Number(roomsInput.max);
-    const modules = quizForm.querySelectorAll('input[type="checkbox"]:checked').length;
+    const checkedModules = Array.from(quizForm.querySelectorAll('input[type="checkbox"]:checked'));
 
-    if (!type || !rooms || modules === 0) {
+    if (!type || !rooms || checkedModules.length === 0) {
       quizResult.innerHTML = '<h3>Недостаточно данных для расчета</h3><p>Выберите тип объекта, количество номеров и минимум один модуль.</p>';
       return;
     }
@@ -204,10 +217,16 @@ if (quizForm && quizResult) {
       chain: 1.35,
     };
 
+    const moduleLines = checkedModules.map((checkbox) => ({
+      label: checkbox.closest('label').textContent.trim(),
+      price: MODULE_PRICES[checkbox.value] || 45000,
+    }));
+    const modulesPart = moduleLines.reduce((sum, line) => sum + line.price, 0);
+
     const base = 120000;
     const roomsPart = rooms * 1700;
-    const modulesPart = modules * 45000;
-    const total = Math.round((base + roomsPart + modulesPart) * (typeMultiplier[type] || 1));
+    const multiplier = typeMultiplier[type] || 1;
+    const total = Math.round((base + roomsPart + modulesPart) * multiplier);
 
     const start = Math.round(total * 0.85);
     const end = Math.round(total * 1.2);
@@ -215,6 +234,10 @@ if (quizForm && quizResult) {
     const endFormatted = end.toLocaleString('ru-RU');
     const launchDays = rooms <= 40 ? '5-9 дней' : rooms <= 120 ? '8-14 дней' : '14-25 дней';
 
-    quizResult.innerHTML = `<h3>Ориентировочный бюджет: ${startFormatted} - ${endFormatted} руб.</h3><p>Предварительный срок запуска: ${launchDays}. Точный расчет подготовим после экспресс-аудита объекта и проверки интеграций.</p><a class="btn btn-primary" href="#contacts">Получить точную смету</a>`;
+    const breakdown = moduleLines
+      .map((line) => `<li><span>${line.label}</span><span>≈ ${line.price.toLocaleString('ru-RU')} руб.</span></li>`)
+      .join('');
+
+    quizResult.innerHTML = `<h3>Ориентировочный бюджет: ${startFormatted} - ${endFormatted} руб.</h3><p>Предварительный срок запуска: ${launchDays}. Точный расчет подготовим после экспресс-аудита объекта и проверки интеграций.</p><p class="quiz-breakdown-label">Из чего складывается смета:</p><ul class="quiz-breakdown">${breakdown}</ul><a class="btn btn-primary" href="#contacts">Получить точную смету</a>`;
   });
 }
