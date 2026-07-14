@@ -14,12 +14,12 @@
         <h2 id="posts-title" class="section-subtitle" style="font-size:1rem">Все статьи</h2>
         <div class="cards">
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">1C</span>
+            {{ service_icon('1C') }}
             <h3><a href="{{ url_for('blog_1c') }}">Автоматизация 1С для отеля: с чего начать</a></h3>
             <p>Пошаговый план для владельца отеля: аудит, приоритетные модули, типичные ошибки при внедрении и реальные сроки.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">KKT</span>
+            {{ service_icon('KKT') }}
             <h3><a href="{{ url_for('blog_kassy') }}">Как выбрать онлайн-кассу для гостиницы</a></h3>
             <p>Требования 54-ФЗ, на что смотреть при выборе ККТ для отеля и как не остаться без кассы в высокий сезон.</p>
           </article>

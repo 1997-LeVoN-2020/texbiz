@@ -153,47 +153,47 @@
         <p class="section-subtitle">Закрываем все критичные узлы ИТ-инфраструктуры отеля под одну ответственность.</p>
         <div class="cards">
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">1C</span>
+            {{ service_icon('1C') }}
             <h3><a href="{{ url_for('svc_1c') }}">Автоматизация 1С для отеля</a></h3>
             <p>Настройка учета, бронирования, отчетности и интеграций с гостиничными модулями.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">KKT</span>
+            {{ service_icon('KKT') }}
             <h3><a href="{{ url_for('svc_kassy') }}">Онлайн-кассы и фискализация</a></h3>
             <p>Подключение ККТ, настройка ОФД, эквайринга и бесперебойной передачи чеков.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">SRV</span>
+            {{ service_icon('SRV') }}
             <h3><a href="{{ url_for('svc_servers') }}">Серверы и сеть</a></h3>
             <p>Проектирование и настройка серверной архитектуры, Wi-Fi и локальной сети объекта.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">LOCK</span>
+            {{ service_icon('LOCK') }}
             <h3><a href="{{ url_for('svc_locks') }}">Замковые системы</a></h3>
             <p>Интеграция электронных замков, карт доступа и синхронизация с учетной системой.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">OPS</span>
+            {{ service_icon('OPS') }}
             <h3>Поддержка и сопровождение</h3>
             <p>Регламентные работы, мониторинг и оперативное устранение инцидентов.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">OTA</span>
+            {{ service_icon('OTA') }}
             <h3>Интеграция каналов продаж</h3>
             <p>Подключение OTA и PMS, синхронизация тарифов, квот и доступности в реальном времени.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">BOOK</span>
+            {{ service_icon('BOOK') }}
             <h3><a href="{{ url_for('booking') }}">Модуль онлайн-бронирования</a></h3>
             <p>Прямые брони и оплата на сайте отеля с интеграцией в 1С-Отель — без комиссии агрегаторов.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">MIG</span>
+            {{ service_icon('MIG') }}
             <h3>Миграция и запуск без простоя</h3>
             <p>Переносим данные и настраиваем новую инфраструктуру поэтапно, чтобы отель продолжал работать.</p>
           </article>
           <article class="card reveal">
-            <span class="service-icon" aria-hidden="true">EDU</span>
+            {{ service_icon('EDU') }}
             <h3>Обучение персонала</h3>
             <p>Обучаем администраторов, бухгалтерию и руководителей работе в новой системе по готовым регламентам.</p>
           </article>
@@ -301,6 +301,7 @@
             <a class="btn btn-ghost" href="#contacts">Запросить смету</a>
           </article>
           <article class="pricing-card featured reveal">
+            <span class="plan-badge">Выбирают чаще всего</span>
             <p class="plan">Стандарт</p>
             <h3>Оптимальный для большинства</h3>
             <ul>

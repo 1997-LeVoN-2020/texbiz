@@ -4,6 +4,10 @@
   --c-dark: #2B3D56;
   --c-mid: #8EA5C2;
   --c-accent: #227BDD;
+  /* Rare second accent -- reserved for the one "pick this" signal per page
+     (e.g. the recommended plan) so --c-accent doesn't have to double as
+     both the brand color and a highlight color. */
+  --c-warm: #C97A2E;
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 28px;
@@ -538,15 +542,18 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 56px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
   margin-bottom: 0.8rem;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: linear-gradient(95deg, rgba(43, 61, 86, 0.12), rgba(34, 123, 221, 0.14));
   border: 1px solid rgba(43, 61, 86, 0.2);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  color: var(--c-dark);
+}
+
+.service-icon svg {
+  width: 22px;
+  height: 22px;
 }
 
 .card,
@@ -747,8 +754,22 @@ h3 {
 }
 
 .pricing-card.featured {
-  border-color: rgba(34, 123, 221, 0.35);
+  border-color: rgba(201, 122, 46, 0.4);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(241, 241, 241, 0.9));
+}
+
+.plan-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-warm);
+  background: color-mix(in srgb, var(--c-warm) 14%, white);
+  border: 1px solid color-mix(in srgb, var(--c-warm) 40%, white);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  margin-bottom: 0.6rem;
 }
 
 .plan {
