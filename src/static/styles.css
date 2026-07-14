@@ -217,12 +217,16 @@ body::before {
 
 .menu-btn {
   display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   border: 1px solid rgba(43, 61, 86, 0.34);
   background: transparent;
   color: var(--c-dark);
   border-radius: var(--radius-sm);
   padding: 0.58rem 0.8rem;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .section {
