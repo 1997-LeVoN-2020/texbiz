@@ -4,9 +4,12 @@
 Usage: python app.py
 """
 import hashlib
+import json
 import os
 import smtplib
 import time
+import urllib.error
+import urllib.request
 from collections import defaultdict
 from datetime import date
 from email.header import Header
@@ -368,6 +371,9 @@ SMTP_PORT = int(os.environ.get("SMTP_PORT", "25"))
 SMTP_USER = os.environ.get("SMTP_USER")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
 
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+
 RATE_LIMIT_WINDOW = 600  # seconds
 RATE_LIMIT_MAX = 5  # requests per IP per window
 
@@ -398,6 +404,22 @@ def rate_limited(ip):
     return False
 
 
+def notify_telegram(text):
+    # Best-effort duplicate of the lead notification -- independent of the
+    # email send, so a Telegram outage never blocks a lead and an SMTP
+    # outage doesn't lose the lead entirely (it still lands in Telegram).
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        return
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = json.dumps({"chat_id": TELEGRAM_CHAT_ID, "text": text}).encode("utf-8")
+    req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=10):
+            pass
+    except (urllib.error.URLError, urllib.error.HTTPError):
+        app.logger.exception("Failed to notify Telegram")
+
+
 @app.route("/send", methods=["POST"])
 def send():
     if rate_limited(client_ip()):
@@ -423,6 +445,8 @@ def send():
         f"Тип объекта: {object_type}\n"
         f"Задача: {message or '-'}\n"
     )
+
+    notify_telegram("Новая заявка с сайта ТЕХБИЗ\n\n" + body)
 
     msg = MIMEText(body, "plain", "utf-8")
     msg["Subject"] = Header("Новая заявка с сайта ТЕХБИЗ", "utf-8")
