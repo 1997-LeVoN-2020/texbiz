@@ -3,3 +3,8 @@
 # git's own export-ignore mechanism, so there's one source of truth for
 # what ships instead of a hand-maintained zip exclude list.
 .claude/ export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+README.md export-ignore
+build_release.sh export-ignore
+VERSION export-ignore
