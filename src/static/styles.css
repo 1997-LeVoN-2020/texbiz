@@ -861,7 +861,7 @@ h3 {
 }
 
 .quiz-form select,
-.quiz-form input {
+.quiz-form input:not([type="checkbox"]) {
   width: 100%;
   margin: 0.45rem 0 0.8rem;
   border: 1px solid rgba(43, 61, 86, 0.24);
@@ -878,7 +878,9 @@ h3 {
 }
 
 .quiz-form fieldset label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 500;
   margin-top: 0.45rem;
 }
