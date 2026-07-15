@@ -14,3 +14,7 @@ venv/
 
 # Claude Code local settings — machine-specific, not shared project config
 .claude/settings.local.json
+
+# Real hosting SFTP/SSH connection details — machine-specific secrets,
+# never committed. Copy deploy.env.example to deploy.env and fill it in.
+deploy.env

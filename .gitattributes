@@ -8,3 +8,5 @@
 README.md export-ignore
 build_release.sh export-ignore
 VERSION export-ignore
+deploy.sh export-ignore
+deploy.env.example export-ignore
