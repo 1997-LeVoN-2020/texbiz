@@ -30,7 +30,7 @@ ROBOTS_DEFAULT = "index, follow, max-snippet:-1, max-image-preview:large, max-vi
 PAGES = [
     {
         "id": "home", "url_path": "", "template": "pages/index.html",
-        "title": "Автоматизация отелей под ключ в 1С | Кассы, серверы, замки | ТЕХБИЗ",
+        "title": "Автоматизация отелей под ключ: 1С, кассы, серверы | ТЕХБИЗ",
         "description": "ТЕХБИЗ внедряет 1С для отелей, настраивает онлайн-кассы, серверы и замковые системы. Комплексная автоматизация гостиниц под ключ с поддержкой 24/7.",
         "og": True, "og_type": "website", "icon192": True,
         "og_title": "Автоматизация отелей под ключ в 1С | ТЕХБИЗ",
@@ -106,7 +106,7 @@ PAGES = [
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Автоматизация 1С для отеля: с чего начать",
         "og_description": "Пошаговый план внедрения 1С для отеля: аудит, приоритетные модули, типичные ошибки и реальные сроки.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-07",
     },
     {
         "id": "blog_kassy", "url_path": "blog/kak-vybrat-onlayn-kassu-dlya-gostinicy/", "template": "pages/blog/kak-vybrat-onlayn-kassu-dlya-gostinicy.html",
@@ -115,7 +115,7 @@ PAGES = [
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Как выбрать онлайн-кассу для гостиницы",
         "og_description": "Требования 54-ФЗ и на что смотреть при выборе ККТ для отеля.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-07",
     },
     {
         "id": "blog_servers", "url_path": "blog/kak-vybrat-server-i-set-dlya-otelya/", "template": "pages/blog/kak-vybrat-server-i-set-dlya-otelya.html",
@@ -124,16 +124,16 @@ PAGES = [
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Как выбрать сервер и сеть для отеля",
         "og_description": "Резервирование, Wi-Fi для гостей и персонала и мониторинг 24/7 — как спроектировать серверную инфраструктуру отеля.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_locks", "url_path": "blog/kak-vybrat-zamkovuyu-sistemu-dlya-otelya/", "template": "pages/blog/kak-vybrat-zamkovuyu-sistemu-dlya-otelya.html",
-        "title": "Как выбрать электронную замковую систему для отеля | Блог ТЕХБИЗ",
+        "title": "Как выбрать замковую систему для отеля | Блог ТЕХБИЗ",
         "description": "На что обратить внимание при выборе и внедрении электронных замков для отеля: интеграция с 1С, уровни доступа, аварийный доступ, совместимость.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Как выбрать электронную замковую систему для отеля",
         "og_description": "Интеграция с 1С, уровни доступа, аварийный доступ и совместимость — на что смотреть при выборе замковой системы.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_channels", "url_path": "blog/integraciya-kanalov-prodazh-dlya-otelya/", "template": "pages/blog/integraciya-kanalov-prodazh-dlya-otelya.html",
@@ -142,61 +142,61 @@ PAGES = [
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Интеграция каналов продаж (OTA/PMS) для отеля",
         "og_description": "Синхронизация 1С, PMS и каналов продаж в реальном времени — как избежать овербукинга и расхождения цен.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_support", "url_path": "blog/podderzhka-24-7-dlya-otelya-chto-dolzhno-byt-v-sla/", "template": "pages/blog/podderzhka-24-7-dlya-otelya-chto-dolzhno-byt-v-sla.html",
-        "title": "Поддержка 24/7 для отеля: что должно быть в SLA | Блог ТЕХБИЗ",
+        "title": "SLA поддержки 24/7 для отеля | Блог ТЕХБИЗ",
         "description": "Приоритеты инцидентов P1/P2/P3, эскалация и реальная работа 24/7/365 в праздники — что должно быть в SLA техподдержки отеля.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Поддержка 24/7 для отеля: что должно быть в SLA",
         "og_description": "Приоритеты инцидентов, эскалация и реальная работа 24/7/365 — что прописать в SLA техподдержки отеля.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_training", "url_path": "blog/obuchenie-personala-pri-vnedrenii-sistemy-v-otele/", "template": "pages/blog/obuchenie-personala-pri-vnedrenii-sistemy-v-otele.html",
-        "title": "Обучение персонала при внедрении новой системы в отеле | Блог ТЕХБИЗ",
+        "title": "Обучение персонала при внедрении систем | Блог ТЕХБИЗ",
         "description": "Почему настроенная 1С не спасает от параллельного учёта: кого учить (администратор, бухгалтер, руководитель) и как проверить, что обучение закрепилось.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Обучение персонала при внедрении новой системы в отеле",
         "og_description": "Кого и чему учить отдельно при внедрении, и как проверить, что обучение закрепилось, а не прошло формально.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_migration", "url_path": "blog/migraciya-na-novuyu-sistemu-bez-ostanovki-otelya/", "template": "pages/blog/migraciya-na-novuyu-sistemu-bez-ostanovki-otelya.html",
-        "title": "Миграция на новую систему без остановки работы отеля | Блог ТЕХБИЗ",
+        "title": "Миграция на новую систему без простоя отеля | Блог ТЕХБИЗ",
         "description": "Как перенести отель на новую 1С, кассу или сервер без простоя: поэтапный перенос данных, тестовый контур, работа с историей броней, выбор окна переключения.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Миграция на новую систему без остановки работы отеля",
         "og_description": "Поэтапный перенос данных, тестовый контур и выбор окна переключения — как мигрировать без простоя.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_mini_hotel", "url_path": "blog/avtomatizaciya-mini-otelya-i-gostevogo-doma/", "template": "pages/blog/avtomatizaciya-mini-otelya-i-gostevogo-doma.html",
-        "title": "Автоматизация мини-отеля и гостевого дома: с чего начать при небольшом бюджете | Блог ТЕХБИЗ",
+        "title": "Автоматизация мини-отеля и гостевого дома | Блог ТЕХБИЗ",
         "description": "Какие модули автоматизации нужны мини-отелю и гостевому дому в первую очередь при небольшом бюджете, а что можно отложить на потом.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Автоматизация мини-отеля и гостевого дома",
         "og_description": "С каких модулей начинать автоматизацию при ограниченном бюджете, а что подключить вторым этапом.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_apartments", "url_path": "blog/avtomatizaciya-apartamentov-i-uk/", "template": "pages/blog/avtomatizaciya-apartamentov-i-uk.html",
-        "title": "Автоматизация апартаментов и УК: чем отличается от отеля | Блог ТЕХБИЗ",
+        "title": "Автоматизация апартаментов и УК | Блог ТЕХБИЗ",
         "description": "Чем управление апарт-объектами отличается от отеля: разрозненные адреса, разные владельцы квартир, нет стойки. Единое окно доступов, платежей, отчётности.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Автоматизация апартаментов и УК",
         "og_description": "Разрозненные объекты, разные владельцы квартир, нет ресепшена — почему нужно единое окно управления.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_chain", "url_path": "blog/avtomatizaciya-seti-otelej/", "template": "pages/blog/avtomatizaciya-seti-otelej.html",
-        "title": "Автоматизация сети отелей: как не потерять управляемость при росте | Блог ТЕХБИЗ",
-        "description": "Почему решения одного отеля ломаются на сети из нескольких объектов и как унифицированные регламенты и централизованный учёт на уровне УК сохраняют контроль над ростом.",
+        "title": "Автоматизация сети отелей | Блог ТЕХБИЗ",
+        "description": "Почему решения одного отеля ломаются на сети объектов и как унифицированные регламенты и централизованный учёт на уровне УК сохраняют контроль над ростом.",
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Автоматизация сети отелей",
         "og_description": "Унифицированные регламенты и централизованный учёт на уровне УК — как сохранить контроль при росте сети.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
     {
         "id": "blog_season", "url_path": "blog/chek-list-podgotovki-otelya-k-vysokomu-sezonu/", "template": "pages/blog/chek-list-podgotovki-otelya-k-vysokomu-sezonu.html",
@@ -205,7 +205,7 @@ PAGES = [
         "og": True, "og_type": "article", "icon192": False,
         "og_title": "Чек-лист подготовки отеля к высокому сезону",
         "og_description": "Резервные сценарии касс, отказоустойчивость серверов, SLA поддержки — что проверить до начала сезона.",
-        "priority": "0.6", "changefreq": "yearly",
+        "priority": "0.6", "changefreq": "yearly", "lastmod": "2026-07-14",
     },
 ]
 
@@ -347,7 +347,7 @@ def sitemap():
         loc = f"{SITE_URL}/{page['url_path']}"
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")
-        lines.append(f"    <lastmod>{DEPLOY_DATE}</lastmod>")
+        lines.append(f"    <lastmod>{page.get('lastmod', DEPLOY_DATE)}</lastmod>")
         lines.append(f"    <changefreq>{page['changefreq']}</changefreq>")
         lines.append(f"    <priority>{page['priority']}</priority>")
         lines.append("  </url>")
