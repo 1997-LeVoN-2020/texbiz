@@ -46,7 +46,9 @@ ARCHIVE="/tmp/texbiz-$COMMIT.tar.gz"
 
 run_remote() {
   if [ "$DRY_RUN" = "1" ]; then
-    echo "  [dry-run] ssh $DEPLOY_SSH_HOST '$1'"
+    # printf %q, а не кавычки вручную: команда содержит свои одинарные кавычки,
+    # и вручную она печаталась бы так, будто в ней ошибка.
+    printf '  [dry-run] ssh %s %q\n' "$DEPLOY_SSH_HOST" "$1"
   else
     ssh "$DEPLOY_SSH_HOST" "$1"
   fi
