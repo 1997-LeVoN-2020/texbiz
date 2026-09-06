@@ -14,7 +14,7 @@
 # Рабочий каталог приводится к состоянию репозитория через rsync --delete,
 # поэтому файлы прежнего Flask-сайта уходят сами. Настройки, база заявок,
 # собранная статика и виртуальное окружение из этого исключены — список и
-# причины у шага 3.
+# причины у шага 5.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -80,7 +80,27 @@ else
 fi
 echo
 
-# --- 3. Перенос в рабочий каталог --------------------------------------------
+# --- 3. Проверка .env --------------------------------------------------------
+echo "3. Проверка настроек на сервере"
+run_remote "test -f $DEPLOY_REMOTE_PATH/.env && echo '   .env на месте' || { echo '   ОШИБКА: нет .env — заполните его по образцу .env.example и повторите'; exit 1; }"
+echo
+
+# --- 4. Миграции и статика ДО подмены кода -----------------------------------
+# Порядок важен и куплен опытом. Если сначала подменить код, а потом собирать
+# статику, то в промежутке сайт уже отвечает новым кодом, у которого ещё нет
+# манифеста статики, и каждая страница отдаёт 500. Ровно так и вышло на первой
+# выкладке. Поэтому команды выполняются из промежуточного каталога, а результат
+# кладётся сразу в рабочий: к моменту подмены кода всё готово.
+echo "4. Миграции, содержимое и статика (код ещё прежний)"
+run_remote "cd $STAGE && cp $DEPLOY_REMOTE_PATH/.env $STAGE/.env && \
+  DJANGO_STATIC_ROOT=$DEPLOY_REMOTE_PATH/public/static \
+  $DEPLOY_VENV/bin/pip install -q -r requirements.txt && \
+  DJANGO_STATIC_ROOT=$DEPLOY_REMOTE_PATH/public/static $DEPLOY_VENV/bin/python manage.py migrate --noinput && \
+  DJANGO_STATIC_ROOT=$DEPLOY_REMOTE_PATH/public/static $DEPLOY_VENV/bin/python manage.py loaddata services solutions articles && \
+  DJANGO_STATIC_ROOT=$DEPLOY_REMOTE_PATH/public/static $DEPLOY_VENV/bin/python manage.py collectstatic --noinput | tail -1"
+echo
+
+# --- 5. Перенос в рабочий каталог --------------------------------------------
 # rsync --delete, а не распаковка поверх: иначе файлы прежнего Flask-сайта
 # (app.py, src/) остались бы лежать рядом с новым. Резервная копия уже снята.
 #
@@ -93,22 +113,12 @@ echo
 #   .venv/     — окружение, если оно внутри каталога сайта
 #   tmp/       — служебный каталог Passenger
 #   cgi-bin/   — каталог создаёт панель хостинга, репозиторий про него не знает
-echo "3. Перенос в рабочий каталог"
+echo "5. Перенос в рабочий каталог"
 run_remote "mkdir -p $DEPLOY_REMOTE_PATH && rsync -a --delete --itemize-changes \
   --include '.env.example' --exclude '.env*' \
   --exclude 'data/' --exclude 'public/' --exclude '.venv/' \
   --exclude 'tmp/' --exclude 'releases/' --exclude 'cgi-bin/' \
   $STAGE/ $DEPLOY_REMOTE_PATH/ && rm -rf $STAGE"
-echo
-
-# --- 4. Проверка .env --------------------------------------------------------
-echo "4. Проверка настроек на сервере"
-run_remote "test -f $DEPLOY_REMOTE_PATH/.env && echo '   .env на месте' || { echo '   ОШИБКА: нет .env — заполните его по образцу .env.example и повторите'; exit 1; }"
-echo
-
-# --- 5. Зависимости и данные -------------------------------------------------
-echo "5. Зависимости, миграции, содержимое, статика"
-run_remote "cd $DEPLOY_REMOTE_PATH && $DEPLOY_VENV/bin/pip install -q -r requirements.txt && $DEPLOY_VENV/bin/python manage.py migrate --noinput && $DEPLOY_VENV/bin/python manage.py loaddata services solutions articles && $DEPLOY_VENV/bin/python manage.py collectstatic --noinput | tail -2"
 echo
 
 # --- 6. Перезапуск -----------------------------------------------------------
@@ -126,7 +136,7 @@ else
   python scripts/check_live.py "$SITE_URL" || {
     echo
     echo "Приёмка не прошла. Откат:"
-    echo "  ssh $DEPLOY_SSH_HOST 'rm -rf $DEPLOY_REMOTE_PATH && tar xzf $BACKUP -C \"\$(dirname $DEPLOY_REMOTE_PATH)\"'"
+    echo "  bash scripts/rollback.sh $BACKUP"
     exit 1
   }
 fi
@@ -134,4 +144,4 @@ fi
 echo
 echo "Готово. Резервная копия: $BACKUP"
 echo "Откат, если понадобится:"
-echo "  ssh $DEPLOY_SSH_HOST 'rm -rf $DEPLOY_REMOTE_PATH && tar xzf $BACKUP -C \"\$(dirname $DEPLOY_REMOTE_PATH)\"'"
+echo "  bash scripts/rollback.sh $BACKUP"

@@ -171,7 +171,10 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "public" / "static"
+# Каталог сборки можно задать снаружи. Это нужно при выкладке: статика
+# собирается из промежуточного каталога сразу в рабочий, чтобы манифест был
+# готов раньше, чем новый код начнёт отвечать посетителям.
+STATIC_ROOT = Path(env("DJANGO_STATIC_ROOT", BASE_DIR / "public" / "static"))
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "public" / "media"
