@@ -222,6 +222,12 @@ class PageTests(TestCase):
     def test_unknown_address_returns_404(self):
         self.assertEqual(self.client.get("/takoy-stranicy-net/").status_code, 404)
 
+    def test_favicon_at_root_is_redirected_not_lost(self):
+        """Браузеры и роботы дёргают /favicon.ico, даже когда есть теги в head."""
+        response = self.client.get("/favicon.ico")
+        self.assertEqual(response.status_code, 301)
+        self.assertIn("favicon", response["Location"])
+
     def test_service_and_solution_counts_match_the_fixtures(self):
         self.assertEqual(Service.objects.count(), 8)
         self.assertEqual(Solution.objects.count(), 4)
