@@ -14,19 +14,12 @@ from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 
-# Django 6.1 требует SQLite 3.37 и новее, а на хостинге reg.ru системный —
-# 3.26. Пакет pysqlite3-binary приносит с собой современный SQLite; если он
-# установлен, подменяем им системный модуль. Подмена обязана произойти до
-# того, как Django импортирует свой драйвер, поэтому она стоит здесь, в самом
-# начале настроек. Локально пакета обычно нет, и тогда используется системный
-# SQLite, который на машине разработчика достаточно свежий.
-try:  # pragma: no cover - зависит от окружения
-    import pysqlite3  # noqa: F401
+# Подмена системного SQLite обязана произойти до того, как Django импортирует
+# свой драйвер, поэтому стоит здесь, в самом начале настроек. Подробности —
+# в config/sqlite_compat.py.
+from config import sqlite_compat  # noqa: E402
 
-    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
-    sys.modules["sqlite3.dbapi2"] = sys.modules["sqlite3"].dbapi2
-except ImportError:
-    pass
+SQLITE_CONNECTION_CLASS = sqlite_compat.install()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -141,14 +134,19 @@ if env("DB_NAME"):
         }
     }
 else:
+    _sqlite_options = {
+        "transaction_mode": "IMMEDIATE",
+        "init_command": "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;",
+    }
+    # Класс соединения с заплаткой нужен только там, где подменён SQLite.
+    if SQLITE_CONNECTION_CLASS is not None:
+        _sqlite_options["factory"] = SQLITE_CONNECTION_CLASS
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": DATA_DIR / "db.sqlite3",
-            "OPTIONS": {
-                "transaction_mode": "IMMEDIATE",
-                "init_command": "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;",
-            },
+            "OPTIONS": _sqlite_options,
         }
     }
 
