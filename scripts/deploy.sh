@@ -132,7 +132,9 @@ echo "7. Приёмка"
 if [ "$DRY_RUN" = "1" ]; then
   echo "  [dry-run] python scripts/check_live.py $SITE_URL"
 else
-  sleep 5
+  # Первый запрос после перезапуска поднимает Django с нуля: замерено около
+  # семи секунд. Меньше ждать нельзя, иначе приёмка поднимет ложную тревогу.
+  sleep 20
   python scripts/check_live.py "$SITE_URL" || {
     echo
     echo "Приёмка не прошла. Откат:"
