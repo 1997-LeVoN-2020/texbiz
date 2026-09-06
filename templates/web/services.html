@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Услуги</p>
+    <h1 id="hero-title">Услуги автоматизации гостиниц</h1>
+    <p class="lead">Закрываем все критичные узлы ИТ-инфраструктуры отеля под одну ответственность: учёт, кассы, серверы, замки, каналы продаж и сопровождение.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+      <a class="btn btn-ghost" href="{% url 'web:solutions' %}">Решения по формату объекта</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" aria-label="Список услуг">
+  <div class="container">
+    {% include "includes/service_cards.html" %}
+    {% include "includes/sla.html" %}
+  </div>
+</section>
+
+{% include "includes/process.html" %}
+
+{% include "includes/contact_section.html" %}
+{% endblock %}

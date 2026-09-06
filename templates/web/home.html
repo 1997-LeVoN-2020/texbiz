@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Комплексная автоматизация отелей</p>
+      <h1 id="hero-title">Автоматизация отеля под ключ: быстрее работа, выше прибыль</h1>
+      <p class="lead">Берём на себя весь технический контур: внедряем, интегрируем и запускаем без остановки работы объекта. Вы получаете меньше ошибок, быстрее заселение и полный контроль процессов.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+        <a class="btn btn-ghost" href="{% url 'web:services' %}">Смотреть услуги</a>
+      </div>
+      <p class="hero-note">Не готовы к аудиту? <a href="{{ site.phone_href }}">Позвоните</a>: за две минуты разберёмся, что нужно.</p>
+      <ul class="chips" aria-label="Коротко о нас">
+        <li>Старт проекта от 5 дней</li>
+        <li>SLA-поддержка 24/7 после запуска</li>
+        <li>Один подрядчик на весь контур</li>
+      </ul>
+    </div>
+    <aside class="hero-card" aria-labelledby="hero-card-title">
+      <span class="mark">{% include "includes/logo.html" with size=56 %}</span>
+      <h2 id="hero-card-title">Что вы получите уже в первый месяц</h2>
+      <ul class="check-list">
+        <li>Прозрачный учёт и понятные управленческие отчёты</li>
+        <li>Стабильную работу касс и фискальных сервисов без сбоев</li>
+        <li>Защищённую серверную инфраструктуру с резервированием</li>
+        <li>Контроль доступа гостей и персонала через замковые системы</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-paper" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Услуги</p>
+      <h2 id="services-title">Услуги автоматизации гостиниц</h2>
+      <p>Закрываем все критичные узлы ИТ-инфраструктуры отеля под одну ответственность.</p>
+    </div>
+    {% include "includes/service_cards.html" %}
+  </div>
+</section>
+
+<section class="section" id="solutions" aria-labelledby="solutions-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Решения</p>
+      <h2 id="solutions-title">Решения под формат вашего объекта</h2>
+      <p>Не продаём шаблон: подбираем стек и сценарии работы под реальный операционный процесс.</p>
+    </div>
+    <div class="grid grid-4">
+      {% for sol in solutions %}
+      <article class="card">
+        <h3><a href="{{ sol.get_absolute_url }}">{{ sol.title }}</a></h3>
+        <div class="card-text">{{ sol.body|safe }}</div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" id="booking-engine" aria-labelledby="booking-title">
+  <div class="container">
+    <div class="panel">
+      <p class="eyebrow">Продукт</p>
+      <h2 id="booking-title">Модуль онлайн-бронирования для сайта отеля</h2>
+      <p class="lead">Гость выбирает номер, бронирует и оплачивает прямо на вашем сайте, без комиссии агрегаторов. Цены, доступность и статус брони всегда синхронизированы с 1С-Отель.</p>
+      <ul class="chips">
+        <li>Прямая интеграция с 1С-Отель</li>
+        <li>ЮKassa, Сбербанк Эквайринг, PayKeeper</li>
+        <li>Поиск брони по номеру и контакту</li>
+      </ul>
+      <div class="benefits">
+        <div class="benefit">
+          <h3>Живые цены и доступность из 1С</h3>
+          <p>Модуль запрашивает тарифы, номера и ограничения напрямую у 1С-Отель: гость видит те же условия, что и администратор на ресепшене.</p>
+        </div>
+        <div class="benefit">
+          <h3>Онлайн-оплата с автоподтверждением</h3>
+          <p>Оплата сразу проводится в бронь 1С через ЮKassa, Сбербанк Эквайринг или PayKeeper. Неоплаченные заявки автоматически снимаются через 15 минут.</p>
+        </div>
+        <div class="benefit">
+          <h3>Бронь без регистрации</h3>
+          <p>Гость находит и оплачивает свою бронь по номеру и контактным данным, без создания аккаунта и лишних полей.</p>
+        </div>
+        <div class="benefit">
+          <h3>Каталог номеров с фото и тарифами</h3>
+          <p>Фото, характеристики и несколько тарифов на один номер со скидками. Всё управляется из админки, без разработчика.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="{% url 'web:booking' %}">Подробнее о модуле</a>
+        <a class="btn btn-ghost" href="{{ site.booking_demo }}" target="_blank" rel="noopener">Смотреть демо</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="integrations" aria-labelledby="integrations-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Интеграции</p>
+      <h2 id="integrations-title">Интегрируем с вашим текущим стеком</h2>
+      <p>Сохраняем рабочие системы там, где это выгодно, и дорабатываем только узкие места.</p>
+    </div>
+    <ul class="chips" style="margin-top:0">
+      <li>1С</li>
+      <li>Онлайн-кассы</li>
+      <li>ОФД</li>
+      <li>Эквайринг</li>
+      <li>PMS</li>
+      <li>Channel Manager</li>
+      <li>Замковые системы</li>
+      <li>IP-телефония</li>
+      <li>Сканеры документов</li>
+      <li>CRM и BI</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section-paper" id="packages" aria-labelledby="packages-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Форматы работы</p>
+      <h2 id="packages-title">Пакеты внедрения</h2>
+      <p>Можно стартовать с базового уровня и масштабировать систему по мере роста объекта. Стоимость называем после аудита объекта.</p>
+    </div>
+    <div class="grid grid-3">
+      <article class="card plan">
+        <p class="plan-name">Старт</p>
+        <h3>Быстрый запуск</h3>
+        <ul>
+          <li>Аудит текущей схемы</li>
+          <li>Базовая настройка 1С и ККТ</li>
+          <li>Обучение администратора</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contacts">Запросить смету</a>
+      </article>
+      <article class="card plan plan-featured">
+        <span class="plan-badge">Выбирают чаще всего</span>
+        <p class="plan-name">Стандарт</p>
+        <h3>Оптимальный для большинства</h3>
+        <ul>
+          <li>1С, кассы, замки, сервер</li>
+          <li>Интеграции и регламенты</li>
+          <li>Поддержка после запуска</li>
+        </ul>
+        <a class="btn btn-primary" href="#contacts">Получить предложение</a>
+      </article>
+      <article class="card plan">
+        <p class="plan-name">Под ключ</p>
+        <h3>Для сетей и сложных объектов</h3>
+        <ul>
+          <li>Поэтапная миграция без простоя</li>
+          <li>SLA и мониторинг 24/7</li>
+          <li>Выделенный инженер проекта</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contacts">Обсудить проект</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% include "includes/process.html" %}
+
+<section class="section section-paper" id="why" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Почему мы</p>
+      <h2 id="why-title">Почему отели выбирают ТЕХБИЗ</h2>
+    </div>
+    <div class="benefits" style="margin-top:0">
+      <div class="benefit">
+        <h3>Единый подрядчик, а не подписка на софт</h3>
+        <p>Мы не продаём лицензию на программу. Берём на себя весь технический контур: 1С, кассы, серверы и замковые системы одним подрядчиком, без разрыва между поставщиками.</p>
+      </div>
+      <div class="benefit">
+        <h3>Быстрый запуск</h3>
+        <p>Параллелим этапы внедрения, чтобы не останавливать операционные процессы.</p>
+      </div>
+      <div class="benefit">
+        <h3>Безопасность и отказоустойчивость</h3>
+        <p>Резервирование, мониторинг и регламенты восстановления инфраструктуры.</p>
+      </div>
+      <div class="benefit">
+        <h3>Поддержка после запуска</h3>
+        <p>Сопровождение, обучение персонала и развитие системы по мере роста объекта.</p>
+      </div>
+    </div>
+    {% include "includes/sla.html" %}
+  </div>
+</section>
+
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Вопросы</p>
+      <h2 id="faq-title">Частые вопросы по автоматизации отелей</h2>
+    </div>
+    <div class="faq">
+      {% for q, a in faq %}
+      <details class="faq-item">
+        <summary>{{ q }}</summary>
+        <p>{{ a }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if articles %}
+<section class="section section-paper" id="blog" aria-labelledby="blog-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Блог</p>
+      <h2 id="blog-title">Разбираем автоматизацию на практике</h2>
+    </div>
+    <div class="grid grid-3">
+      {% for a in articles %}
+      <article class="card">
+        <span class="card-date">{{ a.published_at|ru_date }}</span>
+        <h3><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></h3>
+        <p>{{ a.excerpt }}</p>
+        <a class="more" href="{{ a.get_absolute_url }}">Читать</a>
+      </article>
+      {% endfor %}
+    </div>
+    <p style="margin-top:1.5rem"><a class="more" href="{% url 'blog:index' %}">Все статьи</a></p>
+  </div>
+</section>
+{% endif %}
+
+{% include "includes/contact_section.html" %}
+{% endblock %}

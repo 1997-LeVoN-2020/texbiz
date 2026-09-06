@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="section" aria-labelledby="article-title">
+  <div class="container article">
+    <p class="article-meta"><b>Блог ТЕХБИЗ</b> · {{ article.published_at|ru_date }}</p>
+    <h1 id="article-title">{{ article.title }}</h1>
+    {{ article.body|safe }}
+  </div>
+</section>
+
+{% if more %}
+<section class="section section-paper" aria-labelledby="more-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Ещё по теме</p>
+      <h2 id="more-title">Другие статьи</h2>
+    </div>
+    <div class="grid grid-3">
+      {% for a in more %}
+      <article class="card">
+        <span class="card-date">{{ a.published_at|ru_date }}</span>
+        <h3><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></h3>
+        <p>{{ a.excerpt }}</p>
+        <a class="more" href="{{ a.get_absolute_url }}">Читать</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "includes/contact_section.html" with heading="Обсудить задачу вашего отеля" text="Оставьте контакты. Разберём текущую схему и предложим, с чего начать." %}
+{% endblock %}

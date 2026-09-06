@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Модуль онлайн-бронирования</p>
+      <h1 id="hero-title">Гость бронирует и оплачивает номер прямо на вашем сайте</h1>
+      <p class="lead">Без комиссии агрегаторов, без ручного переноса броней. Модуль напрямую интегрирован с 1С-Отель: цены, доступность и статус брони всегда синхронизированы в реальном времени.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contacts">Подключить модуль</a>
+        <a class="btn btn-ghost" href="{{ demo_url }}" target="_blank" rel="noopener">Смотреть демо</a>
+      </div>
+      <ul class="chips">
+        <li>Интеграция с 1С-Отель</li>
+        <li>ЮKassa, Сбербанк Эквайринг, PayKeeper</li>
+        <li>Без комиссии агрегаторов</li>
+      </ul>
+    </div>
+    <aside class="hero-card" aria-labelledby="guest-title">
+      <h2 id="guest-title">Путь гостя: четыре шага</h2>
+      <ol class="guest-steps">
+        <li><strong>Поиск</strong><span>Даты, гости, тип номера, с живыми ценами из 1С.</span></li>
+        <li><strong>Выбор</strong><span>Номер, тариф и способ размещения, с учётом детей по возрасту.</span></li>
+        <li><strong>Оплата</strong><span>Онлайн через ЮKassa, Сбербанк Эквайринг или PayKeeper.</span></li>
+        <li><strong>Подтверждение</strong><span>Бронь автоматически регистрируется в 1С-Отель.</span></li>
+      </ol>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-paper" id="features" aria-labelledby="features-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Возможности</p>
+      <h2 id="features-title">Что входит в модуль</h2>
+      <p>Не просто форма заявки, а полный цикл бронирования и оплаты, привязанный к вашей PMS.</p>
+    </div>
+    <div class="grid grid-4">
+      <article class="card"><span class="icon-tile">{% icon "PMS" %}</span><h3>Живые цены и доступность</h3><p>Тарифы и номера запрашиваются напрямую у 1С-Отель: гость видит те же условия, что и администратор на ресепшене.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "PAY" %}</span><h3>Онлайн-оплата с автоподтверждением</h3><p>ЮKassa, Сбербанк Эквайринг и PayKeeper. Оплата сразу проводится в бронь 1С, без ручной сверки платежей.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "15" %}</span><h3>Автоотмена неоплаченных броней</h3><p>Если оплата не поступила в течение 15 минут после старта, заявка автоматически снимается, номер не блокируется зря.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "SRCH" %}</span><h3>Поиск брони без регистрации</h3><p>Гость находит и оплачивает свою бронь по номеру и контактным данным, без создания аккаунта.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "RUM" %}</span><h3>Каталог номеров с фото и тарифами</h3><p>Фото, характеристики (вид из окна, тип кровати, санузел) и несколько тарифов на один номер со скидками.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "KID" %}</span><h3>Состав гостей по возрасту</h3><p>Учитываются взрослые и дети с возрастом: номер подбирается по фактической вместимости, а не только по числу мест.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "CRT" %}</span><h3>Несколько номеров в одной брони</h3><p>Гость может добавить в заявку несколько номеров, даже с разными датами. Всё уйдёт в 1С одной группой.</p></article>
+      <article class="card"><span class="icon-tile">{% icon "ADM" %}</span><h3>Управление без разработчика</h3><p>Фото, описания, характеристики номеров и способы оплаты редактируются из админки.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why" aria-labelledby="why-title">
+  <div class="container">
+    <div class="panel">
+      <p class="eyebrow">Экономика</p>
+      <h2 id="why-title">Почему это выгоднее агрегаторов</h2>
+      <p class="lead">Прямой канал продаж не отдаёт комиссию OTA и не зависит от чужих правил ранжирования.</p>
+      <div class="example">
+        <p class="caption">Пример: 50 броней в месяц, средний чек 8 000 ₽</p>
+        <table>
+          <tbody>
+            <tr><td>Агрегатор, комиссия около 18 %</td><td>−72 000 ₽ / мес</td></tr>
+            <tr><td>Модуль ТЕХБИЗ, комиссия 0 %</td><td>0 ₽ / мес</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="benefits">
+        <div class="benefit"><h3>0 % комиссии с брони</h3><p>Агрегаторы берут 15–20 % с каждого бронирования. Прямой канал не требует комиссии с продаж.</p></div>
+        <div class="benefit"><h3>Полный контроль над ценами</h3><p>Вы сами задаёте тарифы и акции в 1С. Модуль их просто отображает, без наценок и ограничений со стороны площадки.</p></div>
+        <div class="benefit"><h3>Прямой контакт с гостем</h3><p>Контактные данные гостя остаются у отеля, а не у посредника. Это база для повторных продаж и рассылок.</p></div>
+        <div class="benefit"><h3>Данные карт не хранятся на сайте</h3><p>Оплата обрабатывается на стороне платёжного шлюза. Сайт не работает с номерами карт напрямую.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" id="compare" aria-labelledby="compare-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Сравнение</p>
+      <h2 id="compare-title">Чем модуль отличается от SaaS-подписки на бронирование</h2>
+      <p>Большинство модулей бронирования на рынке — подписка на чужую платформу. Вот в чём разница с нашим подходом.</p>
+    </div>
+    <div class="benefits" style="margin-top:0">
+      <div class="benefit"><h3>Оплата</h3><p><strong>Подписка:</strong> ежемесячная плата плюс комиссия с каждой брони.<br><strong>ТЕХБИЗ:</strong> разовое внедрение, 0 % комиссии с брони. Оплата гостя проходит напрямую через платёжный шлюз.</p></div>
+      <div class="benefit"><h3>Доработка под объект</h3><p><strong>Подписка:</strong> ограничена тарифом и возможностями платформы.<br><strong>ТЕХБИЗ:</strong> дорабатываем логику под конкретный объект и его 1С.</p></div>
+      <div class="benefit"><h3>Кассы, серверы, замки</h3><p><strong>Подписка:</strong> отдельные подрядчики на каждую систему.<br><strong>ТЕХБИЗ:</strong> тот же подрядчик, что и модуль бронирования.</p></div>
+      <div class="benefit"><h3>Зависимость от поставщика</h3><p><strong>Подписка:</strong> тарифы и условия может менять поставщик платформы.<br><strong>ТЕХБИЗ:</strong> код и логика согласовываются напрямую с отелем.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Вопросы</p>
+      <h2 id="faq-title">Частые вопросы о модуле бронирования</h2>
+    </div>
+    <div class="faq">
+      <details class="faq-item"><summary>Нужно ли менять текущую PMS отеля?</summary><p>Нет. Модуль подключается к уже работающей 1С-Отель: учёт, номерной фонд и тарифы остаются там же.</p></details>
+      <details class="faq-item"><summary>Сколько времени занимает подключение?</summary><p>Зависит от готовности каталога номеров и доступа к 1С-Отель. Обычно от нескольких дней до двух недель.</p></details>
+      <details class="faq-item"><summary>Можно ли использовать свой платёжный шлюз?</summary><p>Сейчас поддерживаются ЮKassa, Сбербанк Эквайринг и PayKeeper. Подключение других провайдеров обсуждается индивидуально.</p></details>
+      <details class="faq-item"><summary>Что видит гость, если оплата не прошла?</summary><p>Понятное сообщение об ошибке без потери введённых данных. Бронь при этом не подтверждается в 1С, номер остаётся свободным.</p></details>
+    </div>
+  </div>
+</section>
+
+{% include "includes/contact_section.html" with heading="Подключите модуль бронирования к своему сайту" text="Оставьте контакты. Покажем демо на данных вашего отеля и посчитаем сроки подключения к 1С-Отель." %}
+{% endblock %}

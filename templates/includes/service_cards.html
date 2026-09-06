@@ -1,0 +1,17 @@
+{% load web_extras %}
+<div class="grid grid-3">
+  {% for s in services %}
+  <article class="card">
+    <span class="icon-tile">{% icon s.icon %}</span>
+    <h3>{% if s.has_page %}<a href="{{ s.get_absolute_url }}">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}</h3>
+    <p>{{ s.summary }}</p>
+    {% if s.has_page %}<a class="more" href="{{ s.get_absolute_url }}">Подробнее</a>{% endif %}
+  </article>
+  {% endfor %}
+  <article class="card card-accent">
+    <span class="icon-tile">{% icon "BOOK" %}</span>
+    <h3><a href="{% url 'web:booking' %}">Модуль онлайн-бронирования</a></h3>
+    <p>Прямые брони и оплата на сайте отеля с интеграцией в 1С-Отель, без комиссии агрегаторов.</p>
+    <a class="more" href="{% url 'web:booking' %}">О модуле</a>
+  </article>
+</div>

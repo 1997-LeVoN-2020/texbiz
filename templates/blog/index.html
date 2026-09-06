@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Блог ТЕХБИЗ</p>
+    <h1 id="hero-title">Статьи об автоматизации гостиничного бизнеса</h1>
+    <p class="lead">Разбираем на практике, как внедрять 1С, кассы, серверную инфраструктуру и замковые системы в отелях, без маркетинговой воды.</p>
+  </div>
+</section>
+
+<section class="section section-paper" aria-label="Все статьи">
+  <div class="container">
+    <div class="grid grid-3">
+      {% for a in articles %}
+      <article class="card">
+        <span class="card-date">{{ a.published_at|ru_date }}</span>
+        <h3><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></h3>
+        <p>{{ a.excerpt }}</p>
+        <a class="more" href="{{ a.get_absolute_url }}">Читать</a>
+      </article>
+      {% empty %}
+      <p>Статей пока нет.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Контакты</p>
+    <h1 id="hero-title">Свяжитесь с нами</h1>
+    <p class="lead">Позвоните, напишите или оставьте заявку. Ответим, зададим уточняющие вопросы и предложим следующий шаг: обычно это аудит объекта.</p>
+  </div>
+</section>
+
+<section class="section section-paper" id="contacts" aria-label="Контакты и форма заявки">
+  <div class="container contact-grid">
+    <div>
+      <span class="label">Связаться</span>
+      <ul class="contact-list" style="margin-top:.75rem">
+        <li><a href="{{ site.phone_href }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li>{{ site.geography }}</li>
+      </ul>
+      <div class="requisites">
+        <span class="label">Реквизиты</span>
+        {{ site.legal_name }}<br>
+        ИНН {{ site.legal_inn }}<br>
+        {{ site.legal_city }}
+      </div>
+    </div>
+    {% include "includes/lead_form.html" %}
+  </div>
+</section>
+{% endblock %}

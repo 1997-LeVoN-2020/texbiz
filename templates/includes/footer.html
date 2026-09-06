@@ -1,0 +1,31 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <a class="logo" href="{% url 'web:home' %}" aria-label="ТЕХБИЗ, на главную">
+        {% include "includes/logo.html" %}
+        <span class="logo-word">ТЕХ<span>БИЗ</span></span>
+      </a>
+      <p class="footer-about">Автоматизация отелей под ключ: учётные системы, кассы, серверы, замки.</p>
+      <p class="footer-geo">{{ site.geography }}</p>
+    </div>
+    <nav class="footer-col footer-nav" aria-label="Разделы сайта">
+      <span class="label">Разделы</span>
+      <a href="{% url 'web:services' %}">Услуги</a>
+      <a href="{% url 'web:solutions' %}">Решения по формату</a>
+      <a href="{% url 'web:booking' %}">Модуль бронирования</a>
+      <a href="{% url 'blog:index' %}">Блог</a>
+      <a href="{% url 'web:contacts' %}">Контакты</a>
+      <a href="{% url 'web:privacy' %}">Политика обработки данных</a>
+    </nav>
+    <div class="footer-col footer-contacts">
+      <span class="label">Связаться</span>
+      <p class="mono"><a href="{{ site.phone_href }}">{{ site.phone }}</a><br><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      <span class="label">Реквизиты</span>
+      <p class="mono">{{ site.legal_name }}<br>ИНН {{ site.legal_inn }}<br>{{ site.legal_city }}</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {{ site.year }} ТЕХБИЗ, технологии для бизнеса. Автоматизация отелей: 1С, кассы, серверы, замковые системы.</p>
+    <a href="#main">Наверх</a>
+  </div>
+</footer>

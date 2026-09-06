@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Решения</p>
+    <h1 id="hero-title">Решения под формат вашего объекта</h1>
+    <p class="lead">Не продаём шаблон: подбираем стек и сценарии работы под реальный операционный процесс. Четыре типовых формата, с которыми работаем чаще всего.</p>
+    <nav class="anchor-nav" aria-label="Форматы объектов">
+      {% for sol in solutions %}<a href="#{{ sol.slug }}">{{ sol.title }}</a>{% endfor %}
+    </nav>
+  </div>
+</section>
+
+<section class="section section-paper" aria-label="Форматы объектов">
+  <div class="container">
+    {% for sol in solutions %}
+    <article class="solution" id="{{ sol.slug }}">
+      <h2>{{ sol.title }}</h2>
+      <div class="solution-text">{{ sol.body|safe }}</div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% include "includes/contact_section.html" with heading="Расскажите о своём объекте" text="Опишите формат и текущие системы. Предложим состав внедрения под ваш случай." %}
+{% endblock %}

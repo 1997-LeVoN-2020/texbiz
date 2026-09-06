@@ -1,0 +1,58 @@
+<form class="lead-form" method="post" action="{% url 'web:lead_submit' %}" novalidate data-lead-form>
+  {% csrf_token %}
+  <input type="hidden" name="ts" value="{{ form.ts.value|default:'' }}">
+  <input type="hidden" name="source_page" value="{{ form.source_page.value|default:request.path }}">
+  <div class="hp" aria-hidden="true">
+    <label for="lead-website">Website</label>
+    <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off">
+  </div>
+
+  <div class="form-row">
+    <div class="field{% if form.name.errors %} is-invalid{% endif %}">
+      <label for="lead-name">Имя</label>
+      <input id="lead-name" name="name" type="text" autocomplete="name" required value="{{ form.name.value|default:'' }}">
+      {% if form.name.errors %}<p class="field-error">{{ form.name.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="field{% if form.phone.errors %} is-invalid{% endif %}">
+      <label for="lead-phone">Телефон</label>
+      <input id="lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7" required value="{{ form.phone.value|default:'' }}">
+      {% if form.phone.errors %}<p class="field-error">{{ form.phone.errors.0 }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field{% if form.object_type.errors %} is-invalid{% endif %}">
+      <label for="lead-object">Тип объекта</label>
+      <select id="lead-object" name="object_type" required>
+        {% for value, label in form.fields.object_type.choices %}
+        <option value="{{ value }}"{% if form.object_type.value == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      {% if form.object_type.errors %}<p class="field-error">{{ form.object_type.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="field{% if form.rooms_count.errors %} is-invalid{% endif %}">
+      <label for="lead-rooms">Номерной фонд <small>необязательно</small></label>
+      <input id="lead-rooms" name="rooms_count" type="number" min="1" max="9999" inputmode="numeric" placeholder="Например, 40" value="{{ form.rooms_count.value|default:'' }}">
+      {% if form.rooms_count.errors %}<p class="field-error">{{ form.rooms_count.errors.0 }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="field{% if form.email.errors %} is-invalid{% endif %}">
+    <label for="lead-email">E-mail <small>необязательно</small></label>
+    <input id="lead-email" name="email" type="email" autocomplete="email" value="{{ form.email.value|default:'' }}">
+    {% if form.email.errors %}<p class="field-error">{{ form.email.errors.0 }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="lead-message">Задача <small>необязательно</small></label>
+    <textarea id="lead-message" name="message" rows="4" placeholder="{{ placeholder|default:'Что нужно автоматизировать?' }}">{{ form.message.value|default:'' }}</textarea>
+  </div>
+
+  <label class="consent{% if form.consent.errors %} is-invalid{% endif %}">
+    <input type="checkbox" name="consent" value="1" required{% if form.consent.value %} checked{% endif %}>
+    <span>Согласен на <a href="{% url 'web:privacy' %}" target="_blank" rel="noopener">обработку персональных данных</a></span>
+  </label>
+
+  <button class="btn btn-primary" type="submit">Отправить заявку</button>
+  <p class="form-status" data-form-status aria-live="polite">{% if form.non_field_errors %}{{ form.non_field_errors.0 }}{% endif %}</p>
+</form>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Услуги автоматизации гостиниц</p>
+    <h1 id="hero-title">{{ service.title }}</h1>
+    <p class="lead">{{ service.lead }}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+      <a class="btn btn-ghost" href="{% url 'web:services' %}">Все услуги</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" aria-label="Что входит в услугу">
+  <div class="container service-body">
+    {{ service.body|safe }}
+  </div>
+</section>
+
+{% include "includes/process.html" %}
+
+{% include "includes/contact_section.html" with heading="Получите план автоматизации для вашего отеля" text="Оставьте контакты. Подготовим аудит текущей схемы и предложение по внедрению." %}
+{% endblock %}

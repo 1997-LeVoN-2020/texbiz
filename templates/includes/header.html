@@ -1,0 +1,25 @@
+{% with vn=request.resolver_match.view_name %}
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="logo" href="{% url 'web:home' %}" aria-label="ТЕХБИЗ, на главную">
+      {% include "includes/logo.html" %}
+      <span class="logo-word">ТЕХ<span>БИЗ</span></span>
+    </a>
+    <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">
+      <span class="menu-toggle-bars" aria-hidden="true"></span>Меню
+    </button>
+    <nav id="site-nav" class="site-nav" data-nav aria-label="Основная навигация">
+      <a href="{% url 'web:services' %}"{% if vn == 'web:services' or vn == 'web:service' %} aria-current="page"{% endif %}>Услуги</a>
+      <a href="{% url 'web:solutions' %}"{% if vn == 'web:solutions' %} aria-current="page"{% endif %}>Решения</a>
+      <a href="{% url 'web:booking' %}"{% if vn == 'web:booking' %} aria-current="page"{% endif %}>Бронирование</a>
+      <a href="{% url 'blog:index' %}"{% if vn == 'blog:index' or vn == 'blog:article' %} aria-current="page"{% endif %}>Блог</a>
+      <a href="{% url 'web:contacts' %}"{% if vn == 'web:contacts' %} aria-current="page"{% endif %}>Контакты</a>
+      <a class="nav-phone" href="{{ site.phone_href }}">{{ site.phone }}</a>
+    </nav>
+    <div class="header-cta">
+      <a class="header-phone" href="{{ site.phone_href }}">{{ site.phone }}</a>
+      <a class="btn btn-primary btn-sm" href="{% url 'web:contacts' %}">Получить аудит</a>
+    </div>
+  </div>
+</header>
+{% endwith %}

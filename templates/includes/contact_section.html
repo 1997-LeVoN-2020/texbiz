@@ -1,0 +1,15 @@
+<section class="section" id="contacts" aria-labelledby="contacts-title">
+  <div class="container contact-grid">
+    <div>
+      <p class="eyebrow">Заявка</p>
+      <h2 id="contacts-title">{{ heading|default:"Получите план автоматизации вашего объекта" }}</h2>
+      <p class="lead">{{ text|default:"Оставьте контакты и описание задачи. Подготовим дорожную карту внедрения 1С, касс, серверной части и замковой системы." }}</p>
+      <ul class="contact-list">
+        <li><a href="{{ site.phone_href }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li>{{ site.geography }}</li>
+      </ul>
+    </div>
+    {% include "includes/lead_form.html" %}
+  </div>
+</section>

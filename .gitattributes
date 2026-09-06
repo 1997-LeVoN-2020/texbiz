@@ -1,12 +1,9 @@
-# Tracked in git (useful in the repo) but not needed on the production
-# server -- excluded from `git archive` (used by build_release.sh) via
-# git's own export-ignore mechanism, so there's one source of truth for
-# what ships instead of a hand-maintained zip exclude list.
+# Хранится в git, но не нужно на сервере — исключается из `git archive`
+# (скрипт сборки релиза), чтобы список того, что едет на хостинг, был один.
 .claude/ export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 README.md export-ignore
+docs/ export-ignore
+scripts/ export-ignore
 build_release.sh export-ignore
-VERSION export-ignore
-deploy.sh export-ignore
-deploy.env.example export-ignore

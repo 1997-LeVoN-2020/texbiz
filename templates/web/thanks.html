@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" aria-labelledby="title">
+  <div class="container page-note">
+    <p class="eyebrow">Заявка</p>
+    <h1 id="title">Заявка отправлена</h1>
+    <p class="lead">Спасибо. Мы получили ваши контакты и свяжемся с вами в ближайшее рабочее время. Если вопрос срочный, звоните: <a href="{{ site.phone_href }}">{{ site.phone }}</a>.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'web:home' %}">На главную</a>
+      <a class="btn btn-ghost" href="{% url 'blog:index' %}">Почитать блог</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

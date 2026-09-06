@@ -1,0 +1,46 @@
+[
+  {
+    "model": "web.solution",
+    "pk": 1,
+    "fields": {
+      "title": "Городской или курортный отель",
+      "slug": "otel",
+      "body": "<p>Собираем единый контур: 1С, кассы, замки, сервер и аналитика по загрузке.</p>\n<p class=\"more\"><a href=\"/blog/1c-avtomatizaciya-otelya-s-chego-nachat/\">Автоматизация 1С для отеля: с чего начать</a></p>\n",
+      "order": 1,
+      "is_published": true
+    }
+  },
+  {
+    "model": "web.solution",
+    "pk": 2,
+    "fields": {
+      "title": "Мини-отель и гостевой дом",
+      "slug": "mini-otel",
+      "body": "<p>Легкий запуск без перегруза по бюджету: только нужные модули и понятный интерфейс для персонала.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-mini-otelya-i-gostevogo-doma/\">Автоматизация мини-отеля и гостевого дома</a></p>\n",
+      "order": 2,
+      "is_published": true
+    }
+  },
+  {
+    "model": "web.solution",
+    "pk": 3,
+    "fields": {
+      "title": "Апартаменты и УК",
+      "slug": "apartamenty",
+      "body": "<p>Управление объектами в одном окне: доступы, платежи, отчетность и поддержка удаленных точек.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-apartamentov-i-uk/\">Автоматизация апартаментов и УК</a></p>\n",
+      "order": 3,
+      "is_published": true
+    }
+  },
+  {
+    "model": "web.solution",
+    "pk": 4,
+    "fields": {
+      "title": "Сетевые объекты",
+      "slug": "set-otelej",
+      "body": "<p>Унифицируем регламенты, централизуем учет и даем прозрачный контроль на уровне управляющей компании.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-seti-otelej/\">Автоматизация сети отелей</a></p>\n",
+      "order": 4,
+      "is_published": true
+    }
+  }
+]

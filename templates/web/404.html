@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" aria-labelledby="title">
+  <div class="container page-note">
+    <p class="eyebrow">Ошибка 404</p>
+    <h1 id="title">Страница не найдена</h1>
+    <p class="lead">Такого адреса на сайте нет. Возможно, страница переехала или в ссылке опечатка.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'web:home' %}">На главную</a>
+      <a class="btn btn-ghost" href="{% url 'web:services' %}">Услуги</a>
+      <a class="btn btn-ghost" href="{% url 'blog:index' %}">Блог</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
