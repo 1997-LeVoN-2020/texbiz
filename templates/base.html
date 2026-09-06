@@ -1,7 +1,11 @@
 {% load static %}<!doctype html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="utf-8">
+  {# Класс снимается сразу, до отрисовки. Пока он стоит, CSS показывает меню
+     развёрнутым: без JavaScript кнопка «Меню» не работает, и на телефоне
+     посетитель остался бы вовсе без навигации. #}
+  <script>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title }}</title>
   <meta name="description" content="{{ page.description }}">

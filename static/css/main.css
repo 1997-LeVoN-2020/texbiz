@@ -281,6 +281,21 @@ p { margin: 0; }
   .menu-toggle { display: inline-flex; margin-left: auto; }
   .header-cta { margin-left: 0; }
   .header-phone { display: none; }
+
+  /* Без JavaScript кнопка «Меню» ничего не переключает, поэтому ссылки
+     показываются всегда — строкой с переносом под логотипом, а не выпадающей
+     панелью: панель, открытая навсегда, перекрывала бы содержимое. */
+  .no-js .header-inner { flex-wrap: wrap; }
+  .no-js .menu-toggle { display: none; }
+  .no-js .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.25rem;
+    order: 3;
+    width: 100%;
+    margin: 0;
+    padding-bottom: .85rem;
+  }
 }
 
 @media (max-width: 600px) {
