@@ -2,9 +2,15 @@
 <html lang="ru" class="no-js">
 <head>
   <meta charset="utf-8">
-  {# Класс снимается сразу, до отрисовки. Пока он стоит, CSS показывает меню
-     развёрнутым: без JavaScript кнопка «Меню» не работает, и на телефоне
-     посетитель остался бы вовсе без навигации. #}
+  {% comment %}
+    Класс снимается сразу, до отрисовки. Пока он стоит, CSS показывает меню
+    развёрнутым: без JavaScript кнопка «Меню» не работает, и на телефоне
+    посетитель остался бы вовсе без навигации.
+
+    Именно {% comment %}, а не {# #}: одиночная форма работает только в одну
+    строку, а многострочная выводится на страницу как текст. Так и случилось
+    на боевом сайте.
+  {% endcomment %}
   <script>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title }}</title>
@@ -27,9 +33,11 @@
   <meta property="og:image" content="{{ site.url }}{% static 'img/og-cover.png' %}">
   <meta name="twitter:card" content="summary_large_image">
 
-  {# Шрифты лежат на своём домене, а не у Google: на одно чужое соединение
-     меньше до первой отрисовки, и страница не зависит от доступности
-     fonts.gstatic.com. Собираются scripts/fetch_fonts.py. #}
+  {% comment %}
+    Шрифты лежат на своём домене, а не у Google: на одно чужое соединение
+    меньше до первой отрисовки, и страница не зависит от доступности
+    fonts.gstatic.com. Собираются scripts/fetch_fonts.py.
+  {% endcomment %}
   <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
 

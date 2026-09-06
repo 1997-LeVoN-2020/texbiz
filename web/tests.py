@@ -283,6 +283,20 @@ class PageTests(TestCase):
         service.save()
         self.assertEqual(self.client.get(f"/{service.slug}/").status_code, 404)
 
+    def test_pages_contain_no_leftover_template_syntax(self):
+        """Многострочный {# #} Django комментарием не считает и печатает на страницу.
+
+        Так мои заметки о вёрстке попали на боевой сайт и висели поверх шапки
+        на каждой странице. Для многострочных нужен {% comment %}.
+        """
+        urls = ["/", "/uslugi/", "/resheniya/", "/booking/", "/kontakty/", "/privacy/", "/spasibo/", "/blog/"]
+        urls += [s.get_absolute_url() for s in Service.objects.published().exclude(body="")]
+        for url in urls:
+            html = self.client.get(url).content.decode()
+            for marker in ("{{", "{%", "{#"):
+                with self.subTest(url=url, marker=marker):
+                    self.assertNotIn(marker, html, f"{url}: на страницу попал {marker}")
+
     def test_unknown_address_returns_404(self):
         self.assertEqual(self.client.get("/takoy-stranicy-net/").status_code, 404)
 
