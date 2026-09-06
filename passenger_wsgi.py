@@ -34,7 +34,11 @@ PYTHON_TAG = "python{}.{}".format(sys.version_info[0], sys.version_info[1])
 
 CANDIDATES = [
     os.environ.get("TEXBIZ_VENV", ""),
+    # Рядом с каталогом сайта: ~/www/<домен> лежит на два уровня ниже дома.
     os.path.join(DATA_DIR, "texbiz-django"),
+    # То же место, но через домашний каталог: работает и когда проект лежит
+    # не на своём обычном уровне вложенности, например при проверке из /tmp.
+    os.path.expanduser(os.path.join("~", "texbiz-django")),
     os.path.join(PROJECT_DIR, ".venv"),
 ]
 
