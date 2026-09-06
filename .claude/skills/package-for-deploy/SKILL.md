@@ -1,24 +1,46 @@
 ---
 name: package-for-deploy
-description: Упаковать версионированный texbiz-deploy-v<VERSION>.zip для загрузки на хостинг (reg.ru, ISPmanager). Использовать когда просят "собери архив для деплоя", "подготовь zip для загрузки на хостинг", "запакуй новую версию".
+description: Собрать архив Django-сайта ТЕХБИЗ для загрузки на хостинг reg.ru с ISPmanager. Использовать когда просят «собери архив для деплоя», «подготовь zip для хостинга», «запакуй новую версию».
 ---
+
+## Перед сборкой
+
+Проверить, что всё готово: прогнать скилл `check-site` и агента `deploy-checklist`. Архив собирается из закоммиченного, поэтому сначала коммит.
 
 ## Команда
 
 ```
-bash build_release.sh
+bash scripts/build_release.sh
 ```
 
-Пакует **ровно то, что закоммичено** в `HEAD` (`git archive`), в `releases/texbiz-deploy-v<VERSION>.zip` — весь репозиторий (`app.py`, `passenger_wsgi.py`, `requirements.txt`, `src/templates/`, `src/static/`), кроме `.claude/` (исключён через `.gitattributes` `export-ignore` — не нужен на сервере). `<VERSION>` берётся из файла `VERSION` в корне репозитория. Некоммиченные изменения в архив **не попадают** — сначала закоммитить.
+Скрипт откажется работать при незакоммиченных изменениях и при существующем файле с тем же именем. Результат: `releases/texbiz-django-<дата>-<коммит>.zip`.
 
-Откажется собирать, если файл с текущей версией уже есть в `releases/` — старые версии никогда не перезаписываются и не удаляются. Перед новой сборкой нужно поднять версию в `VERSION` (семвер, например `1.0.0` → `1.0.1`/`1.1.0`) и закоммитить.
+## Что попадает в архив
 
-`releases/` в `.gitignore`, архивы не коммитятся — но локально накапливается история версий для отката. Тот же паттерн (`VERSION` + `git archive` + отказ от перезаписи + `releases/`), что и в проекте модуля бронирования (`booking-module`, `build_release.sh`).
+Собирается через `git archive` из `HEAD`, поэтому список того, что едет на сервер, задан одним местом — `.gitattributes`. Помечено `export-ignore` и в архив не попадает: `.claude/`, `docs/`, `scripts/`, `README.md`, `.gitignore`, `.gitattributes`.
 
-## Куда распаковывать (важно для этого хостинга)
+Не попадает и не должно: `.env` (заполняется на сервере вручную), `data/` с базой и логами, `public/` со собранной статикой, `.venv/`, `reference-old-site/`.
 
-`texbiz-deploy-v<VERSION>.zip` целиком → напрямую в директорию домена в ISPmanager (`/var/www/<пользователь>/data/www/tex-biz.ru`). Один шаг распаковки кладёт весь Flask-проект (сайт целиком — один Python-процесс) в нужный корень.
+## Дальше на сервере
 
-## После загрузки
+1. Распаковать в каталог домена.
+2. Заполнить `.env` по образцу `.env.example`: обязательно `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`, `SITE_URL`, настройки SMTP.
+3. В окружении приложения:
 
-Свериться, что `MAIL_ENDPOINT` в `src/static/script.js` (по умолчанию `/send`) совпадает с реальным путём приложения, настроенным в ISPmanager. Перезапустить Passenger-приложение после каждой новой выкладки.
+```
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py loaddata services solutions articles
+.venv/bin/python manage.py collectstatic --noinput
+```
+
+4. Перезапустить приложение в ISPmanager. **Без перезапуска Passenger продолжит отдавать старый код.**
+5. Отправить тестовую заявку и убедиться, что письмо дошло.
+
+## Грабли этого хостинга
+
+Редирект на HTTPS включается галочкой в ISPmanager, а не в Django и не в `.htaccess`: за прокси reg.ru собственный редирект даёт `ERR_TOO_MANY_REDIRECTS`. На этом проекте так уже ломали сайт.
+
+`passenger_wsgi.py` сам перезапускает процесс интерпретатором из `.venv`: путь `.venv/bin/python` на сервере, не `Scripts`. Если ISPmanager создал своё окружение в другом месте, поправить путь в файле.
+
+В боевом режиме включается `ManifestStaticFilesStorage`: ссылка на несуществующий файл в шаблоне валит `collectstatic`. Это не поломка, а проверка — добавить недостающий файл.
