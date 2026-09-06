@@ -20,10 +20,26 @@ Django передаёт его в драйвер параметром `factory` 
 """
 import sys
 
-# Коды из sqlite3.h. Нужен только предел на число параметров, остальные Django
-# не спрашивает; для незнакомых кодов отдаём консервативное значение.
-SQLITE_LIMIT_VARIABLE_NUMBER = 9
-CONSERVATIVE_LIMITS = {SQLITE_LIMIT_VARIABLE_NUMBER: 999}
+# Коды из sqlite3.h. Стандартный модуль Python объявляет их сам, pysqlite3 —
+# нет, а Django обращается к ним по имени. Заводим весь набор, чтобы не
+# возвращаться сюда из-за следующей недостающей константы.
+LIMIT_CONSTANTS = {
+    "SQLITE_LIMIT_LENGTH": 0,
+    "SQLITE_LIMIT_SQL_LENGTH": 1,
+    "SQLITE_LIMIT_COLUMN": 2,
+    "SQLITE_LIMIT_EXPR_DEPTH": 3,
+    "SQLITE_LIMIT_COMPOUND_SELECT": 4,
+    "SQLITE_LIMIT_VDBE_OP": 5,
+    "SQLITE_LIMIT_FUNCTION_ARG": 6,
+    "SQLITE_LIMIT_ATTACHED": 7,
+    "SQLITE_LIMIT_LIKE_PATTERN_LENGTH": 8,
+    "SQLITE_LIMIT_VARIABLE_NUMBER": 9,
+    "SQLITE_LIMIT_TRIGGER_DEPTH": 10,
+    "SQLITE_LIMIT_WORKER_THREADS": 11,
+}
+
+# Значения по кодам: занижены намеренно, см. пояснение в описании модуля.
+CONSERVATIVE_LIMITS = {LIMIT_CONSTANTS["SQLITE_LIMIT_VARIABLE_NUMBER"]: 999}
 
 
 def install():
@@ -34,8 +50,14 @@ def install():
     except ImportError:
         return None
 
-    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+    module = sys.modules.pop("pysqlite3")
+    sys.modules["sqlite3"] = module
     sys.modules["sqlite3.dbapi2"] = dbapi2
+
+    for name, code in LIMIT_CONSTANTS.items():
+        for target in (module, dbapi2):
+            if not hasattr(target, name):
+                setattr(target, name, code)
 
     if hasattr(dbapi2.Connection, "getlimit"):
         return None  # заплатка не нужна, метод уже есть
