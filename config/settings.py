@@ -9,9 +9,24 @@
 правкой, когда понадобится.
 """
 import os
+import sys
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
+
+# Django 6.1 требует SQLite 3.37 и новее, а на хостинге reg.ru системный —
+# 3.26. Пакет pysqlite3-binary приносит с собой современный SQLite; если он
+# установлен, подменяем им системный модуль. Подмена обязана произойти до
+# того, как Django импортирует свой драйвер, поэтому она стоит здесь, в самом
+# начале настроек. Локально пакета обычно нет, и тогда используется системный
+# SQLite, который на машине разработчика достаточно свежий.
+try:  # pragma: no cover - зависит от окружения
+    import pysqlite3  # noqa: F401
+
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+    sys.modules["sqlite3.dbapi2"] = sys.modules["sqlite3"].dbapi2
+except ImportError:
+    pass
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -105,16 +120,37 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATA_DIR = Path(env("DJANGO_DATA_DIR", BASE_DIR / "data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DATA_DIR / "db.sqlite3",
-        "OPTIONS": {
-            "transaction_mode": "IMMEDIATE",
-            "init_command": "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;",
-        },
+# По умолчанию SQLite: сайту с формой заявок большего не нужно, а файл базы
+# проще резервировать. Если хостинг не даёт достаточно свежий SQLite,
+# заполните DB_NAME и остальное в .env — тогда используется MySQL, как в
+# соседнем проекте booking-engine на этом же сервере. Менять код для этого
+# не требуется.
+if env("DB_NAME"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER", ""),
+            "PASSWORD": env("DB_PASSWORD", ""),
+            "HOST": env("DB_HOST", "localhost"),
+            "PORT": env("DB_PORT", ""),
+            "OPTIONS": {
+                "charset": "utf8mb4",
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": DATA_DIR / "db.sqlite3",
+            "OPTIONS": {
+                "transaction_mode": "IMMEDIATE",
+                "init_command": "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;",
+            },
+        }
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
