@@ -5,11 +5,15 @@
 
 Запуск:  .venv/Scripts/python manage.py test
 """
+import tempfile
 import time
+from io import StringIO
+from pathlib import Path
 from unittest.mock import patch
 
 from django.core import mail
 from django.core.cache import cache
+from django.core.management import call_command
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -185,6 +189,65 @@ class LeadSubmitTests(TestCase):
 
     def test_get_is_not_allowed(self):
         self.assertEqual(self.client.get(self.url).status_code, 405)
+
+
+class LeadsCommandTests(TestCase):
+    """Чтение заявок на сервере, пока админка не подключена."""
+
+    def setUp(self):
+        cache.clear()
+        for n in range(3):
+            Lead.objects.create(
+                name=f"Клиент {n}",
+                phone=f"+7900000000{n}",
+                object_type="Отель",
+                consent=True,
+                message="нужны кассы" if n == 0 else "",
+                status=Lead.Status.NEW if n else Lead.Status.CLOSED,
+            )
+
+    def run_command(self, *args):
+        out = StringIO()
+        call_command("leads", *args, stdout=out)
+        return out.getvalue()
+
+    def test_shows_leads_with_contacts(self):
+        output = self.run_command()
+        self.assertIn("Клиент 0", output)
+        self.assertIn("+79000000000", output)
+        self.assertIn("нужны кассы", output)
+        self.assertIn("Всего: 3", output)
+
+    def test_filters_by_status(self):
+        output = self.run_command("--status", "new")
+        self.assertIn("Клиент 1", output)
+        self.assertNotIn("Клиент 0", output)
+
+    def test_count_prints_only_a_number(self):
+        self.assertEqual(self.run_command("--count").strip(), "3")
+
+    def test_says_plainly_when_there_are_none(self):
+        Lead.objects.all().delete()
+        self.assertIn("Заявок нет", self.run_command())
+
+    def test_csv_export_opens_in_excel_with_cyrillic(self):
+        path = Path(tempfile.gettempdir()) / "texbiz-leads-test.csv"
+        try:
+            self.run_command("--csv", str(path))
+            raw = path.read_bytes()
+            # Метка порядка байтов: без неё Excel показывает кириллицу мусором.
+            self.assertTrue(raw.startswith(b"\xef\xbb\xbf"))
+            text = raw.decode("utf-8-sig")
+            self.assertIn("Телефон", text)
+            self.assertIn("Клиент 0", text)
+            self.assertEqual(len(text.strip().splitlines()), 4)  # заголовок и три заявки
+        finally:
+            path.unlink(missing_ok=True)
+
+    def test_command_does_not_change_anything(self):
+        before = list(Lead.objects.values_list("status", flat=True))
+        self.run_command()
+        self.assertEqual(list(Lead.objects.values_list("status", flat=True)), before)
 
 
 class PageTests(TestCase):
