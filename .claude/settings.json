@@ -8,6 +8,7 @@
       "Bash(.venv/Scripts/python manage.py collectstatic:*)",
       "Bash(.venv/Scripts/python scripts/check_site.py)",
       "Bash(python scripts/make_assets.py)",
+      "Bash(ssh booking-prod:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",

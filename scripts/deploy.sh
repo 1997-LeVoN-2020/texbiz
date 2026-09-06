@@ -92,11 +92,12 @@ echo
 #   public/    — собранная статика и медиа
 #   .venv/     — окружение, если оно внутри каталога сайта
 #   tmp/       — служебный каталог Passenger
+#   cgi-bin/   — каталог создаёт панель хостинга, репозиторий про него не знает
 echo "3. Перенос в рабочий каталог"
 run_remote "mkdir -p $DEPLOY_REMOTE_PATH && rsync -a --delete --itemize-changes \
   --include '.env.example' --exclude '.env*' \
   --exclude 'data/' --exclude 'public/' --exclude '.venv/' \
-  --exclude 'tmp/' --exclude 'releases/' \
+  --exclude 'tmp/' --exclude 'releases/' --exclude 'cgi-bin/' \
   $STAGE/ $DEPLOY_REMOTE_PATH/ && rm -rf $STAGE"
 echo
 
