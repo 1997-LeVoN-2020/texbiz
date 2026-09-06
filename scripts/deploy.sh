@@ -11,9 +11,10 @@
 # сайта, только потом изменения. Если что-то пойдёт не так, копия лежит на
 # сервере и восстанавливается одной командой — она печатается в конце.
 #
-# Скрипт НИЧЕГО не удаляет на сервере. Файлы прежнего сайта, оставшиеся после
-# распаковки, он только перечисляет: удалять их — решение человека, который
-# видит сервер.
+# Рабочий каталог приводится к состоянию репозитория через rsync --delete,
+# поэтому файлы прежнего Flask-сайта уходят сами. Настройки, база заявок,
+# собранная статика и виртуальное окружение из этого исключены — список и
+# причины у шага 3.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -42,7 +43,6 @@ fi
 
 COMMIT="$(git rev-parse --short HEAD)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-ARCHIVE="/tmp/texbiz-$COMMIT.tar.gz"
 
 run_remote() {
   if [ "$DRY_RUN" = "1" ]; then
@@ -64,49 +64,60 @@ BACKUP="$DEPLOY_BACKUP_DIR/texbiz-$STAMP.tar.gz"
 run_remote "mkdir -p $DEPLOY_BACKUP_DIR && tar czf $BACKUP -C \"\$(dirname $DEPLOY_REMOTE_PATH)\" \"\$(basename $DEPLOY_REMOTE_PATH)\" && ls -lh $BACKUP"
 echo
 
-# --- 2. Сборка и доставка ----------------------------------------------------
-echo "2. Сборка архива из HEAD"
-git archive --format=tar.gz --output="$ARCHIVE" HEAD
-echo "   $ARCHIVE ($(du -h "$ARCHIVE" | cut -f1))"
-
-echo "3. Доставка на сервер"
+# --- 2. Доставка в промежуточный каталог -------------------------------------
+# Приём взят из соседнего проекта booking-engine, он обкатан на этом же
+# хостинге. Архив уезжает одним сжатым потоком: rsync нужен только на сервере,
+# в Git Bash под Windows его нет. core.autocrlf=false обязателен, иначе в
+# архив уедут переводы строк Windows и сломают шелл-скрипты.
+STAGE="/tmp/texbiz-stage-$COMMIT"
+echo "2. Доставка файлов в промежуточный каталог на сервере"
 if [ "$DRY_RUN" = "1" ]; then
-  echo "  [dry-run] scp $ARCHIVE $DEPLOY_SSH_HOST:/tmp/"
+  echo "  [dry-run] git archive HEAD | ssh $DEPLOY_SSH_HOST 'tar -xzf - -C $STAGE'"
 else
-  scp -q "$ARCHIVE" "$DEPLOY_SSH_HOST:/tmp/"
+  git -c core.autocrlf=false archive --format=tar HEAD | gzip \
+    | ssh "$DEPLOY_SSH_HOST" "rm -rf $STAGE && mkdir -p $STAGE && tar -xzf - -C $STAGE"
+  echo "   доставлено"
 fi
 echo
 
-# --- 4. Распаковка -----------------------------------------------------------
-# Распаковка поверх: .env и каталог данных архив не содержит, поэтому они
-# остаются нетронутыми.
-echo "4. Распаковка поверх текущей версии"
-run_remote "mkdir -p $DEPLOY_REMOTE_PATH && tar xzf /tmp/$(basename "$ARCHIVE") -C $DEPLOY_REMOTE_PATH && rm /tmp/$(basename "$ARCHIVE")"
+# --- 3. Перенос в рабочий каталог --------------------------------------------
+# rsync --delete, а не распаковка поверх: иначе файлы прежнего Flask-сайта
+# (app.py, src/) остались бы лежать рядом с новым. Резервная копия уже снята.
+#
+# Что исключено и почему:
+#   .env*      — рядом с .env заводят ручные копии при разборе доступов, и
+#                --delete снёс бы их вместе с ключами. Образец из репозитория
+#                при этом выкладывается: правило include идёт первым.
+#   data/      — база с заявками и логи
+#   public/    — собранная статика и медиа
+#   .venv/     — окружение, если оно внутри каталога сайта
+#   tmp/       — служебный каталог Passenger
+echo "3. Перенос в рабочий каталог"
+run_remote "mkdir -p $DEPLOY_REMOTE_PATH && rsync -a --delete --itemize-changes \
+  --include '.env.example' --exclude '.env*' \
+  --exclude 'data/' --exclude 'public/' --exclude '.venv/' \
+  --exclude 'tmp/' --exclude 'releases/' \
+  $STAGE/ $DEPLOY_REMOTE_PATH/ && rm -rf $STAGE"
 echo
 
-# --- 5. Проверка .env --------------------------------------------------------
-echo "5. Проверка настроек на сервере"
+# --- 4. Проверка .env --------------------------------------------------------
+echo "4. Проверка настроек на сервере"
 run_remote "test -f $DEPLOY_REMOTE_PATH/.env && echo '   .env на месте' || { echo '   ОШИБКА: нет .env — заполните его по образцу .env.example и повторите'; exit 1; }"
 echo
 
-# --- 6. Зависимости и данные -------------------------------------------------
-echo "6. Зависимости, миграции, содержимое, статика"
+# --- 5. Зависимости и данные -------------------------------------------------
+echo "5. Зависимости, миграции, содержимое, статика"
 run_remote "cd $DEPLOY_REMOTE_PATH && $DEPLOY_VENV/bin/pip install -q -r requirements.txt && $DEPLOY_VENV/bin/python manage.py migrate --noinput && $DEPLOY_VENV/bin/python manage.py loaddata services solutions articles && $DEPLOY_VENV/bin/python manage.py collectstatic --noinput | tail -2"
 echo
 
-# --- 7. Перезапуск -----------------------------------------------------------
+# --- 6. Перезапуск -----------------------------------------------------------
 # Passenger перечитывает приложение, когда меняется tmp/restart.txt.
-echo "7. Перезапуск приложения"
+echo "6. Перезапуск приложения"
 run_remote "mkdir -p $DEPLOY_REMOTE_PATH/tmp && touch $DEPLOY_REMOTE_PATH/tmp/restart.txt && echo '   перезапуск запрошен'"
 echo
 
-# --- 8. Остатки прежнего сайта ----------------------------------------------
-echo "8. Файлы прежнего сайта, оставшиеся в каталоге (ничего не удаляю)"
-run_remote "cd $DEPLOY_REMOTE_PATH && ls -d app.py src build_release.sh deploy.sh VERSION 2>/dev/null || echo '   остатков не найдено'"
-echo
-
-# --- 9. Приёмка --------------------------------------------------------------
-echo "9. Приёмка"
+# --- 7. Приёмка --------------------------------------------------------------
+echo "7. Приёмка"
 if [ "$DRY_RUN" = "1" ]; then
   echo "  [dry-run] python scripts/check_live.py $SITE_URL"
 else
