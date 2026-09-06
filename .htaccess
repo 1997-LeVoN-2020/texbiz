@@ -1,0 +1,71 @@
+# Apache на стороне хостинга (reg.ru, ISPmanager, Passenger).
+#
+# Корень домена совпадает с корнем проекта, поэтому Apache видит все файлы
+# приложения. Passenger обрабатывает только то, чего нет на диске, — всё
+# остальное отдаётся файлом. Без правил ниже по прямой ссылке доступны
+# data/db.sqlite3 с заявками и .env с паролями.
+#
+# ВАЖНО: редиректа на HTTPS здесь намеренно нет. Его включает галочка
+# «перенаправлять http-запросы в HTTPS» в ISPmanager. За проксирующим слоем
+# reg.ru переменная %{HTTPS} не отражает настоящий протокол, и правило
+# зацикливается само на себя: на этом проекте так уже ловили
+# ERR_TOO_MANY_REDIRECTS.
+
+Options -Indexes
+
+RewriteEngine On
+
+# --- Статика и медиа ---------------------------------------------------------
+# STATIC_ROOT = public/static, а адрес — /static/. Без этой переброски запрос
+# уходит в Django, который в боевом режиме статику не отдаёт, и сайт
+# открывается без стилей. Если в панели удастся задать Alias на уровне
+# сервера — он предпочтительнее, эти два правила тогда можно убрать.
+RewriteRule ^static/(.*)$ public/static/$1 [L]
+RewriteRule ^media/(.*)$ public/media/$1 [L]
+
+# --- Закрытое ----------------------------------------------------------------
+# База с персональными данными, логи, релизные архивы.
+RewriteRule ^(data|releases|public/media/private)/ - [F,L]
+
+# Исходники приложения и шаблоны.
+RewriteRule ^(config|web|blog|scripts|templates)/ - [F,L]
+
+# По расширению: код, база, логи, скрипты.
+RewriteRule \.(py|pyc|pyo|sqlite3|sqlite|db|log|sh|cfg|ini)$ - [F,L]
+
+# Точечные файлы: .env, .git, .gitignore и прочее.
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# Файлы в корне, которые не должны отдаваться.
+<FilesMatch "^(manage\.py|passenger_wsgi\.py|requirements\.txt|db\.sqlite3)$">
+  Require all denied
+</FilesMatch>
+
+# --- Домен -------------------------------------------------------------------
+# www на домен без www. Правило по имени хоста, от %{HTTPS} не зависит,
+# поэтому безопасно.
+RewriteCond %{HTTP_HOST} ^www\.tex-biz\.ru$ [NC]
+RewriteRule ^ https://tex-biz.ru%{REQUEST_URI} [L,R=301]
+
+# --- Заголовки ---------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # X-Frame-Options и HSTS Django выставляет сам, здесь не дублируются.
+</IfModule>
+
+# --- Сжатие и кэш ------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/xml application/xml application/javascript image/svg+xml application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>

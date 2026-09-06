@@ -217,11 +217,30 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
-SECURE_HSTS_SECONDS = 0 if DEBUG else int(env("DJANGO_HSTS_SECONDS", "31536000"))
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
-X_FRAME_OPTIONS = "SAMEORIGIN"
+
+# Сайт себя нигде во фрейм не вставляет, поэтому DENY, а не SAMEORIGIN.
+X_FRAME_OPTIONS = "DENY"
+
+# HSTS начинается с часа: если что-то пойдёт не так с сертификатом, ошибка
+# продержится час, а не год. Поднимать до 31536000 после того, как сайт
+# отработает на HTTPS без нареканий.
+SECURE_HSTS_SECONDS = 0 if DEBUG else int(env("DJANGO_HSTS_SECONDS", "3600"))
+
+# Выключено намеренно. Заголовок с includeSubDomains заставляет браузер год
+# требовать HTTPS от ВСЕХ поддоменов tex-biz.ru, включая те, о которых мы не
+# знаем. Поддомен без действующего сертификата после этого перестаёт
+# открываться, и откатить это нельзя: заголовок уже закэширован у посетителя.
+# Включать, только когда точно известен список поддоменов и у каждого есть
+# сертификат.
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("DJANGO_HSTS_SUBDOMAINS", False)
+SECURE_HSTS_PRELOAD = False
+
+# W008: редирект на HTTPS делает ISPmanager, а не Django — за прокси reg.ru
+#       собственный редирект даёт бесконечный цикл.
+# W021: в preload-список не подаёмся, это одностороннее решение.
+SILENCED_SYSTEM_CHECKS = ["security.W008", "security.W021"]
 
 # --- Логи ------------------------------------------------------------------
 
