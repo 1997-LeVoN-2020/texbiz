@@ -10,6 +10,7 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.templatetags.static import static
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
@@ -230,6 +231,18 @@ def server_error(request):
         ),
     }
     return render(request, "web/500.html", ctx, status=500)
+
+
+def favicon(request):
+    """Адрес значка вычисляется при запросе, а не при загрузке файла адресов.
+
+    В боевом режиме имена файлов статики хешируются, и `static()` берёт их из
+    манифеста, который создаёт `collectstatic`. Если вызвать `static()` на
+    уровне модуля, то до первого `collectstatic` манифеста ещё нет — и падает
+    любая команда manage.py, включая сам `collectstatic` и `migrate`. Поймано
+    на первой выкладке.
+    """
+    return redirect(static("img/favicon.svg"), permanent=True)
 
 
 def robots_txt(request):

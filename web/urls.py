@@ -1,6 +1,4 @@
-from django.templatetags.static import static
 from django.urls import path
-from django.views.generic.base import RedirectView
 
 from . import views
 
@@ -10,11 +8,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     # Значок описан тегами в <head>, но браузеры и роботы всё равно дёргают
     # /favicon.ico в корне. Без этого правила каждый такой запрос — 404 в логе.
-    path(
-        "favicon.ico",
-        RedirectView.as_view(url=static("img/favicon.svg"), permanent=True),
-        name="favicon",
-    ),
+    path("favicon.ico", views.favicon, name="favicon"),
     path("uslugi/", views.services_index, name="services"),
     path("resheniya/", views.solutions, name="solutions"),
     path("booking/", views.booking, name="booking"),

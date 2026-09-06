@@ -24,11 +24,12 @@ RewriteRule ^static/(.*)$ public/static/$1 [L]
 RewriteRule ^media/(.*)$ public/media/$1 [L]
 
 # --- Закрытое ----------------------------------------------------------------
-# База с персональными данными, логи, релизные архивы.
-RewriteRule ^(data|releases|public/media/private)/ - [F,L]
-
-# Исходники приложения и шаблоны.
-RewriteRule ^(config|web|blog|scripts|templates)/ - [F,L]
+# Условие -f обязательно: закрывать надо файлы на диске, а не адреса сайта.
+# Каталог приложения blog/ соседствует с разделом сайта /blog/, и правило без
+# этого условия положило бы весь блог. Так и вышло на первой выкладке: /blog/
+# отдавал 403. Теперь blog/models.py закрыт, а /blog/ уходит в приложение.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(data|releases|config|web|blog|scripts|templates)/ - [F,L]
 
 # По расширению: код, база, логи, скрипты.
 RewriteRule \.(py|pyc|pyo|sqlite3|sqlite|db|log|sh|cfg|ini)$ - [F,L]

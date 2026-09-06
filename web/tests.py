@@ -11,6 +11,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
+from django.conf import settings
 from django.core import mail
 from django.core.cache import cache
 from django.core.management import call_command
@@ -290,6 +291,24 @@ class PageTests(TestCase):
         response = self.client.get("/favicon.ico")
         self.assertEqual(response.status_code, 301)
         self.assertIn("favicon", response["Location"])
+
+    def test_url_modules_do_not_resolve_static_when_imported(self):
+        """Защита от ошибки, которая положила первую выкладку.
+
+        В боевом режиме имена файлов статики берутся из манифеста, который
+        создаёт collectstatic. Вызов static() на уровне модуля адресов
+        выполняется при загрузке — то есть до того, как манифест существует, —
+        и валит любую команду manage.py, включая migrate и сам collectstatic.
+        Адрес статики нужно вычислять внутри представления.
+        """
+        for name in ["web/urls.py", "config/urls.py", "blog/urls.py"]:
+            with self.subTest(module=name):
+                source = (Path(settings.BASE_DIR) / name).read_text(encoding="utf-8")
+                self.assertNotIn(
+                    "static(",
+                    source,
+                    f"{name}: адрес статики вычисляется при импорте — перенесите вызов в представление",
+                )
 
     def test_service_and_solution_counts_match_the_fixtures(self):
         self.assertEqual(Service.objects.count(), 8)
