@@ -286,8 +286,12 @@ def _notify(lead):
     """Письмо и Telegram. Любой сбой пишется в лог и не мешает приёму заявки."""
     text = _lead_text(lead)
     try:
+        # В теме только номер заявки. Имя приходит из формы, и подставлять его
+        # в заголовок письма незачем: оно всё равно есть в теле, а так спамер
+        # не напишет что угодно в тему почты владельца. Подмена заголовков
+        # невозможна и без этого — clean_name схлопывает переносы строк.
         send_mail(
-            subject=f"Новая заявка с сайта ТЕХБИЗ: {lead.name}",
+            subject=f"Новая заявка с сайта ТЕХБИЗ №{lead.pk}",
             message=text,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=settings.LEAD_NOTIFY_EMAILS,
