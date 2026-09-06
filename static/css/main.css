@@ -156,7 +156,10 @@ p { margin: 0; }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { background: var(--accent-hover); color: var(--on-accent); }
 
-.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-2); }
+/* Граница второстепенной кнопки — единственное, что отличает её от простого
+   текста, поэтому берётся --ink-3: контраст 5.72, требование WCAG 1.4.11 — 3.0.
+   Светлые --line и --line-2 остаются для оформления: рамок карточек, разделителей. */
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink-3); }
 .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
 
 .btn-sm { font-size: 14px; padding: .7rem 1rem; }
@@ -238,7 +241,7 @@ p { margin: 0; }
   font-weight: 500;
   color: var(--ink);
   background: transparent;
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--ink-3);
   border-radius: var(--radius-sm);
   padding: .55rem .8rem;
   cursor: pointer;
@@ -621,7 +624,7 @@ p { margin: 0; }
   color: var(--ink);
   text-decoration: none;
   padding: .5rem .85rem;
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--ink-3);
   border-radius: var(--radius-sm);
   background: var(--paper);
 }
@@ -703,20 +706,26 @@ p { margin: 0; }
 .field { display: grid; gap: .4rem; }
 .field label { font-family: var(--display); font-size: 14px; font-weight: 500; }
 .field label small { font-weight: 400; color: var(--ink-3); }
+/* Размер 16px обязателен: на iOS поле с меньшим шрифтом зумит страницу при фокусе.
+   Граница --ink-3, а не --line: заливка поля почти не отличается от карточки,
+   и рамка остаётся единственным признаком поля ввода. */
 .field input, .field select, .field textarea {
   font: inherit;
   font-size: 16px;
   color: var(--ink);
   background: var(--paper-2);
-  border: 1px solid var(--line);
+  border: 1px solid var(--ink-3);
   border-radius: var(--radius-sm);
   padding: .7rem .85rem;
   width: 100%;
   transition: border-color .15s, box-shadow .15s;
 }
 .field textarea { resize: vertical; min-height: 6.5rem; }
+.field ::placeholder { color: var(--ink-3); opacity: 1; }
+/* Обводку не снимаем: подложка --accent-soft даёт всего 1.13 к фону и сама по
+   себе фокус не показывает. Обводка из :focus-visible остаётся, рамка и ореол
+   работают вдобавок к ней. */
 .field input:focus, .field select:focus, .field textarea:focus {
-  outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
