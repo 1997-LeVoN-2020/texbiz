@@ -16,7 +16,7 @@
     "fields": {
       "title": "Мини-отель и гостевой дом",
       "slug": "mini-otel",
-      "body": "<p>Легкий запуск без перегруза по бюджету: только нужные модули и понятный интерфейс для персонала.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-mini-otelya-i-gostevogo-doma/\">Автоматизация мини-отеля и гостевого дома</a></p>\n",
+      "body": "<p>Лёгкий запуск без перегруза по бюджету: только нужные модули и понятный интерфейс для персонала.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-mini-otelya-i-gostevogo-doma/\">Автоматизация мини-отеля и гостевого дома</a></p>\n",
       "order": 2,
       "is_published": true
     }
@@ -27,7 +27,7 @@
     "fields": {
       "title": "Апартаменты и УК",
       "slug": "apartamenty",
-      "body": "<p>Управление объектами в одном окне: доступы, платежи, отчетность и поддержка удаленных точек.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-apartamentov-i-uk/\">Автоматизация апартаментов и УК</a></p>\n",
+      "body": "<p>Управление объектами в одном окне: доступы, платежи, отчётность и поддержка удалённых точек.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-apartamentov-i-uk/\">Автоматизация апартаментов и УК</a></p>\n",
       "order": 3,
       "is_published": true
     }
@@ -38,7 +38,7 @@
     "fields": {
       "title": "Сетевые объекты",
       "slug": "set-otelej",
-      "body": "<p>Унифицируем регламенты, централизуем учет и даем прозрачный контроль на уровне управляющей компании.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-seti-otelej/\">Автоматизация сети отелей</a></p>\n",
+      "body": "<p>Унифицируем регламенты, централизуем учёт и даём прозрачный контроль на уровне управляющей компании.</p>\n<p class=\"more\"><a href=\"/blog/avtomatizaciya-seti-otelej/\">Автоматизация сети отелей</a></p>\n",
       "order": 4,
       "is_published": true
     }
