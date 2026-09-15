@@ -116,6 +116,29 @@ class LeadSubmitTests(TestCase):
         self.assertContains(response, "field-error", status_code=422)
         self.assertEqual(Lead.objects.count(), 0)
 
+    # --- Опросный лист ---
+
+    def test_estimate_answers_are_folded_into_the_message(self):
+        data = lead_data(form="raschet", object_name="Гостиница «Пример»", workplaces="3", timeline="К следующему сезону")
+        data["systems"] = ["Онлайн-кассы", "Учёт ведётся вручную"]
+        data["tasks"] = ["Внедрение 1С:Отель"]
+        response = self.post(data)
+        self.assertRedirects(response, self.thanks)
+        message = Lead.objects.get().message
+        self.assertIn("Опросный лист", message)
+        self.assertIn("Объект: Гостиница «Пример»", message)
+        self.assertIn("Рабочих мест: 3", message)
+        self.assertIn("Уже есть: Онлайн-кассы, Учёт ведётся вручную", message)
+        self.assertIn("Нужно: Внедрение 1С:Отель", message)
+        self.assertIn("Сроки: К следующему сезону", message)
+
+    def test_invalid_estimate_returns_to_its_own_page(self):
+        response = self.post(lead_data(form="raschet", phone="123"))
+        self.assertEqual(response.status_code, 422)
+        self.assertContains(response, "Опросный лист", status_code=422)
+        self.assertContains(response, 'name="systems"', status_code=422)
+        self.assertEqual(Lead.objects.count(), 0)
+
     # --- Отправка с JavaScript ---
 
     def test_with_javascript_returns_json_and_redirect_target(self):
@@ -257,7 +280,7 @@ class PageTests(TestCase):
     fixtures = ["services.json", "solutions.json", "articles.json"]
 
     def test_public_pages_open(self):
-        for name in ["web:home", "web:services", "web:solutions", "web:booking", "web:contacts", "blog:index"]:
+        for name in ["web:home", "web:services", "web:solutions", "web:booking", "web:estimate", "web:contacts", "blog:index"]:
             with self.subTest(page=name):
                 self.assertEqual(self.client.get(reverse(name)).status_code, 200)
 

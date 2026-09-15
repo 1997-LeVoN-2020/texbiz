@@ -802,6 +802,14 @@ p { margin: 0; }
 .lead-form .btn { justify-self: start; }
 .form-status { font-family: var(--display); font-size: 14px; color: var(--ink-2); min-height: 1.2em; }
 .form-status.is-error { color: var(--error); }
+
+/* Группы галочек опросного листа */
+.choices { margin: 0; padding: 0; border: 0; display: grid; gap: .5rem; }
+.choices legend { font-family: var(--display); font-size: 14px; font-weight: 500; margin-bottom: .35rem; padding: 0; }
+.choices label { display: flex; gap: .65rem; align-items: flex-start; font-size: 15px; cursor: pointer; }
+.choices input { margin: .2rem 0 0; accent-color: var(--accent); flex: none; width: 16px; height: 16px; }
+
+.steps-compact { grid-template-columns: minmax(0, 1fr); margin-top: 1rem; margin-bottom: 2rem; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---------- Статья, длинный текст ---------- */

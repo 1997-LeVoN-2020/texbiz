@@ -61,6 +61,7 @@ def pages():
         "/resheniya/",
         "/booking/",
         "/kontakty/",
+        "/raschet/",
         "/privacy/",
         "/spasibo/",
         "/blog/",

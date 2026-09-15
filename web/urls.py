@@ -31,6 +31,7 @@ urlpatterns = [
     path("resheniya/<slug:slug>/", views.solution_detail, name="solution"),
     path("booking/", views.booking, name="booking"),
     path("kontakty/", views.contacts, name="contacts"),
+    path("raschet/", views.estimate, name="estimate"),
     path("privacy/", views.privacy, name="privacy"),
     path("spasibo/", views.thanks, name="thanks"),
     path("send/", views.lead_submit, name="lead_submit"),

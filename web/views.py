@@ -17,7 +17,7 @@ from django.views.decorators.http import require_POST
 
 from blog.models import Article
 
-from .forms import LeadForm
+from .forms import EstimateForm, LeadForm
 from .models import Lead, Service, Solution
 from .seo import breadcrumbs, faq_page, jsonld, organization, page_meta
 
@@ -185,6 +185,25 @@ def solution_detail(request, slug):
             "form": lead_form(request),
             "jsonld": [jsonld(schema), jsonld(breadcrumbs(crumbs))],
         },
+    )
+
+
+def estimate(request, form=None, status=200):
+    """Опросный лист для расчёта проекта. POST принимает lead_submit с form=raschet."""
+    if form is None:
+        form = EstimateForm(initial={"ts": int(time.time()), "source_page": request.path})
+    return render(
+        request,
+        "web/estimate.html",
+        {
+            "page": page_meta(
+                request,
+                title="Расчёт проекта автоматизации отеля: опросный лист | ТЕХБИЗ",
+                description="Заполните опросный лист: формат объекта, номерной фонд, что уже есть и что нужно внедрить. Подготовим предложение по внедрению 1С:Отель, касс, серверов и замков.",
+            ),
+            "form": form,
+        },
+        status=status,
     )
 
 
@@ -393,7 +412,9 @@ def lead_submit(request):
             return JsonResponse({"ok": False, "error": "Слишком много заявок. Позвоните нам по телефону."}, status=429)
         return redirect(thanks_url)
 
-    form = LeadForm(request.POST)
+    # Опросный лист присылает те же поля плюс свои; ошибки показываем на его странице.
+    is_estimate = request.POST.get("form") == "raschet"
+    form = (EstimateForm if is_estimate else LeadForm)(request.POST)
 
     # Ботам отвечаем как людям, но ничего не сохраняем.
     if form.is_bot or _too_fast(form):
@@ -406,6 +427,8 @@ def lead_submit(request):
         if as_json:
             errors = {field: errs[0] for field, errs in form.errors.items()}
             return JsonResponse({"ok": False, "errors": errors}, status=422)
+        if is_estimate:
+            return estimate(request, form=form, status=422)
         return contacts(request, form=form, status=422)
 
     lead = form.save(commit=False)

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Расчёт проекта</p>
+    <h1 id="hero-title">Опросный лист для расчёта</h1>
+    <p class="lead">Стоимость проекта складывается из лицензий «1С» и внедрения. Лицензии считаются по числу рабочих мест, внедрение — по вашему объекту: номерной фонд, оборудование, интеграции, перенос данных. Ответьте на несколько вопросов, и мы подготовим предложение под ваш случай.</p>
+    <p class="hero-note">Не хотите заполнять? <a href="{{ site.phone_href }}">Позвоните</a>: заполним анкету вместе за несколько минут.</p>
+  </div>
+</section>
+
+<section class="section section-paper" id="contacts" aria-label="Опросный лист">
+  <div class="container contact-grid">
+    <div>
+      <span class="label">Что будет дальше</span>
+      <ol class="steps steps-compact">
+        <li><strong>Разбор анкеты</strong><span>Перезвоним, уточним детали, которых не хватает для расчёта.</span></li>
+        <li><strong>Предложение</strong><span>Состав лицензий, работ и этапов под ваш объект.</span></li>
+        <li><strong>Аудит</strong><span>При необходимости смотрим объект на месте до старта.</span></li>
+      </ol>
+      <ul class="contact-list">
+        <li><a href="{{ site.phone_href }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+      </ul>
+    </div>
+
+    <form class="lead-form" method="post" action="{% url 'web:lead_submit' %}" novalidate data-lead-form>
+      {% csrf_token %}
+      <input type="hidden" name="form" value="raschet">
+      <input type="hidden" name="ts" value="{{ form.ts.value|default:'' }}">
+      <input type="hidden" name="source_page" value="{{ form.source_page.value|default:request.path }}">
+      <div class="hp" aria-hidden="true">
+        <label for="lead-website">Website</label>
+        <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-row">
+        <div class="field{% if form.name.errors %} is-invalid{% endif %}">
+          <label for="lead-name">Имя</label>
+          <input id="lead-name" name="name" type="text" autocomplete="name" required value="{{ form.name.value|default:'' }}">
+          {% if form.name.errors %}<p class="field-error">{{ form.name.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="field{% if form.phone.errors %} is-invalid{% endif %}">
+          <label for="lead-phone">Телефон</label>
+          <input id="lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7" required value="{{ form.phone.value|default:'' }}">
+          {% if form.phone.errors %}<p class="field-error">{{ form.phone.errors.0 }}</p>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field{% if form.email.errors %} is-invalid{% endif %}">
+          <label for="lead-email">E-mail <small>необязательно</small></label>
+          <input id="lead-email" name="email" type="email" autocomplete="email" value="{{ form.email.value|default:'' }}">
+          {% if form.email.errors %}<p class="field-error">{{ form.email.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="field">
+          <label for="lead-object-name">Название объекта <small>необязательно</small></label>
+          <input id="lead-object-name" name="object_name" type="text" maxlength="150" value="{{ form.object_name.value|default:'' }}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field{% if form.object_type.errors %} is-invalid{% endif %}">
+          <label for="lead-object">Тип объекта</label>
+          <select id="lead-object" name="object_type" required>
+            {% for value, label in form.fields.object_type.choices %}
+            <option value="{{ value }}"{% if form.object_type.value == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field{% if form.rooms_count.errors %} is-invalid{% endif %}">
+          <label for="lead-rooms">Номерной фонд</label>
+          <input id="lead-rooms" name="rooms_count" type="number" min="1" max="9999" inputmode="numeric" placeholder="Например, 40" value="{{ form.rooms_count.value|default:'' }}">
+          {% if form.rooms_count.errors %}<p class="field-error">{{ form.rooms_count.errors.0 }}</p>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field{% if form.workplaces.errors %} is-invalid{% endif %}">
+          <label for="lead-workplaces">Рабочих мест <small>компьютеров, работающих с базой одновременно</small></label>
+          <input id="lead-workplaces" name="workplaces" type="number" min="1" max="999" inputmode="numeric" placeholder="Например, 3" value="{{ form.workplaces.value|default:'' }}">
+          {% if form.workplaces.errors %}<p class="field-error">{{ form.workplaces.errors.0 }}</p>{% endif %}
+        </div>
+        <div class="field">
+          <label for="lead-timeline">Сроки</label>
+          <select id="lead-timeline" name="timeline">
+            {% for value, label in form.fields.timeline.choices %}
+            <option value="{{ value }}"{% if form.timeline.value == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <fieldset class="choices">
+        <legend>Что уже есть на объекте</legend>
+        {% for value, label in form.fields.systems.choices %}
+        <label><input type="checkbox" name="systems" value="{{ value }}"{% if value in form.systems.value %} checked{% endif %}><span>{{ label }}</span></label>
+        {% endfor %}
+      </fieldset>
+
+      <fieldset class="choices">
+        <legend>Что нужно сделать</legend>
+        {% for value, label in form.fields.tasks.choices %}
+        <label><input type="checkbox" name="tasks" value="{{ value }}"{% if value in form.tasks.value %} checked{% endif %}><span>{{ label }}</span></label>
+        {% endfor %}
+      </fieldset>
+
+      <div class="field">
+        <label for="lead-message">Комментарий <small>необязательно</small></label>
+        <textarea id="lead-message" name="message" rows="4" placeholder="Текущие системы, особенности объекта, что болит сильнее всего">{{ form.message.value|default:'' }}</textarea>
+      </div>
+
+      <label class="consent{% if form.consent.errors %} is-invalid{% endif %}">
+        <input type="checkbox" name="consent" value="1" required{% if form.consent.value %} checked{% endif %}>
+        <span>Согласен на <a href="{% url 'web:privacy' %}" target="_blank" rel="noopener">обработку персональных данных</a></span>
+      </label>
+
+      <button class="btn btn-primary" type="submit">Отправить опросный лист</button>
+      <p class="form-status" data-form-status aria-live="polite">{% if form.non_field_errors %}{{ form.non_field_errors.0 }}{% endif %}</p>
+    </form>
+  </div>
+</section>
+{% endblock %}
