@@ -354,7 +354,7 @@ class PageTests(TestCase):
 
     def test_service_and_solution_counts_match_the_fixtures(self):
         self.assertEqual(Service.objects.count(), 8)
-        self.assertEqual(Solution.objects.count(), 15)
+        self.assertEqual(Solution.objects.count(), 18)
 
 
 class SeoTests(TestCase):

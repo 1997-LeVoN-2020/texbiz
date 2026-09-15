@@ -36,7 +36,7 @@ def organization():
         "taxID": settings.LEGAL_INN,
         "address": {"@type": "PostalAddress", "addressLocality": "Анапа", "addressCountry": "RU"},
         "url": settings.SITE_URL + "/",
-        "description": "Комплексная автоматизация гостиниц и отелей: внедрение 1С, настройка онлайн-касс, серверной инфраструктуры и замковых систем.",
+        "description": "Партнёр «1С:Отель». Комплексная автоматизация гостиниц и отелей: внедрение 1С, настройка онлайн-касс, серверной инфраструктуры и замковых систем.",
         "telephone": settings.CONTACT_PHONE_HREF.replace("tel:", ""),
         "email": settings.CONTACT_EMAIL,
         "areaServed": "RU",
