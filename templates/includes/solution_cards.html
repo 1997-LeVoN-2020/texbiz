@@ -1,0 +1,12 @@
+{% load web_extras %}
+<div class="grid grid-2 solution-grid">
+  {% for sol in solutions %}
+  <a class="scard" href="{{ sol.get_absolute_url }}">
+    <span class="icon-tile">{% icon sol.icon %}</span>
+    <span class="scard-text">
+      <span class="scard-title">{{ sol.title }}</span>
+      <span class="scard-summary">{{ sol.summary }}</span>
+    </span>
+  </a>
+  {% endfor %}
+</div>

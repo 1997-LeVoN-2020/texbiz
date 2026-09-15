@@ -8,6 +8,7 @@ import json
 from django.conf import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
+from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
@@ -18,7 +19,7 @@ from blog.models import Article
 
 from .forms import LeadForm
 from .models import Lead, Service, Solution
-from .seo import faq_page, jsonld, organization, page_meta
+from .seo import breadcrumbs, faq_page, jsonld, organization, page_meta
 
 log = logging.getLogger("web.leads")
 
@@ -53,7 +54,7 @@ def lead_form(request):
 
 def home(request):
     services = Service.objects.published()
-    solutions = Solution.objects.published()
+    solutions = Solution.objects.published()[:6]
     articles = Article.objects.published()[:3]
     return render(
         request,
@@ -119,18 +120,70 @@ def service_detail(request, slug):
     )
 
 
-def solutions(request):
+def solutions(request, group=None):
+    """Каталог решений: все или одна группа. Фильтр — обычные ссылки, без JS."""
+    published = Solution.objects.published()
+    counts = {row["group"]: row["n"] for row in published.values("group").annotate(n=Count("id"))}
+    groups = [(code, label, counts.get(code, 0)) for code, label in Solution.Group.choices]
+    crumbs = [("Главная", reverse("web:home")), ("Решения", reverse("web:solutions"))]
+    if group:
+        label = Solution.Group(group).label
+        title = f"{label}: решения для отелей | ТЕХБИЗ"
+        description = f"Решения ТЕХБИЗ для отелей в группе «{label}»: что внедряем, как это работает и с чего начать. Полный цикл — от аудита до поддержки."
+        items = published.filter(group=group)
+        crumbs.append((label, request.path))
+    else:
+        label = ""
+        title = "Решения для отелей: каталог по группам | ТЕХБИЗ"
+        description = "Все решения ТЕХБИЗ для гостиниц по шести группам: продажи и бронирование, гость и сервис, финансы и учёт, инфраструктура, сеть и УК, запуск и команда."
+        items = published
     return render(
         request,
         "web/solutions.html",
         {
+            "page": page_meta(request, title=title, description=description),
+            "groups": groups,
+            "group": group,
+            "group_label": label,
+            "total": sum(counts.values()),
+            "solutions": items,
+            "crumbs": crumbs,
+            "form": lead_form(request),
+            "jsonld": [jsonld(breadcrumbs(crumbs))] if group else [],
+        },
+    )
+
+
+def solution_detail(request, slug):
+    solution = get_object_or_404(Solution.objects.published(), slug=slug)
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": solution.title,
+        "name": solution.title,
+        "description": solution.meta_description or solution.summary,
+        "provider": {"@type": "Organization", "name": settings.SITE_NAME, "url": settings.SITE_URL + "/"},
+        "areaServed": "RU",
+    }
+    crumbs = [
+        ("Главная", reverse("web:home")),
+        ("Решения", reverse("web:solutions")),
+        (solution.get_group_display(), reverse("web:solutions_group", kwargs={"group": solution.group})),
+        (solution.title, solution.get_absolute_url()),
+    ]
+    return render(
+        request,
+        "web/solution.html",
+        {
             "page": page_meta(
                 request,
-                title="Решения по формату объекта для отелей | ТЕХБИЗ",
-                description="Автоматизация под формат объекта: городской и курортный отель, мини-отель и гостевой дом, апартаменты и УК, сеть отелей. Подбираем стек под ваш процесс.",
+                title=solution.page_title,
+                description=solution.meta_description or solution.summary,
             ),
-            "solutions": Solution.objects.published(),
+            "solution": solution,
+            "crumbs": crumbs,
             "form": lead_form(request),
+            "jsonld": [jsonld(schema), jsonld(breadcrumbs(crumbs))],
         },
     )
 

@@ -272,6 +272,34 @@ class PageTests(TestCase):
             with self.subTest(slug=slug):
                 self.assertEqual(self.client.get(f"/{slug}/").status_code, 200)
 
+    def test_solution_pages_open_with_breadcrumbs(self):
+        solution = Solution.objects.published().first()
+        response = self.client.get(solution.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "BreadcrumbList")
+        self.assertContains(response, solution.get_group_display())
+
+    def test_solution_group_filters_the_catalog(self):
+        group = Solution.Group.FINANCE
+        response = self.client.get(reverse("web:solutions_group", kwargs={"group": group}))
+        self.assertEqual(response.status_code, 200)
+        shown = [s for s in Solution.objects.published().filter(group=group)]
+        hidden = Solution.objects.published().exclude(group=group).first()
+        for s in shown:
+            self.assertContains(response, s.get_absolute_url())
+        self.assertNotContains(response, hidden.get_absolute_url())
+
+    def test_unknown_solution_group_is_a_solution_slug(self):
+        """/resheniya/<что угодно>/ — адрес решения, а не группы; чужой slug даёт 404."""
+        self.assertEqual(self.client.get("/resheniya/net-takogo/").status_code, 404)
+
+    def test_unpublished_solution_is_hidden(self):
+        solution = Solution.objects.published().first()
+        solution.is_published = False
+        solution.save()
+        self.assertEqual(self.client.get(solution.get_absolute_url()).status_code, 404)
+        self.assertNotContains(self.client.get(reverse("web:solutions")), solution.get_absolute_url())
+
     def test_service_without_a_page_is_not_reachable(self):
         service = Service.objects.filter(body="").first()
         self.assertIsNotNone(service)
@@ -326,7 +354,7 @@ class PageTests(TestCase):
 
     def test_service_and_solution_counts_match_the_fixtures(self):
         self.assertEqual(Service.objects.count(), 8)
-        self.assertEqual(Solution.objects.count(), 4)
+        self.assertEqual(Solution.objects.count(), 15)
 
 
 class SeoTests(TestCase):

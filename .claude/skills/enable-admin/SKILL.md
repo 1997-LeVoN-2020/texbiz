@@ -43,8 +43,10 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Solution)
 class SolutionAdmin(admin.ModelAdmin):
-    list_display = ("title", "slug", "order", "is_published")
+    list_display = ("title", "group", "slug", "order", "is_published")
+    list_filter = ("group", "is_published")
     list_editable = ("order", "is_published")
+    search_fields = ("title", "summary")
     prepopulated_fields = {"slug": ("title",)}
 
 

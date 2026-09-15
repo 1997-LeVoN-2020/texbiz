@@ -1,6 +1,6 @@
 ---
 name: content-writer
-description: Пишет тексты для сайта ТЕХБИЗ — страницы услуг, решения по формату объекта, статьи блога — в сложившемся тоне и складывает их в фикстуры. Использовать при запросе новой услуги, новой статьи или переписывания существующего текста.
+description: Пишет тексты для сайта ТЕХБИЗ — страницы услуг, решения из каталога, статьи блога — в сложившемся тоне и складывает их в фикстуры. Использовать при запросе новой услуги, новой статьи или переписывания существующего текста.
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---
@@ -41,7 +41,7 @@ model: sonnet
 | Что | Файл | Ключевые поля |
 |---|---|---|
 | Услуга | `web/fixtures/services.json` | `title`, `slug`, `icon`, `summary`, `lead`, `body`, `meta_title`, `meta_description`, `order`, `is_published` |
-| Решение по формату | `web/fixtures/solutions.json` | `title`, `slug`, `body`, `order` |
+| Решение | `web/fixtures/solutions.json` | `title`, `slug`, `group`, `icon`, `summary`, `lead`, `body`, `meta_title`, `meta_description`, `order`, `is_published` |
 | Статья | `blog/fixtures/articles.json` | `title`, `slug`, `excerpt`, `body`, `published_at`, `meta_title`, `meta_description`, `is_published` |
 
 Поле `body` — готовый HTML без обёрток страницы. Допустимая разметка: `<h2>`, `<h3>`, `<p>`, `<ul>`, `<ol>`, `<li>`, `<strong>`, `<a>`, `<details class="faq-item">` с `<summary>`, а на страницах услуг блок `<div class="features">` с карточками `<div class="feature">`. Классы бери из существующих записей, новые не изобретай: под них нет стилей. Значок услуги — код из `web/icons.py`.

@@ -47,17 +47,11 @@
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Решения</p>
-      <h2 id="solutions-title">Решения под формат вашего объекта</h2>
+      <h2 id="solutions-title">Что внедряем в отелях</h2>
       <p>Не продаём шаблон: подбираем стек и сценарии работы под реальный операционный процесс.</p>
     </div>
-    <div class="grid grid-4">
-      {% for sol in solutions %}
-      <article class="card">
-        <h3><a href="{{ sol.get_absolute_url }}">{{ sol.title }}</a></h3>
-        <div class="card-text">{{ sol.body|safe }}</div>
-      </article>
-      {% endfor %}
-    </div>
+    {% include "includes/solution_cards.html" %}
+    <p class="section-more"><a class="more" href="{% url 'web:solutions' %}">Все решения по группам</a></p>
   </div>
 </section>
 

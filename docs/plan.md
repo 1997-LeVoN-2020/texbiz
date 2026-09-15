@@ -28,7 +28,7 @@
 | Главная | `/` | тексты старой главной без калькулятора, кейсов и процентов |
 | Услуги | `/uslugi/` | карточки услуг старой главной + блок SLA |
 | Услуги, 4 страницы | `/1c-avtomatizaciya-otelya/`, `/onlain-kassy-dlya-gostinicy/`, `/nastroika-serverov-otelya/`, `/integraciya-zamkovyh-sistem/` | как есть |
-| Решения по формату | `/resheniya/` | четыре вкладки старой главной + ссылки на статьи |
+| Решения | `/resheniya/`, `/resheniya/<группа>/`, `/resheniya/<slug>/` | каталог 15 решений в 6 группах по образцу 1c-hotel.ru/solutions (15.09.2026); тексты из услуг и статей, три написаны заново |
 | Модуль бронирования | `/booking/` | как есть |
 | Блог | `/blog/`, `/blog/<slug>/` | 12 статей как есть |
 | Контакты | `/kontakty/` | телефон, почта, реквизиты, форма |
@@ -45,7 +45,7 @@
 | Модель | Поля |
 |---|---|
 | Service — услуга | title, slug, lead, body (HTML), meta_description, order, is_published |
-| Solution — решение по формату | title, slug, body (HTML), order, is_published |
+| Solution — решение | title, slug, group, icon, summary, lead, body (HTML), meta_title, meta_description, order, is_published |
 | Article — статья | title, slug, excerpt, body (HTML), published_at, meta_description, is_published |
 | Lead — заявка | name, phone, object_type, message, source_page, consent, created_at, status |
 
@@ -87,7 +87,7 @@
 - [x] `base`: head с метатегами, Метрика, шапка, подвал, skip-link
 - [x] Главная
 - [x] Услуги: обзор и 4 страницы
-- [x] Решения по формату объекта
+- [x] Решения: каталог по группам и страницы решений (ред. 15.09.2026)
 - [x] Модуль бронирования
 - [x] Блог: список и статья
 - [x] Контакты и реквизиты

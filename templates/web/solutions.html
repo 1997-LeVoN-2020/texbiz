@@ -3,23 +3,31 @@
 {% block content %}
 <section class="hero hero-compact" aria-labelledby="hero-title">
   <div class="container">
-    <p class="eyebrow">Решения</p>
-    <h1 id="hero-title">Решения под формат вашего объекта</h1>
-    <p class="lead">Не продаём шаблон: подбираем стек и сценарии работы под реальный операционный процесс. Четыре типовых формата, с которыми работаем чаще всего.</p>
-    <nav class="anchor-nav" aria-label="Форматы объектов">
-      {% for sol in solutions %}<a href="#{{ sol.slug }}">{{ sol.title }}</a>{% endfor %}
-    </nav>
+    {% if group %}
+      {% include "includes/breadcrumbs.html" with crumbs=crumbs %}
+      <h1 id="hero-title">{{ group_label }}</h1>
+      <p class="lead">Решения этой группы. Внедряем как единый контур с остальными системами отеля, а не по отдельности.</p>
+    {% else %}
+      <p class="eyebrow">Решения</p>
+      <h1 id="hero-title">Решения</h1>
+      <p class="lead">Что внедряем в отелях — по шести группам. Выберите группу или листайте весь каталог.</p>
+    {% endif %}
   </div>
 </section>
 
-<section class="section section-paper" aria-label="Форматы объектов">
+<section class="section section-paper" aria-label="Каталог решений">
   <div class="container">
-    {% for sol in solutions %}
-    <article class="solution" id="{{ sol.slug }}">
-      <h2>{{ sol.title }}</h2>
-      <div class="solution-text">{{ sol.body|safe }}</div>
-    </article>
-    {% endfor %}
+    <nav class="cat-tabs" aria-label="Группы решений">
+      <a href="{% url 'web:solutions' %}"{% if not group %} class="is-active" aria-current="page"{% endif %}>
+        <span>Все решения</span><span class="count">{{ total }}</span>
+      </a>
+      {% for code, label, n in groups %}
+      <a href="{% url 'web:solutions_group' group=code %}"{% if code == group %} class="is-active" aria-current="page"{% endif %}>
+        <span>{{ label }}</span><span class="count">{{ n }}</span>
+      </a>
+      {% endfor %}
+    </nav>
+    {% include "includes/solution_cards.html" %}
   </div>
 </section>
 

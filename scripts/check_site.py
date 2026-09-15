@@ -31,7 +31,8 @@ from django.conf import settings  # noqa: E402
 from django.test import Client  # noqa: E402
 
 from blog.models import Article  # noqa: E402
-from web.models import Service  # noqa: E402
+from django.urls import reverse  # noqa: E402
+from web.models import Service, Solution  # noqa: E402
 
 # Тестовый клиент не принимает хост testserver: он не в ALLOWED_HOSTS.
 client = Client(HTTP_HOST="127.0.0.1")
@@ -65,6 +66,8 @@ def pages():
         "/blog/",
     ]
     urls += [s.get_absolute_url() for s in Service.objects.published().exclude(body="")]
+    urls += [reverse("web:solutions_group", kwargs={"group": code}) for code in Solution.Group.values]
+    urls += [s.get_absolute_url() for s in Solution.objects.published()]
     urls += [a.get_absolute_url() for a in Article.objects.published()]
     return urls
 

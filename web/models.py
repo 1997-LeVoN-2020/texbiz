@@ -1,5 +1,5 @@
 """
-Модели раздела «сайт»: услуги, решения по формату объекта, заявки.
+Модели раздела «сайт»: услуги, каталог решений, заявки.
 
 Все модели плоские, без связанных таблиц. Содержимое услуг и решений
 загружается из фикстур (web/fixtures/), заявки создаёт форма на сайте.
@@ -52,11 +52,25 @@ class Service(models.Model):
 
 
 class Solution(models.Model):
-    """Решение под формат объекта: отель, мини-отель, апартаменты, сеть."""
+    """Решение из каталога /resheniya/: карточка в группе и своя страница."""
+
+    class Group(models.TextChoices):
+        SALES = "sales", "Продажи и бронирование"
+        GUEST = "guest", "Гость и сервис"
+        FINANCE = "finance", "Финансы и учёт"
+        INFRA = "infra", "Инфраструктура"
+        CHAIN = "chain", "Сеть и УК"
+        LAUNCH = "launch", "Запуск и команда"
 
     title = models.CharField("Название", max_length=200)
-    slug = models.SlugField("Якорь", unique=True, help_text="Блок на странице /resheniya/#<slug>")
-    body = models.TextField("Текст (HTML)")
+    slug = models.SlugField("Адрес", unique=True, help_text="Страница открывается по /resheniya/<slug>/")
+    group = models.CharField("Группа", max_length=16, choices=Group.choices, default=Group.LAUNCH)
+    icon = models.CharField("Значок", max_length=16, choices=ICON_CHOICES, default="OPS")
+    summary = models.CharField("Текст карточки", max_length=160)
+    lead = models.TextField("Лид-абзац страницы", blank=True)
+    body = models.TextField("Содержимое страницы (HTML)")
+    meta_title = models.CharField("Title для поиска", max_length=200, blank=True)
+    meta_description = models.CharField("Description для поиска", max_length=300, blank=True)
     order = models.PositiveSmallIntegerField("Порядок", default=0)
     is_published = models.BooleanField("Опубликовано", default=True)
 
@@ -71,7 +85,11 @@ class Solution(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("web:solutions") + f"#{self.slug}"
+        return reverse("web:solution", kwargs={"slug": self.slug})
+
+    @property
+    def page_title(self):
+        return self.meta_title or f"{self.title} | ТЕХБИЗ"
 
 
 class Lead(models.Model):

@@ -1,8 +1,24 @@
-from django.urls import path
+from django.urls import path, register_converter
 
 from . import views
+from .models import Solution
 
 app_name = "web"
+
+
+class GroupConverter:
+    """Код группы решений: /resheniya/finance/. Всё остальное после /resheniya/ — адрес решения."""
+
+    regex = "|".join(Solution.Group.values)
+
+    def to_python(self, value):
+        return value
+
+    def to_url(self, value):
+        return value
+
+
+register_converter(GroupConverter, "group")
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -11,6 +27,8 @@ urlpatterns = [
     path("favicon.ico", views.favicon, name="favicon"),
     path("uslugi/", views.services_index, name="services"),
     path("resheniya/", views.solutions, name="solutions"),
+    path("resheniya/<group:group>/", views.solutions, name="solutions_group"),
+    path("resheniya/<slug:slug>/", views.solution_detail, name="solution"),
     path("booking/", views.booking, name="booking"),
     path("kontakty/", views.contacts, name="contacts"),
     path("privacy/", views.privacy, name="privacy"),

@@ -1,10 +1,10 @@
-"""sitemap.xml: статические страницы, услуги со своей страницей, статьи."""
+"""sitemap.xml: статические страницы, услуги со своей страницей, решения и их группы, статьи."""
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 from blog.models import Article
 
-from .models import Service
+from .models import Service, Solution
 
 # (имя адреса, приоритет, частота обновления)
 STATIC_PAGES = [
@@ -42,6 +42,27 @@ class ServiceSitemap(Sitemap):
         return Service.objects.published().exclude(body="")
 
 
+class SolutionGroupSitemap(Sitemap):
+    protocol = "https"
+    priority = 0.7
+    changefreq = "monthly"
+
+    def items(self):
+        return [code for code in Solution.Group.values if Solution.objects.published().filter(group=code).exists()]
+
+    def location(self, item):
+        return reverse("web:solutions_group", kwargs={"group": item})
+
+
+class SolutionSitemap(Sitemap):
+    protocol = "https"
+    priority = 0.7
+    changefreq = "monthly"
+
+    def items(self):
+        return Solution.objects.published()
+
+
 class ArticleSitemap(Sitemap):
     protocol = "https"
     priority = 0.6
@@ -57,5 +78,7 @@ class ArticleSitemap(Sitemap):
 SITEMAPS = {
     "pages": StaticSitemap,
     "services": ServiceSitemap,
+    "solution_groups": SolutionGroupSitemap,
+    "solutions": SolutionSitemap,
     "articles": ArticleSitemap,
 }

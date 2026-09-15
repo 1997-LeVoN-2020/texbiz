@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    {% include "includes/breadcrumbs.html" %}
+    <h1 id="hero-title">{{ solution.title }}</h1>
+    <p class="lead">{{ solution.lead }}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#contacts">Получить аудит объекта</a>
+      <a class="btn btn-ghost" href="{% url 'web:solutions_group' group=solution.group %}">{{ solution.get_group_display }}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" aria-label="Описание решения">
+  <div class="container service-body">
+    {{ solution.body|safe }}
+  </div>
+</section>
+
+{% include "includes/process.html" %}
+
+{% include "includes/contact_section.html" with heading="Обсудим это решение для вашего объекта" text="Оставьте контакты. Посмотрим текущую схему и предложим, как встроить решение без остановки работы." %}
+{% endblock %}

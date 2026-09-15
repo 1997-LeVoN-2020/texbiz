@@ -63,3 +63,15 @@ def faq_page(items):
             for q, a in items
         ],
     }
+
+
+def breadcrumbs(crumbs):
+    """Хлебные крошки: список (название, путь) от главной до текущей страницы."""
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": i, "name": name, "item": settings.SITE_URL + path}
+            for i, (name, path) in enumerate(crumbs, start=1)
+        ],
+    }
