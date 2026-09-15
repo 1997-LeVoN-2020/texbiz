@@ -543,6 +543,10 @@ p { margin: 0; }
 }
 .panel .lead { margin-top: 1rem; }
 .panel .chips li { background: var(--paper); }
+.panel-inline { display: flex; gap: 1.25rem; align-items: flex-start; margin-top: 1.5rem; }
+.panel-inline h3 { font-size: 1.05rem; margin-bottom: .5rem; }
+.panel-inline p { color: var(--ink-2); margin-bottom: .75rem; }
+@media (max-width: 520px) { .panel-inline { flex-direction: column; } }
 
 .benefits {
   display: grid;
