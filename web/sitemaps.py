@@ -13,6 +13,8 @@ STATIC_PAGES = [
     ("web:booking", 0.9, "weekly"),
     ("web:solutions", 0.8, "monthly"),
     ("blog:index", 0.7, "weekly"),
+    ("web:training", 0.7, "monthly"),
+    ("web:support", 0.7, "monthly"),
     ("web:estimate", 0.7, "yearly"),
     ("web:contacts", 0.6, "yearly"),
 ]

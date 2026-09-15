@@ -207,6 +207,36 @@ def estimate(request, form=None, status=200):
     )
 
 
+def training(request):
+    return render(
+        request,
+        "web/training.html",
+        {
+            "page": page_meta(
+                request,
+                title="Обучение персонала отеля работе в 1С:Отель | ТЕХБИЗ",
+                description="Три формата обучения команды отеля: онлайн-курсы по ролям, индивидуальное обучение на вашей конфигурации и обучение на проекте перед запуском без остановки работы.",
+            ),
+            "form": lead_form(request),
+        },
+    )
+
+
+def support(request):
+    return render(
+        request,
+        "web/support.html",
+        {
+            "page": page_meta(
+                request,
+                title="Поддержка 1С:Отель, касс и серверов отеля 24/7 | ТЕХБИЗ",
+                description="Как обратиться в поддержку ТЕХБИЗ: заявка, телефон для критичных сбоев, удалённое подключение, время реакции по приоритетам P1–P3 и обновления 1С:Отель.",
+            ),
+            "form": lead_form(request),
+        },
+    )
+
+
 def booking(request):
     schema = {
         "@context": "https://schema.org",

@@ -280,7 +280,7 @@ class PageTests(TestCase):
     fixtures = ["services.json", "solutions.json", "articles.json"]
 
     def test_public_pages_open(self):
-        for name in ["web:home", "web:services", "web:solutions", "web:booking", "web:estimate", "web:contacts", "blog:index"]:
+        for name in ["web:home", "web:services", "web:solutions", "web:booking", "web:estimate", "web:training", "web:support", "web:contacts", "blog:index"]:
             with self.subTest(page=name):
                 self.assertEqual(self.client.get(reverse(name)).status_code, 200)
 

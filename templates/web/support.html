@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Поддержка</p>
+    <h1 id="hero-title">Поддержка и сопровождение</h1>
+    <p class="lead">Отель работает круглосуточно: ночные заезды, ночной аудит, касса в выходные. Сопровождаем 1С, кассы, серверы и замковую систему по договору с фиксированным временем реакции — критичный сбой ночью берём в работу раньше планового вопроса по отчёту.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#contacts">Написать в поддержку</a>
+      <a class="btn btn-ghost" href="{{ site.phone_href }}">{{ site.phone }}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" aria-labelledby="how-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Как обратиться</p>
+      <h2 id="how-title">Чтобы решили быстрее</h2>
+    </div>
+    <div class="grid grid-3">
+      <article class="card">
+        <span class="icon-tile">{% icon "LOG" %}</span>
+        <h3>Опишите ситуацию</h3>
+        <p>Название отеля, что именно не работает, текст или скриншот ошибки, с какого момента. Так заявка сразу попадёт к нужному специалисту, а не пойдёт по кругу уточнений.</p>
+      </article>
+      <article class="card">
+        <span class="icon-tile">{% icon "15" %}</span>
+        <h3>Критичный сбой — звоните</h3>
+        <p>Если встала касса, недоступна 1С или не выдаются ключи, не ждите ответа на письмо: звоните по телефону <a href="{{ site.phone_href }}">{{ site.phone }}</a>. Это приоритет P1.</p>
+      </article>
+      <article class="card">
+        <span class="icon-tile">{% icon "SEC" %}</span>
+        <h3>Удалённое подключение</h3>
+        <p>Большинство вопросов решается удалённо: специалист подключается к сеансу, номер которого вы называете сами, и только на время работы. Мы никогда не просим открыть доступ, если вы не обращались в поддержку.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-label="Уровни поддержки">
+  <div class="container">
+    {% include "includes/sla.html" %}
+    <p class="section-more"><a class="more" href="{% url 'web:solution' slug='podderzhka-24-7' %}">Как устроены приоритеты и эскалация</a></p>
+  </div>
+</section>
+
+<section class="section section-paper" aria-labelledby="updates-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Обновления</p>
+      <h2 id="updates-title">Обновления «1С:Отель»</h2>
+      <p>Обновления публикуются на сайте фирмы «1С» — это единственный официальный источник. Для загрузки нужны учётная запись и действующий договор сопровождения ИТС. Устанавливаем обновления в рамках сопровождения, в согласованное окно и после проверки на тестовой копии базы.</p>
+    </div>
+    <p><a class="more" href="https://releases.1c.ru/" target="_blank" rel="noopener">Обновления на сайте «1С»</a></p>
+  </div>
+</section>
+
+{% include "includes/contact_section.html" with heading="Написать в поддержку" text="Опишите ситуацию — заявка попадёт к специалистам. Если у вас ещё нет договора сопровождения, здесь же можно запросить условия." placeholder="Название отеля, что случилось, с какого момента" %}
+{% endblock %}

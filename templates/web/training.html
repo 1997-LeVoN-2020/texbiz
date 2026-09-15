@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load web_extras %}
+
+{% block content %}
+<section class="hero hero-compact" aria-labelledby="hero-title">
+  <div class="container">
+    <p class="eyebrow">Обучение</p>
+    <h1 id="hero-title">Обучение команды отеля</h1>
+    <p class="lead">Три формата под разные задачи: новому сотруднику освоить систему самостоятельно, команде подготовиться под свой отель, объекту запуститься без сбоев. Учим по ролям и на данных вашего объекта, а не общей презентацией.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#contacts">Запросить программу</a>
+      <a class="btn btn-ghost" href="{% url 'web:solution' slug='obuchenie-personala' %}">Что входит в обучение</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-paper" aria-labelledby="formats-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Форматы</p>
+      <h2 id="formats-title">Три способа обучить команду</h2>
+    </div>
+    <div class="grid grid-3">
+      <article class="card">
+        <span class="icon-tile">{% icon "EDU" %}</span>
+        <h3>Онлайн-курсы — самостоятельно</h3>
+        <p>Курсы по ролям на портале «1С:Отель»: первоначальная настройка базы, фронт-офис, бронирование, управление тарифами. Проходятся в своём темпе, с любого устройства — новый сотрудник осваивает систему сам, не отвлекая старшего смены.</p>
+        <a class="more" href="https://1c-hotel.pro/" target="_blank" rel="noopener">Курсы на 1c-hotel.pro</a>
+      </article>
+      <article class="card">
+        <span class="icon-tile">{% icon "MON" %}</span>
+        <h3>Индивидуально — онлайн, под ваш отель</h3>
+        <p>Учим вашу команду на вашей конфигурации, тематическими блоками с вопросами и ответами после каждого: служба приёма — заезд, выезд, шахматка, касса; бронирование и продажи — тарифы, квоты, групповые брони; отчётность и обмен с бухгалтерией. Состав групп и темы подстраиваем под объект.</p>
+      </article>
+      <article class="card card-accent">
+        <span class="icon-tile">{% icon "OPS" %}</span>
+        <h3>На проекте — перед запуском</h3>
+        <p>Обучение входит во внедрение: команда работает на тестовом контуре до переключения, с разбором нештатных ситуаций. В первые дни после старта остаёмся на связи с каждой сменой, чтобы вопрос у стойки решался за минуту, а не заявкой в поддержку.</p>
+        <a class="more" href="{% url 'web:solution' slug='vnedrenie-1c-otel' %}">Как проходит внедрение</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="roles-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Кого учим</p>
+      <h2 id="roles-title">Разным ролям — разное обучение</h2>
+      <p>Администратору стойки не нужен курс по управленческим отчётам, а руководителю — по закрытию смены. Каждый учится своим сценариям.</p>
+    </div>
+    <ol class="steps">
+      <li><strong>Администратор стойки</strong><span>Заселение, выселение, касса, нештатные ситуации на реальных сценариях.</span></li>
+      <li><strong>Служба бронирования</strong><span>Тарифы, квоты, групповые брони, работа с каналами продаж.</span></li>
+      <li><strong>Бухгалтер</strong><span>Закрытие смены, сверка кассовых операций, обмен с 1С:Бухгалтерией.</span></li>
+      <li><strong>Руководитель</strong><span>Отчёты по загрузке и выручке вместо сводки «на словах».</span></li>
+      <li><strong>Новый сотрудник</strong><span>Онлайн-курс по своей роли и короткий разбор особенностей объекта.</span></li>
+    </ol>
+  </div>
+</section>
+
+{% include "includes/contact_section.html" with heading="Составим программу под вашу команду" text="Напишите, сколько человек и какие роли нужно обучить, и на какой системе работает объект. Предложим формат и состав блоков." placeholder="Сколько человек, какие роли, какая система" %}
+{% endblock %}

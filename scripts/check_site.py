@@ -62,6 +62,8 @@ def pages():
         "/booking/",
         "/kontakty/",
         "/raschet/",
+        "/obuchenie/",
+        "/podderzhka/",
         "/privacy/",
         "/spasibo/",
         "/blog/",
