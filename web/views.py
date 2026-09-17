@@ -19,7 +19,7 @@ from blog.models import Article
 
 from .forms import EstimateForm, LeadForm
 from .models import Lead, Service, Solution
-from .seo import breadcrumbs, faq_page, jsonld, organization, page_meta
+from .seo import breadcrumbs, faq_from_html, faq_page, jsonld, organization, page_meta
 
 log = logging.getLogger("web.leads")
 
@@ -115,7 +115,7 @@ def service_detail(request, slug):
             ),
             "service": service,
             "form": lead_form(request),
-            "jsonld": [jsonld(schema)],
+            "jsonld": [jsonld(schema)] + ([jsonld(faq_page(faq))] if (faq := faq_from_html(service.body)) else []),
         },
     )
 
@@ -348,7 +348,7 @@ def favicon(request):
 
 
 def robots_txt(request):
-    body = f"User-agent: *\nAllow: /\nDisallow: /send/\nDisallow: /spasibo/\n\nSitemap: {settings.SITE_URL}/sitemap.xml\n"
+    body = f"User-agent: *\nAllow: /\nDisallow: /send/\nDisallow: /spasibo/\nDisallow: /{settings.ADMIN_URL}\n\nSitemap: {settings.SITE_URL}/sitemap.xml\n"
     return HttpResponse(body, content_type="text/plain; charset=utf-8")
 
 

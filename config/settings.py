@@ -4,9 +4,9 @@
 Всё, что зависит от окружения, берётся из переменных окружения или из файла
 .env в корне проекта (образец — .env.example). Секретов в коде нет.
 
-Админка намеренно не подключена: приложение django.contrib.admin установлено,
-но адрес /admin/ не зарегистрирован (см. config/urls.py). Включается одной
-правкой, когда понадобится.
+Панель управления подключена по адресу DJANGO_ADMIN_URL (см. config/urls.py):
+заявки в ней переводятся по статусам, содержимое открыто на чтение, потому что
+его источник — фикстуры репозитория.
 """
 import os
 import sys
@@ -66,8 +66,12 @@ if not DEBUG and SECRET_KEY == _DEV_SECRET:
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "tex-biz.ru,www.tex-biz.ru,localhost,127.0.0.1")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "https://tex-biz.ru,https://www.tex-biz.ru")
 
+# Адрес панели управления, со слэшем на конце и без ведущего. Не /admin/:
+# на него круглосуточно идёт перебор паролей.
+ADMIN_URL = env("DJANGO_ADMIN_URL", "panel-upravleniya/").strip("/") + "/"
+
 INSTALLED_APPS = [
-    "django.contrib.admin",  # установлено, адрес не подключён — задел под админку
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

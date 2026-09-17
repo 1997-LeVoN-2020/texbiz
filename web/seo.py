@@ -1,5 +1,7 @@
 """Метаданные страниц и микроразметка JSON-LD."""
 import json
+import re
+from html import unescape
 
 from django.conf import settings
 from django.utils.safestring import mark_safe
@@ -48,6 +50,23 @@ def organization():
             "Модуль онлайн-бронирования",
         ],
     }
+
+
+def faq_from_html(body):
+    """Вопросы из блоков <details class="faq-item"> в тексте страницы.
+
+    Возвращает список (вопрос, ответ) без разметки — для FAQPage. Видимый FAQ
+    и микроразметка берутся из одного места, поэтому разойтись не могут.
+    """
+    items = []
+    for block in re.findall(r'<details class="faq-item">(.*?)</details>', body, re.S):
+        q = re.search(r"<summary>(.*?)</summary>", block, re.S)
+        if not q:
+            continue
+        answer = re.sub(r"<summary>.*?</summary>", "", block, count=1, flags=re.S)
+        answer = unescape(re.sub(r"<[^>]+>", " ", answer))
+        items.append((unescape(q.group(1)).strip(), " ".join(answer.split())))
+    return items
 
 
 def faq_page(items):

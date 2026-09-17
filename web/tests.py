@@ -15,6 +15,7 @@ from django.conf import settings
 from django.core import mail
 from django.core.cache import cache
 from django.core.management import call_command
+from django.utils import timezone
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -388,6 +389,12 @@ class SeoTests(TestCase):
             with self.subTest(page=name):
                 self.assertContains(self.client.get(reverse(name)), "noindex")
 
+    def test_service_faq_is_marked_up_from_the_visible_questions(self):
+        service = Service.objects.exclude(body="").first()
+        html = self.client.get(service.get_absolute_url()).content.decode()
+        self.assertIn('"@type": "FAQPage"', html)
+        self.assertIn("Сколько стоит внедрение 1С для отеля?", html)
+
     def test_public_pages_are_indexable(self):
         self.assertNotContains(self.client.get(reverse("web:home")), "noindex")
 
@@ -396,6 +403,25 @@ class SeoTests(TestCase):
         self.assertIn("/1c-avtomatizaciya-otelya/", body)
         self.assertNotIn("/privacy/", body)
         self.assertNotIn("/spasibo/", body)
+
+    def test_admin_requires_login_and_is_hidden_from_robots(self):
+        response = self.client.get("/" + settings.ADMIN_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login/", response["Location"])
+        self.assertContains(self.client.get("/robots.txt"), f"Disallow: /{settings.ADMIN_URL}")
+
+    def test_rss_feed_lists_published_articles_only(self):
+        from blog.models import Article
+
+        for url in ["/feed/", "/blog/feed/"]:
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200, url)
+            self.assertIn("rss+xml", response["Content-Type"])
+        body = self.client.get("/blog/feed/").content.decode()
+        self.assertIn(Article.objects.published().first().title, body)
+        future = Article.objects.filter(published_at__gt=timezone.now()).first()
+        if future:
+            self.assertNotIn(future.title, body)
 
     def test_robots_points_at_the_sitemap(self):
         body = self.client.get("/robots.txt").content.decode()
