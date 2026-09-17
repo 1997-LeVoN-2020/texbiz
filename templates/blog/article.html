@@ -7,6 +7,13 @@
     <p class="article-meta"><b>Блог ТЕХБИЗ</b> · {{ article.published_at|ru_date }}</p>
     <h1 id="article-title">{{ article.title }}</h1>
     {{ article.body|safe }}
+    <aside class="article-cta">
+      <p><strong>Хотите разобрать это на своём объекте?</strong> Опишите задачу — посмотрим текущую схему и предложим, с чего начать.</p>
+      <div class="actions">
+        <a class="btn btn-primary btn-sm" href="#contacts">Обсудить задачу</a>
+        <a class="btn btn-ghost btn-sm" href="{% url 'web:estimate' %}">Заполнить опросный лист</a>
+      </div>
+    </aside>
   </div>
 </section>
 

@@ -256,6 +256,13 @@ p { margin: 0; }
     linear-gradient(var(--ink), var(--ink)) bottom / 100% 2px no-repeat;
 }
 
+/* Семь пунктов меню с телефоном и кнопкой не помещаются между 961 и 1140 px:
+   телефон здесь прячем, он остаётся в подвале и в мобильном меню. */
+@media (max-width: 1140px) {
+  .header-phone { display: none; }
+  .site-nav { gap: 1.1rem; }
+}
+
 @media (max-width: 960px) {
   .site-nav { display: none; }
   .site-header.is-open .site-nav {
@@ -701,6 +708,17 @@ p { margin: 0; }
 .scard-summary { font-size: .95rem; color: var(--ink-2); }
 
 .section-more { margin-top: 1.5rem; }
+
+/* Призыв в конце статьи: после текста, до «Других статей» */
+.article-cta {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+}
+.article-cta p { margin: 0 0 1rem; font-size: 17px; }
+.article-cta .actions { margin-top: 0; }
 
 @media (max-width: 760px) {
   .cat-tabs { grid-template-columns: minmax(0, 1fr); }

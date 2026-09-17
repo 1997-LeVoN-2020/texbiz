@@ -10,8 +10,10 @@
     </button>
     <nav id="site-nav" class="site-nav" data-nav aria-label="Основная навигация">
       <a href="{% url 'web:services' %}"{% if vn == 'web:services' or vn == 'web:service' %} aria-current="page"{% endif %}>Услуги</a>
-      <a href="{% url 'web:solutions' %}"{% if vn == 'web:solutions' %} aria-current="page"{% endif %}>Решения</a>
+      <a href="{% url 'web:solutions' %}"{% if vn == 'web:solutions' or vn == 'web:solutions_group' or vn == 'web:solution' %} aria-current="page"{% endif %}>Решения</a>
       <a href="{% url 'web:booking' %}"{% if vn == 'web:booking' %} aria-current="page"{% endif %}>Бронирование</a>
+      <a href="{% url 'web:training' %}"{% if vn == 'web:training' %} aria-current="page"{% endif %}>Обучение</a>
+      <a href="{% url 'web:support' %}"{% if vn == 'web:support' %} aria-current="page"{% endif %}>Поддержка</a>
       <a href="{% url 'blog:index' %}"{% if vn == 'blog:index' or vn == 'blog:article' %} aria-current="page"{% endif %}>Блог</a>
       <a href="{% url 'web:contacts' %}"{% if vn == 'web:contacts' %} aria-current="page"{% endif %}>Контакты</a>
       <a class="nav-phone" href="{{ site.phone_href }}">{{ site.phone }}</a>

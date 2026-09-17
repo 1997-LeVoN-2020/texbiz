@@ -183,7 +183,8 @@ def solution_detail(request, slug):
             "solution": solution,
             "crumbs": crumbs,
             "form": lead_form(request),
-            "jsonld": [jsonld(schema), jsonld(breadcrumbs(crumbs))],
+            "jsonld": [jsonld(schema), jsonld(breadcrumbs(crumbs))]
+            + ([jsonld(faq_page(faq))] if (faq := faq_from_html(solution.body)) else []),
         },
     )
 

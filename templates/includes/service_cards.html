@@ -3,9 +3,9 @@
   {% for s in services %}
   <article class="card">
     <span class="icon-tile">{% icon s.icon %}</span>
-    <h3>{% if s.has_page %}<a href="{{ s.get_absolute_url }}">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}</h3>
+    <h3>{% if s.card_url %}<a href="{{ s.card_url }}">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}</h3>
     <p>{{ s.summary }}</p>
-    {% if s.has_page %}<a class="more" href="{{ s.get_absolute_url }}">Подробнее</a>{% endif %}
+    {% if s.card_url %}<a class="more" href="{{ s.card_url }}">Подробнее</a>{% endif %}
   </article>
   {% endfor %}
   <article class="card card-accent">

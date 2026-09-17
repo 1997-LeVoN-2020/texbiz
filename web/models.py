@@ -16,7 +16,7 @@ class PublishedQuerySet(models.QuerySet):
 
 
 class Service(models.Model):
-    """Услуга. Если body пуст, у услуги нет своей страницы — только карточка в списке."""
+    """Услуга. Если body пуст, своей страницы нет: карточка ведёт по link_url или никуда."""
 
     title = models.CharField("Название", max_length=200)
     slug = models.SlugField("Адрес", unique=True, help_text="Страница открывается по /<slug>/")
@@ -24,6 +24,10 @@ class Service(models.Model):
     summary = models.CharField("Текст карточки", max_length=300)
     lead = models.TextField("Лид-абзац страницы", blank=True)
     body = models.TextField("Содержимое страницы (HTML)", blank=True)
+    link_url = models.CharField(
+        "Куда ведёт карточка без страницы", max_length=200, blank=True,
+        help_text="Адрес на сайте, например /podderzhka/. Используется, только если body пуст.",
+    )
     meta_title = models.CharField("Title для поиска", max_length=200, blank=True)
     meta_description = models.CharField("Description для поиска", max_length=300, blank=True)
     order = models.PositiveSmallIntegerField("Порядок", default=0)
@@ -45,6 +49,11 @@ class Service(models.Model):
 
     def get_absolute_url(self):
         return reverse("web:service", kwargs={"slug": self.slug})
+
+    @property
+    def card_url(self):
+        """Адрес с карточки: своя страница, иначе link_url, иначе пусто."""
+        return self.get_absolute_url() if self.has_page else self.link_url
 
     @property
     def page_title(self):
