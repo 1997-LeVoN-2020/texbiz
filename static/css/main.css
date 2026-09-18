@@ -709,6 +709,21 @@ p { margin: 0; }
 
 .section-more { margin-top: 1.5rem; }
 
+/* Снимки экрана демо-витрины */
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; align-items: start; }
+.shot { margin: 0; }
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.shot figcaption { margin-top: .6rem; font-family: var(--display); font-size: 14px; color: var(--ink-2); }
+.article figure.shot { margin: 1.5rem 0 2rem; }
+@media (max-width: 760px) { .shots { grid-template-columns: minmax(0, 1fr); } }
+
 /* Призыв в конце статьи: после текста, до «Других статей» */
 .article-cta {
   margin-top: 2.5rem;

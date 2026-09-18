@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load web_extras %}
+{% load static web_extras %}
 
 {% block content %}
 <section class="hero" aria-labelledby="hero-title">
@@ -27,6 +27,27 @@
         <li><strong>Подтверждение</strong><span>Бронь автоматически регистрируется в 1С-Отель.</span></li>
       </ol>
     </aside>
+  </div>
+</section>
+
+<section class="section" id="screens" aria-labelledby="screens-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Как это выглядит</p>
+      <h2 id="screens-title">Что видит гость на сайте отеля</h2>
+      <p>Снимки с демонстрационной витрины: номера, цены и доступность приходят из 1С-Отель, бронь ищется по номеру и контакту без регистрации.</p>
+    </div>
+    <div class="shots">
+      <figure class="shot">
+        <img src="{% static 'img/booking/rooms.webp' %}" width="1280" height="900" loading="lazy" alt="Список доступных номеров на выбранные даты: фото, описание, вместимость, цена от и кнопка «Выбрать тариф»">
+        <figcaption>Выбор дат и гостей, затем список номеров с ценами на эти даты</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="{% static 'img/booking/find.webp' %}" width="1280" height="520" loading="lazy" alt="Форма «Найти бронирование»: номер брони и телефон или e-mail">
+        <figcaption>Гость находит свою бронь по номеру и контакту — без личного кабинета</figcaption>
+      </figure>
+    </div>
+    <p class="section-more"><a class="more" href="{{ demo_url }}" target="_blank" rel="noopener">Открыть демо-витрину</a></p>
   </div>
 </section>
 
